@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 import os
 from flask import g
 
@@ -7,7 +8,7 @@ def get_db():
     if not hasattr(g, 'db'):
         # https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
         database_url = os.environ["DATABASE_URL"]
-        con = psycopg2.connect(database_url)
+        con = psycopg2.connect(database_url, cursor_factory=psycopg2.extras.NamedTupleCursor)
         g.db = con
     return g.db
 
