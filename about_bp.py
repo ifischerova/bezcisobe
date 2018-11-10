@@ -14,3 +14,8 @@ def show_about():
     # vygeneruje výsledné HTML, které vrátí jako výsledek z téhle funkce zpátky
     # do Fasku, a ten ji pošle k uživateli do prohlížeče.
     return render_template('about.html')
+
+
+@blueprint.route('/')
+def show_index():
+    return render_template('index.html')

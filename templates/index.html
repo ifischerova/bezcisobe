@@ -25,14 +25,26 @@
              url_for() je pak funkce Flasku, která vrátí, pro jakou adresu je
              registrovaná funkce show() v blueprintu names_bp.
              //-->
-        
+						 <title>Běžci sobě/uvod</title>
+						 <div class="jumbotron">
+								 <h1>Běžci sobě</h1>
+						 </div>
+						 <img  src="{{ url_for('static', filename='bezec.png') }}" >																					
+						 <h1> Naše appka slouží všem běžcům, kteří nemají problém dojet za závodem přes půl republiky, ale mají občas potíže, jak se tam dopravit.</h1>
+						 <h1>Jestli řešíš to stejné, neváhej se tu zaregistrovat a najít si spolujízdu.</h1>
+				 
     </p>
-    <!-- Vynechá jeden řádek //-->
-		<br/>
-		about
+		ZÁVODY
+
+
     <!-- Další odstavec //-->
     <p>
-        
+		PŘIHLÁŠENÍ 
+
+
+		<p>
+
+		CO JSME ZAČ?
     </p>
 <!-- Řekne Flasku, že tady končí blok "body" //-->
 {% endblock %}
