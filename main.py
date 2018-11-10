@@ -1,12 +1,12 @@
 # Z modulu flask naimportuje "Flask" a "g" tak, abychom je mohli
 # používat v tomto programu
+import os
 from flask import Flask, g
 # Stejně tak pro about_bp modul
 import about_bp
 
 import zavody_bp
 
-# Vytvoří novou Flask aplikaci a uloží ji do proměnné "kateApp"
 bezciSobe = Flask(__name__)
 
 # Stejně tak zaregistrujeme about_bp blueprint
@@ -21,3 +21,9 @@ def close_db(error):
     if hasattr(g, 'db'):
         # Bezpečně ukončí spojení s naší databází
         g.db.close()
+
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    bezciSobe.run(host='0.0.0.0', port=port)
+
