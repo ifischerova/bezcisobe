@@ -18,33 +18,38 @@
         a říká, že obsah má být extra-velkými písmeny a na šedém pozadí //-->
 
     <!-- Odstavec //-->
-    <p>
+    <div class="hlavicka">
         <!-- <a href="url">Text</a> je HTML tag, který z textu "Text" udělá odkaz,
              který odkazuje na adresu "url". V našem případ použijeme {{ a }}, což
              říká Flasku aby vyhodnotil to, co je uvnitř a nahradil tím ty závorky.
              url_for() je pak funkce Flasku, která vrátí, pro jakou adresu je
              registrovaná funkce show() v blueprintu names_bp.
              //-->
-						 <title>Běžci sobě/uvod</title>
-						 <div class="jumbotron">
-								 <h1>Běžci sobě</h1>
+						 <div class="nadpis">
+								 <h1>BĚŽCI SOBĚ</h1>
 						 </div>
-						 <img  src="{{ url_for('static', filename='bezec.png') }}" >																					
-						 <h1> Naše appka slouží všem běžcům, kteří nemají problém dojet za závodem přes půl republiky, ale mají občas potíže, jak se tam dopravit.</h1>
-						 <h1>Jestli řešíš to stejné, neváhej se tu zaregistrovat a najít si spolujízdu.</h1>
+						 <img class="bezec" src="{{ url_for('static', filename='bezec.png') }}" >																					
+						 <p> Naše appka slouží všem běžcům, kteří nemají problém dojet za závodem přes půl republiky, ale mají občas potíže, jak se tam dopravit.</p>
+						 <p>Jestli řešíš to stejné, neváhej se tu zaregistrovat a najít si spolujízdu.</p>
 				 
-    </p>
-		ZÁVODY
+		
+	</div>
+	<div class="tlacitka">
+		<a href="{{ url_for('zavody_bp.show_zavody') }}" target="_blank" class="btn btn-default">
+			ZÁVODY
+		</a>
+   
+		<a href="#"class="btn btn-default">
+				PŘIHLÁŠENÍ
+		</a>
 
+    <a href="#" class="btn btn-default">
+				REGISTRACE
+		</a>
 
-    <!-- Další odstavec //-->
-    <p>
-		PŘIHLÁŠENÍ 
-
-
-		<p>
-
-		CO JSME ZAČ?
-    </p>
+		<a href="#" class="btn btn-default">
+				KDO A CO JSME ZAČ?
+		</a>
+	</div>
 <!-- Řekne Flasku, že tady končí blok "body" //-->
 {% endblock %}

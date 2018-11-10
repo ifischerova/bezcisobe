@@ -1,3 +1,23 @@
-.table > tbody > tr > td {
-    vertical-align: middle;
+*,:after, :before { box-sizing: border-box;}
+.nadpis h1{
+	font-size: 48px; 
+	color: green; 
+	font-weight: bold;
+	font-family:  "Helvetica";
+	text-align: center;
+}
+.bezec{
+	margin: 3em;
+}
+.hlavicka{
+	text-align: center;
+}
+.tlacitka .btn{
+	display: block;
+	width: 250px;
+	margin:20px auto;
+	color:green;
+	font-size:2.5m;
+	font-weight:bold;
+	background-color: #d5e1df;
 }
