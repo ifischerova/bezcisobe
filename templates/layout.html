@@ -1,0 +1,52 @@
+<!-- Tohle je komentář v HTML. Prohlížeč ho ignoruje, ale Flask ne. Proto nemůžu
+     v komentářích používat kombinaci složená závorka-procento, protože Flask se
+     to snaží pochopit, i když je to jenom komentář. Proto v komentářích používám
+     {$ a $}, které Flask nezná, takže mu nevadí. Jenom si představ, že místo "$"
+     je tam "%" :) //-->
+
+
+<!-- První element na stránce: říka, že tohle je HTML dokument //-->
+<!DOCTYPE HTML>
+<!-- Začátek hlavičky - hlavička obsahuje metadata pro prohlížeč, která se nezobrazují
+     nikde na stránce //-->
+<head>
+
+    <!-- Nastaví titulek stránky - to je to, co se objeví v názvu tabu v prohlížeči //-->
+    <title>Aplikace Běžci sobě</title>
+    <h1>Naše appka slouží všem běžcům, kteří nemají problém dojet za závodem přes půl republiky, ale mají občas potíže, jak se tam dopravit.</h1>
+    <h1>Jestli řešíš to stejné, neváhej se tu zaregistrovat a najít si spolujízdu.</h1>
+
+    <!-- Připojí ke stránce soubor, který obsahuje spoustu předpřipravených stylů,
+         které nám usnadní upravovat, jak má stránka vypadat //-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous" />
+
+    <!-- Připojí ke stránce soubor, který obsahuje naše vlastní styly.
+         Všechno mezi {{ a }} Flask nahradí za skutečné hodnoty. V tomhle případě
+         nahrádí url_for('static', filename='style.css') za skutečnou adresu, na
+         které prohlížeč může najít soubor static/style.css //-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+<!-- Konec hlavičky //-->
+</head>
+<!-- Začátek těla stránky - všechno mezi <body> a </body> se zobrazí jako obsah
+     stránky //-->
+<body>
+    <!-- Začátek oddílu (division) stránky. class="container" říká, že tento oddíl
+         je třídy "container". V jednom z těch .css souborů, které jsme připojili
+         nahoře je specifikované, jak mají oddíly třídy container vypadat (velikost
+         písma, odsazení atd.).//-->
+    <div class="container">
+
+    <!-- {$ a $} jsou zase instrukce pro Flask, které říkají, že sem se má vložit
+         block s názvem "body" z jednotlivých templatů, které tento "layout" rozšiřují //-->
+    {% block body %}
+    {% endblock %}
+
+    <!-- Konec oddilu stránky //-->
+    </div>
+<!-- Konec těla stránky. Za tíhle prvkem už nic nesmí být //-->
+</body>
+
+

@@ -1,0 +1,39 @@
+<!-- Tohle je komentář v HTML. Prohlížeč ho ignoruje, ale Flask ne. Proto nemůžu
+     v komentářích používat kombinaci složená závorka-procento, protože Flask se
+     to snaží pochopit, i když je to jenom komentář. Proto v komentářích používám
+     {$ a $}, které Flask nezná, takže mu nevadí. Jenom si představ, že místo "$"
+     je tam "%" :) //-->
+
+<!-- {$ extends $} říká Flasku, že tato šablona rozšiřuje šablonu layout.html
+     Tohle je hodně užitečné, když máš vícero stránek, které mají stejnou hlavičku
+     a strukturu a liší se jenom v jedné části (třeba v hlavním obsahu) a nechceš
+     pokaždý tu hlavičku opakovat ve všech šablonách //-->
+{% extends "layout.html" %}
+<!-- Řekne flasku, že tedy začíná blok body - Flask vezme to, co je tedy mezi touhle
+     značkou a značkou {$ endblock $} a vloží to na stejně označené místo v layout.html
+//-->
+{% block body %}
+    <!-- Začátek oddílu stránky třídy jumbotron - třída jumbotron je zase definovaná
+         v jednom z těch .css souborů, které jsme připojili v hlavičce v layout.html
+        a říká, že obsah má být extra-velkými písmeny a na šedém pozadí //-->
+    <div class="jumbotron">
+        <h1>Vitej na moji druhee strance</h1>
+    </div>
+    <!-- Odstavec //-->
+    <p>
+        <!-- <a href="url">Text</a> je HTML tag, který z textu "Text" udělá odkaz,
+             který odkazuje na adresu "url". V našem případ použijeme {{ a }}, což
+             říká Flasku aby vyhodnotil to, co je uvnitř a nahradil tím ty závorky.
+             url_for() je pak funkce Flasku, která vrátí, pro jakou adresu je
+             registrovaná funkce show() v blueprintu names_bp.
+             //-->
+        
+    </p>
+    <!-- Vynechá jeden řádek //-->
+    <br/>
+    <!-- Další odstavec //-->
+    <p>
+        Toto je stranka o me ale nic se tu o me nedozvis.
+    </p>
+<!-- Řekne Flasku, že tady končí blok "body" //-->
+{% endblock %}
