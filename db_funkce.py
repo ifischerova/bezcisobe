@@ -14,7 +14,7 @@ def get_db():
 
 
 def zavody():
-    sql = """SELECT * FROM zavody"""
+    sql = """SELECT * FROM zavody ORDER BY datum_zavodu DESC"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql)
@@ -27,7 +27,7 @@ def registrace(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo):
     sql = """INSERT INTO uzivatele(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo)
              VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_uzivatele;"""
     conn = get_db()
-    vendor_id = None
+    id_uzivatele = None
     try:
         cur = conn.cursor()
         # execute the INSERT statement
@@ -47,22 +47,41 @@ def registrace(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo):
 def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka):
     """ prida nove auto s ridicem do databaze """
     sql = """INSERT INTO nabidka_spolujizdy(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka)
-             VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_uzivatele;"""
-    conn = None
-    vendor_id = None
+             VALUES(%s, %s, %s, %s, %s) RETURNING id_jizdy;"""
+    conn = get_db()
+    id_uzivatele = None
     try:
-        # read database configuration
-        params = config()
-        # connect to the PostgreSQL database
-        conn = psycopg2.connect(**params)
-        # create a new cursor
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo))
+        cur.execute(sql, (ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka))
         # get the generated id back
-        id_uzivatele = cur.fetchone()[0]
+        id_spolujizdy = cur.fetchone()[0]
         # commit the changes to the database
         conn.commit()
+        # close communication with the database
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+def nabidky_spolujizdy(id_zavodu):
+    """ nabidne volna auta ke konkretnimu zavodu """
+    sql = """SELECT ridic, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - sum(chci_mist) as
+    volnych_mist FROM
+    (select * from 
+    nabidka_spolujizdy as ns left join spolujezdci as s on ns.id_jizdy = s.id_jizdy
+    group by ns.id_jizdy)
+     where mist_auto_nabidka > sum(chci_mist)
+     order by misto_odjezdu
+     """
+    conn = get_db()
+    id_uzivatele = None
+    try:
+        cur = conn.cursor()
+        # execute the SELECT statement
+        cur.execute(sql, (id_zavodu))
         # close communication with the database
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
