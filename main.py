@@ -12,10 +12,9 @@ bezciSobe.register_blueprint(about_bp.blueprint)
 
 # Zaregistruje funkci close_db() do naší aplikace jako funkci, která se má spustit,
 # když se ukončuje naše aplikace
-'''
+
 @bezciSobe.teardown_appcontext
 def close_db(error):
-    if hasattr(g, 'sqlite_db'):
+    if hasattr(g, 'db'):
         # Bezpečně ukončí spojení s naší databází
-        g.sqlite_db.close()
-'''
+        g.db.close()

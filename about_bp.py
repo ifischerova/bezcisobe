@@ -1,5 +1,7 @@
 # Z flasku naimportuje spoustu různých funkcí, které budeme potřebovat
 from flask import Blueprint, render_template
+import db_funkce
+
 
 # Vytvoří nový blueprint s názvem "about_bp" a uloží ho to proměnné blueprint
 blueprint = Blueprint('about_bp', __name__)
