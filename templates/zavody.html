@@ -17,22 +17,27 @@
               v jednom z těch .css souborů, které jsme připojili v hlavičce v layout.html
              a říká, že obsah má být extra-velkými písmeny a na šedém pozadí //-->
          <div class="container">
-            <h1>Závody</h1>
+            <h1>Závody {{ id_vybraneho }}</h1>
          </div>
          <!-- Odstavec //-->
-         <h1>Podívej se na seznam závodů.</h1>
-            {% for zavod in zavody %}
-            <p>{{ zavod.datum_zavodu.strftime("%d-%m-%Y") + ", " + zavod.nazev + ", " + zavod.misto_zavodu}}</p>
-            {% endfor %}
+         <h1>Podívej se na seznam závodů.</h1>            
+            <select name="zavod" onchange="javascript:location.href='/zavody/'+this.value">
+                <option value="">Vyber si závod.</option>
+                {% for zavod in zavody %}
+                <option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod == id_vybraneho %}selected{% endif %}>
+                    {{ zavod.datum_zavodu.strftime("%d-%m-%Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
+                </option>
+                {% endfor %}
+                </select>
          <!-- Vynechá jeden řádek //-->
          <br/>
-         <!-- Další odstavec //-->
          <p>
-            <select zavod="ovoce">
-                <option value="jb">jablko</option>
-                <option value="hs" selected="selected">hruška</option>
-                </select>
-         </p>
+         <table>
+                <tr><td>Kdo</td><td>Nástupní místo</td><td>Kolik má míst</td><td>Poznámka</td><td>Chci nastoupit</td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                </table>
+        </p>
+
      <!-- Řekne Flasku, že tady končí blok "body" //-->
      {% endblock %}
      
