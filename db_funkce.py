@@ -68,22 +68,25 @@ def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka):
 
 def nabidky_spolujizdy(id_zavodu):
     """ nabidne volna auta ke konkretnimu zavodu """
-    sql = """SELECT ridic, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - sum(chci_mist) as
+    sql = """SELECT ridic, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
     volnych_mist FROM
-    (select * from 
-    nabidka_spolujizdy as ns left join spolujezdci as s on ns.id_jizdy = s.id_jizdy
-    group by ns.id_jizdy)
-     where mist_auto_nabidka > sum(chci_mist)
-     order by misto_odjezdu
+    nabidka_spolujizdy as ns 
+    left join 
+        (select id_jizdy, sum(chci_mist) as sum_obsazena_mista from 
+        spolujezdci as s 
+        group by s.id_jizdy) as s
+    on ns.id_jizdy = s.id_jizdy
+     where (mist_auto_nabidka > sum_obsazena_mista or s.id_jizdy is null) AND id_zavod=%s
+     order by misto_odjezdu;
      """
     conn = get_db()
-    id_uzivatele = None
+    id_jizdy = None
     try:
         cur = conn.cursor()
         # execute the SELECT statement
-        cur.execute(sql, (id_zavodu))
+        cur.execute(sql, (id_zavodu,))
         # close communication with the database
-        cur.close()
+        return cur.fetchall()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
