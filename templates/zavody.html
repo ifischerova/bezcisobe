@@ -12,15 +12,21 @@
      <!-- Řekne flasku, že tedy začíná blok body - Flask vezme to, co je tedy mezi touhle
           značkou a značkou {$ endblock $} a vloží to na stejně označené místo v layout.html
      //-->
-     {% block body %}
+		 {% block body %}
+		 <nav class="navbar navbar-light bg-light">
+				<a class="navbar-brand" href="#">
+					<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+					BĚŽCI SOBĚ
+				</a>
+			</nav>
          <!-- Začátek oddílu stránky třídy jumbotron - třída jumbotron je zase definovaná
               v jednom z těch .css souborů, které jsme připojili v hlavičce v layout.html
              a říká, že obsah má být extra-velkými písmeny a na šedém pozadí //-->
-         <div class="container">
-            <h1>Závody {{ id_vybraneho }}</h1>
-         </div>
+
+          <h1>Závody {{ id_vybraneho }}</h1>
+
          <!-- Odstavec //-->
-         <h1>Podívej se na seznam závodů.</h1>            
+         <p>Podívej se na seznam závodů.</p>            
             <select name="zavod" onchange="javascript:location.href='/zavody/'+this.value">
                 <option value="">Vyber si závod.</option>
                 {% for zavod in zavody %}
