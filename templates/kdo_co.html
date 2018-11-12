@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="hlavicka"></div>
-<div class="nadpis">
+<nav class="navbar navbar-light bg-light">
+		<a class="navbar-brand" href="#">
+			<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
+			BĚŽCI SOBĚ
+<div class="nadpis h1">
 		<h1>KDO A CO JSME ZAČ?</h1>
 </div> 
 <div class="obrazky">
@@ -10,7 +13,7 @@
 <img class="obrazky" src="{{ url_for('static', filename='petra.png') }}">
 <p>Celkem aktivní maminka na rodičovské dovolené, která je ráda venku a potřebuje nenechat zreznout mozkové závity. Její “datové dovednosti a zkušenosti” jsou zatím jen ty, které jií dala Akademie. Baví ji Python i SQL.</p>
 <img class="obrazky" src="{{ url_for('static', filename='czechitas.png') }}">
-<p>Píšeme příběhy žen v IT už od samého počátku. Otevíráme jim dveře k informačním technologiím, motivujeme a vzděláváme je. Více o nás najdeš<a href='https://www.czechitas.cz/cs/'>tady</a></p>
+<p>Píšeme příběhy žen v IT už od samého počátku. Otevíráme jim dveře k informačním technologiím, motivujeme a vzděláváme je. Více o<a href='https://www.czechitas.cz/cs/'>Czechitas.</a></p>
 </div>
 <div class="kontakty" >
 		<h2>KONTAKTY</h2>
