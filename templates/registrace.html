@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+<nav class="navbar navbar-light bg-light">
+	<a class="navbar-brand" href="#">
+		<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
+		BĚŽCI SOBĚ
+
+<div class="hlavicka">
+<form action=registrace.html target="_blank">
+Jméno*:
+<input tabindex=1 type="text" size=20 name="jmeno">
+Příjmení*:
+<input tabindex=1 type="text" size=30 name="prijmeni">
+Ulice*:
+<input tabindex=1 type="text" size=40 name="ulice">
+Č.p./Č.o.*:
+<input tabindex=1 type="text" size=10 name="cpco">
+Město/Obec*:
+<input tabindex=1 type="text" size=25 name="mesto">
+Stát:
+<input tabindex%1 type="text" size=20 name="stat">
+E-mail*:
+<input tabindex=1 type="text" size=50 name="email">
+Telefon*:
+<input tabindex=1 type="text" size=15 name="telefon">
+Heslo*:
+<input tabindex=1 type="heslo" size=15 name="heslo">
+Potvrzeni hesla*:
+<input tabindex=1 type="heslo" size=15 name="potvrzeni hesla">
+<input tabindex=1 type="checkbox" checked name="skrtatko" value=ano>Souhlasím ze zpracováním osobních údajů.
+<input tabindex=1 type="submit" value="odeslat">
+</form>
+</div>
+{% endblock %}

@@ -9,6 +9,8 @@ import zavody_bp
 
 import kdo_co_bp
 
+import registrace_bp
+
 bezciSobe = Flask(__name__)
 
 # Stejně tak zaregistrujeme about_bp blueprint
