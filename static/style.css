@@ -21,3 +21,13 @@
 	font-weight:bold;
 	background-color: #d5e1df;
 }
+.kontakty{
+	font-size:36px;
+	color:green;
+	font-weight: bold;
+	font-family: "Helvetica";
+	text-align: center;
+}
+.obrazky{
+	float: left
+}
