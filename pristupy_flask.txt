@@ -1,3 +1,0 @@
-$ENV:DATABASE_URL = "postgres://jdsnghrskfdcwy:5d3440bb922a7a29ad3317fadab6a04eaa62e51575248115c0f039b2277f78d9@ec2-54-247-98-162.eu-west-1.compute.amazonaws.com:5432/de05orr05rt4kk"
-
-PS C:\Users\Iva\Desktop\PROJEKT\bezcisobe> flask run
