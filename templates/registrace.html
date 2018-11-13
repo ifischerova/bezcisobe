@@ -4,31 +4,35 @@
 	<a class="navbar-brand" href="#">
 		<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
 		BĚŽCI SOBĚ
+		<div class="nadpis h1">
+			<h1>REGISTRAČNÍ FORMULÁŘ</h1>
+		</div>
+	<img class="bezec" src="{{ url_for('static', filename='bezec.png') }}" >	
 
 <div class="hlavicka">
 <form action=registrace.html target="_blank">
 Jméno*:
-<input tabindex=1 type="text" size=20 name="jmeno">
+<input tabindex=1 type="text" size=20 name="jmeno" required>
 Příjmení*:
-<input tabindex=1 type="text" size=30 name="prijmeni">
+<input tabindex=1 type="text" size=30 name="prijmeni" required>
 Ulice*:
-<input tabindex=1 type="text" size=40 name="ulice">
+<input tabindex=1 type="text" size=40 name="ulice" required>
 Č.p./Č.o.*:
-<input tabindex=1 type="text" size=10 name="cpco">
+<input tabindex=1 type="text" size=10 name="cpco" required>
 Město/Obec*:
-<input tabindex=1 type="text" size=25 name="mesto">
+<input tabindex=1 type="text" size=25 name="mesto" required>
 Stát:
-<input tabindex%1 type="text" size=20 name="stat">
+<input tabindex=1 type="text" size=20 name="stat">
 E-mail*:
-<input tabindex=1 type="text" size=50 name="email">
+<input tabindex=1 type="text" size=50 name="email" required>
 Telefon*:
-<input tabindex=1 type="text" size=15 name="telefon">
+<input tabindex=1 type="text" size=15 name="telefon" required>
 Heslo*:
-<input tabindex=1 type="heslo" size=15 name="heslo">
+<input tabindex=1 type="heslo" size=15 name="heslo" required>
 Potvrzeni hesla*:
-<input tabindex=1 type="heslo" size=15 name="potvrzeni hesla">
+<input tabindex=1 type="heslo" size=15 name="potvrzeni hesla" required>
 <input tabindex=1 type="checkbox" checked name="skrtatko" value=ano>Souhlasím ze zpracováním osobních údajů.
-<input tabindex=1 type="submit" value="odeslat">
+<input tabindex=1 type="submit" value="Odeslat">
 </form>
 </div>
 {% endblock %}

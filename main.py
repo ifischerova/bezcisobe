@@ -17,6 +17,7 @@ bezciSobe = Flask(__name__)
 bezciSobe.register_blueprint(about_bp.blueprint)
 bezciSobe.register_blueprint(zavody_bp.blueprint)
 bezciSobe.register_blueprint(kdo_co_bp.blueprint)
+bezciSobe.register_blueprint(registrace_bp.blueprint)
 
 # Zaregistruje funkci close_db() do naší aplikace jako funkci, která se má spustit,
 # když se ukončuje naše aplikace
