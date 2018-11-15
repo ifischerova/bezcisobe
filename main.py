@@ -11,6 +11,8 @@ import kdo_co_bp
 
 import registrace_bp
 
+import prihlaseni_bp
+
 bezciSobe = Flask(__name__)
 
 # Stejně tak zaregistrujeme about_bp blueprint
@@ -18,6 +20,7 @@ bezciSobe.register_blueprint(about_bp.blueprint)
 bezciSobe.register_blueprint(zavody_bp.blueprint)
 bezciSobe.register_blueprint(kdo_co_bp.blueprint)
 bezciSobe.register_blueprint(registrace_bp.blueprint)
+bezciSobe.register_blueprint(prihlaseni_bp.blueprint)
 
 # Zaregistruje funkci close_db() do naší aplikace jako funkci, která se má spustit,
 # když se ukončuje naše aplikace

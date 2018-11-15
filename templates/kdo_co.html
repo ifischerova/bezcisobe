@@ -4,46 +4,51 @@
 		<a class="navbar-brand" href="#">
 			<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
 			BĚŽCI SOBĚ
+		</a>
+</nav>
 <div class="hlavicka">
-<div class="nadpis h1">
+	<div class="nadpis h1">
 		<h1>KDO A CO JSME ZAČ?</h1>
-</div> 
+	</div> 
 </div>
 
 <div>
-	<img class = "obrazky" src="{{ url_for('static', filename='iva.PNG') }}">
+	<img src="{{ url_for('static', filename='botyiva.jpg') }}" width="300px" height="200px" alt="Boty_Iva" margin=2em>
 </div>
 
 <div>
-	<p style="text-align:justify"> 
+	<p> 
+		IVA<br />
 		Zatím z domu pracující máma na rodičovské, která chce změnit kariéru a tím i svůj život:) IT ji neskutečně oslovilo a baví ji! 
 	</p>
 </div>
 
 <div>
-	<img class="obrazky" src="{{ url_for('static', filename='petra.png') }}">
+	<img src="{{ url_for('static', filename='botypetra.jpg') }}" width="300px" height="200px" alt="Boty_Petra" margin=2em>
 </div>
-	<p style="text-align:justify"> 
+	<p class="obrazky"> 
+		PETRA <br />
 		Celkem aktivní maminka na rodičovské dovolené, která je ráda venku a potřebuje nenechat zreznout mozkové závity. Její “datové dovednosti a zkušenosti” jsou zatím jen ty, které jií dala Akademie. Baví ji Python i SQL.
 	</p>
 </div>
 
 <div>
-	<img class="obrazky" src="{{ url_for('static', filename='czechitas.png') }}">
+	<img src="{{ url_for('static', filename='czechitas.png') }}" width="250px" height="100px" alt="logo Czechitas" margin=2em>
 </div>
-
 <div>
-	<p style="text-align:justify"> 
-	Píšeme příběhy žen v IT už od samého počátku. Otevíráme jim dveře k informačním technologiím, motivujeme a vzděláváme je. Více o<a href='https://www.czechitas.cz/cs/'>Czechitas.</a>
+	<p class="obrazky">
+		CZECHITAS
+	Píšeme příběhy žen v IT už od samého počátku. <br />
+	Otevíráme jim dveře k informačním technologiím, motivujeme a vzděláváme je.<br />
+	Více o<a href='https://www.czechitas.cz/cs/'> Czechitas.</a>
 	</p>
 </div>
 
 <div class="kontakty" >
 	<h2>KONTAKTY</h2>
 </div>
-
 <div class="hlavicka">
-	<p>Pokud nám chceš cokoli napsat, můžeš <a href='info@bezcisobe.cz'>tady.</a></p>
+	<p>Pokud nám chceš cokoli napsat, můžeš <a href='info@bezcisobe.cz'>tady.</a></p><br />
 	<p>Samozřejmě nás najdeš i na <a href='https://www.facebook.com/trenerkb/'>FACEBOOKU.</a></p>
 </div>
 {% endblock %}

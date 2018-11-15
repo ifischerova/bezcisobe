@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block body %}
+<nav class="navbar navbar-light bg-light">
+		<a class="navbar-brand" href="#">
+			<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
+			BĚŽCI SOBĚ
+		</a>
+</nav>
+
+<div class="hlavicka">
+	<div class="nadpis h1">
+		<h1>PŘIHLÁŠENÍ</h1>
+	</div> 
+</div>
+
+<div>
+	<form action=prihlaseni.html target="_blank">
+</div>
+<div>
+		<p class="zarovnani">
+	Zadejte prosím svůj email a heslo.
+	</p>
+</div>
+
+<p class="formular">
+		E-mail*:
+		<input tabindex=1 type="text" size=50 name="email" required><br />
+</p>
+
+<p class="formular">
+		Heslo*:
+		<input tabindex=1 type="heslo" size=50 name="heslo" required><br />
+</p>
+
+<div>
+		<p class="tlacitka">
+	<input tabindex=1 type="submit" value="Přihlásit se" class="btn btn-default">
+	<input tabindex=1 type="submit" value="Nemám zatím účet" class="btn btn-default">
+	<input tabindex=1 type="submit" value="Zapomněl jsem heslo" class="btn btn-default">
+		</p>
+	</div>
+
+
+
+
+
+
+
+
+
+</form>
+{% endblock %}

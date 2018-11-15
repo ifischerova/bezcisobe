@@ -32,3 +32,15 @@
 .obrazky{
 	float: left;
 }
+.zarovnani{
+	text-align: center;
+	font-weight: bold;
+	font-family:"Helvetica";
+	font-size:20px;
+}
+.formular{
+	text-align: center;
+	font-weight: bold;
+	font-family:"Helvetica";
+	font-size:15px;
+}
