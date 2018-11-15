@@ -59,7 +59,7 @@ def registrace(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo):
     """ vlozi noveho uzivatele do databaze """
 
     sql = """INSERT INTO uzivatele
-            (jmeno, prijmeni, ulice, mesto_obec, PSC, latitude, longitude, email, telefon, heslo)
+            (jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo, latitude, longitude)
              VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_uzivatele;"""
     conn = get_db()
     id_uzivatele = None
@@ -68,7 +68,7 @@ def registrace(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo):
     try:
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (jmeno, prijmeni, ulice, mesto_obec, PSC, latitude, longitude, email, telefon, hash_heslo(heslo)))
+        cur.execute(sql, (jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, hash_heslo(heslo), latitude, longitude))
         # get the generated id back
         id_uzivatele = cur.fetchone()[0]
         # commit the changes to the database
@@ -80,6 +80,8 @@ def registrace(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo):
     finally:
         if conn is not None:
             conn.close()
+    return id_uzivatele
+
 
 def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka):
     """ prida nove auto s ridicem do databaze """
@@ -104,6 +106,7 @@ def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka):
     finally:
         if conn is not None:
             conn.close()
+
 
 def nabidky_spolujizdy(id_zavodu):
     """ nabidne volna auta ke konkretnimu zavodu """

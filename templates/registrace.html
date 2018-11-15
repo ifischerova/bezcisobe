@@ -10,17 +10,17 @@
 	<img class="bezec" src="{{ url_for('static', filename='bezec.png') }}" >	
 
 <div class="hlavicka">
-<form action=registrace.html target="_blank">
+<form method="POST" action="{{ url_for('registrace_bp.add_new') }}" target="_blank">
 Jméno*:
 <input tabindex=1 type="text" size=20 name="jmeno" required>
 Příjmení*:
 <input tabindex=1 type="text" size=30 name="prijmeni" required>
-Ulice*:
+Ulice a č.p./č.o.*:
 <input tabindex=1 type="text" size=40 name="ulice" required>
 Č.p./Č.o.*:
 <input tabindex=1 type="text" size=10 name="cpco" required>
 Město/Obec*:
-<input tabindex=1 type="text" size=25 name="mesto" required>
+<input tabindex=1 type="text" size=25 name="mesto_obec" required>
 Stát:
 <input tabindex=1 type="text" size=20 name="stat">
 E-mail*:
