@@ -1,3 +1,4 @@
 flask==1.0.2
 gunicorn==19.9.0
 psycopg2==2.7.6
+geopy==1.17.0
