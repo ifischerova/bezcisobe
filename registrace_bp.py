@@ -13,4 +13,12 @@ def add_new():
 	result = request.form
 	db_funkce.registrace(**result)
 	#registrace(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo)
+	# Takhle funkce nám získá adresu (URL) pro funkci show() v tomhle blueprintu
+    	# tzn v tomhle konkrétním případě na adresu "/"
+    #showUrl = url_for('registrace_bp.show')
+    	# Přesměuje uživatelův prohlížeč na adresu v showUrl, takže prohlížeč znovu
+    	# načte tu úvodní stránku (tzn. že se znovu zavolá funkce show() výše), a ta
+    	# znovu vypíše všechny záznamy z databáze, tentokrát i s tím záznamem, který
+    	# jsme tam pravě vložili
+    #return redirect(showUrl)
 

@@ -51,24 +51,24 @@ def get_gps(ulice, PSC):
     try:
         data = connection.geocode(query)
     except GeopyError:
-        return ('', '')
-    return data.latitude, data.longitude
+        return (.0, .0)
+    return (.0, .0) if data is None else (data.latitude, data.longitude)
 
 
-def registrace(jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo):
+def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_potvrzeni, skrtatko):
     """ vlozi noveho uzivatele do databaze """
 
     sql = """INSERT INTO uzivatele
-            (jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, heslo, latitude, longitude)
-             VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_uzivatele;"""
+            (jmeno, prijmeni, ulice, mesto_obec, "PSC", email, telefon, heslo, latitude, longitude)
+             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_uzivatele;"""
     conn = get_db()
     id_uzivatele = None
-    latitude, longitude = get_gps(ulice, PSC)
+    latitude, longitude = get_gps(ulice, psc)
 
     try:
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (jmeno, prijmeni, ulice, mesto_obec, PSC, email, telefon, hash_heslo(heslo), latitude, longitude))
+        cur.execute(sql, (jmeno, prijmeni, ulice, mesto, psc, email, telefon, hash_heslo(heslo), latitude, longitude))
         # get the generated id back
         id_uzivatele = cur.fetchone()[0]
         # commit the changes to the database
