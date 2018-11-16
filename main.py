@@ -13,6 +13,18 @@ import registrace_bp
 
 import prihlaseni_bp
 
+import potvrzeni_registrace_bp
+
+import obnova_bp
+
+import heslonew_bp
+
+import newautoinput_bp
+
+import autook_bp
+
+import autonotok_bp
+
 bezciSobe = Flask(__name__)
 
 # Stejně tak zaregistrujeme about_bp blueprint
@@ -21,7 +33,12 @@ bezciSobe.register_blueprint(zavody_bp.blueprint)
 bezciSobe.register_blueprint(kdo_co_bp.blueprint)
 bezciSobe.register_blueprint(registrace_bp.blueprint)
 bezciSobe.register_blueprint(prihlaseni_bp.blueprint)
-
+bezciSobe.register_blueprint(potvrzeni_registrace_bp.blueprint)
+bezciSobe.register_blueprint(obnova_bp.blueprint)
+bezciSobe.register_blueprint(heslonew_bp.blueprint)
+bezciSobe.register_blueprint(newautoinput_bp.blueprint)
+bezciSobe.register_blueprint(autook_bp.blueprint)
+bezciSobe.register_blueprint(autonotok_bp.blueprint)
 # Zaregistruje funkci close_db() do naší aplikace jako funkci, která se má spustit,
 # když se ukončuje naše aplikace
 

@@ -1,11 +1,16 @@
 *,:after, :before { box-sizing: border-box;}
+
+body{
+	padding-bottom:20px;
+}
+
 .nadpis h1{
 	font-size: 48px; 
 	color: green; 
 	font-weight: bold;
 	font-family:  "Helvetica";
 	text-align: center;
-	margin:2em;
+	margin:40px;
 }
 .bezec{
 	margin: 3em;
@@ -23,12 +28,17 @@
 	background-color: #d5e1df;
 }
 .kontakty{
+	text-align: center;
+}
+.kontakty h2{
+	margin: 40px 0 10px 0;
 	font-size:36px;
 	color:green;
 	font-weight: bold;
 	font-family: "Helvetica";
-	text-align: center;
 }
+
+
 .obrazky{
 	float: left;
 }
@@ -44,3 +54,12 @@
 	font-family:"Helvetica";
 	font-size:15px;
 }
+.kontakt img {
+	width:300px;
+	float:left;
+	margin-right:20px;
+}
+.kontakt{
+	margin-bottom:20px;
+}
+

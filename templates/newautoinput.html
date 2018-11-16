@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+<nav class="navbar navbar-light bg-light">
+	<a class="navbar-brand" href="#">
+		<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
+		BĚŽCI SOBĚ
+		<div class="nadpis h1">
+			<h1>PŘIDAT AUTO K ZÁVODU</h1>
+		</div>
+<div class="zarovnani">
+Vyplň prosím všechny kolonky.
+<form>
+Vyjíždím z:
+<input tabindex=1 type="text" size=50 name="odjezd" required><br />
+
+Vyjíždím v:
+<input tabindex=1 type="text" size=50 name="datumodjezdu" required><br />
+
+Mám v autě volných míst:
+<input tabindex=1 type="text" size=10 name="pocetmist" required><br />
+
+Poznámky:
+<textarea rows="6" columns="15" name="poznamky"></textarea><br />
+</form>
+<p class="tlacitka">
+		<a href="{{ url_for('autook_bp.show_autook') }}" class="btn btn-default"><br />
+		OK
+</p>
+</div>
+{% endblock %}
