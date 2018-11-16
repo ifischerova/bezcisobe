@@ -1,54 +1,25 @@
 {% extends "layout.html" %}
+{% block title %}O NÁS{% endblock %}
 {% block body %}
-<nav class="navbar navbar-light bg-light">
-		<a class="navbar-brand" href="#">
-			<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
-			BĚŽCI SOBĚ
-		</a>
-</nav>
-<div class="hlavicka">
-	<div class="nadpis h1">
-		<h1>KDO A CO JSME ZAČ?</h1>
-	</div> 
-</div>
-
-<div>
-	<img src="{{ url_for('static', filename='botyiva.jpg') }}" width="300px" height="200px" alt="Boty_Iva" margin=2em>
-</div>
-
-<div>
+<div class="kontakt clearfix">
+	<img src="{{ url_for('static', filename='botyiva.jpg') }}" alt="Boty_Iva">
 	<p> 
-		IVA<br />
+		<h3>IVA</h3>
 		Zatím z domu pracující máma na rodičovské, která chce změnit kariéru a tím i svůj život:) IT ji neskutečně oslovilo a baví ji! 
 	</p>
 </div>
 
-<div>
-	<img src="{{ url_for('static', filename='botypetra.jpg') }}" width="300px" height="200px" alt="Boty_Petra" margin=2em>
-</div>
-	<p class="obrazky"> 
-		PETRA <br />
+<div class="kontakt clearfix">
+	<img src="{{ url_for('static', filename='botypetra.jpg') }}" alt="Boty_Petra">
+	<p> 
+		<h3>PETRA</h3>
 		Celkem aktivní maminka na rodičovské dovolené, která je ráda venku a potřebuje nenechat zreznout mozkové závity. Její “datové dovednosti a zkušenosti” jsou zatím jen ty, které jií dala Akademie. Baví ji Python i SQL.
-	</p>
-</div>
-
-<div>
-	<img src="{{ url_for('static', filename='czechitas.png') }}" width="250px" height="100px" alt="logo Czechitas" margin=2em>
-</div>
-<div>
-	<p class="obrazky">
-		CZECHITAS
-	Píšeme příběhy žen v IT už od samého počátku. <br />
-	Otevíráme jim dveře k informačním technologiím, motivujeme a vzděláváme je.<br />
-	Více o<a href='https://www.czechitas.cz/cs/'> Czechitas.</a>
 	</p>
 </div>
 
 <div class="kontakty" >
 	<h2>KONTAKTY</h2>
-</div>
-<div class="hlavicka">
-	<p>Pokud nám chceš cokoli napsat, můžeš <a href='info@bezcisobe.cz'>tady.</a></p><br />
+	<p>Pokud nám chceš cokoli napsat, můžeš <a href='mailto:info@bezcisobe.cz'>tady.</a></p>
 	<p>Samozřejmě nás najdeš i na <a href='https://www.facebook.com/trenerkb/'>FACEBOOKU.</a></p>
 </div>
 {% endblock %}

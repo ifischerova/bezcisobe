@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if error is defined %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+{%if success is defined %}
+<div class="alert alert-success">Na email jsme vám posali odkaz na obnovení hesla.</div>
+{% endif %}
+	
+<div class="zarovnani">
+Zadej prosím email, na který ti máme poslat instrukce.
+<form>
+E-mail:
+<input tabindex=1 type="text" size=50 name="email" required><br />
+</form>
+<p class="tlacitka">
+		<a href="{{ url_for('obnova_bp.send_link') }}" class="btn btn-default"><br />
+		Odeslat
+</p>
+</div>
+{% endblock %}

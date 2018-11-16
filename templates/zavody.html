@@ -19,14 +19,11 @@
 					BĚŽCI SOBĚ
 				</a>
 			</nav>
-         <!-- Začátek oddílu stránky třídy jumbotron - třída jumbotron je zase definovaná
-              v jednom z těch .css souborů, které jsme připojili v hlavičce v layout.html
-             a říká, že obsah má být extra-velkými písmeny a na šedém pozadí //-->
-
-          <h1>Závody {{ id_vybraneho }}</h1>
-
-         <!-- Odstavec //-->
-         <p>Podívej se na seznam závodů.</p>            
+			<div class="nadpis h1">
+					<h1>Závody {{ id_vybraneho }}</h1>
+			</div>
+			<div class="zarovnani">
+					<p>Podívej se na seznam závodů.</p>            
             <select name="zavod" onchange="javascript:location.href='/zavody/'+this.value">
                 <option value="">Vyber si závod.</option>
                 {% for zavod in zavody %}
@@ -35,15 +32,22 @@
                 </option>
                 {% endfor %}
                 </select>
-         <!-- Vynechá jeden řádek //-->
-         <br/>
+
+				 <br/>
+			</div>
          <p>
              {{ nabidka_spolujizdy }}
          <table>
                 <tr><td>Kdo</td><td>Nástupní místo</td><td>Kolik má míst</td><td>Poznámka</td><td>Chci nastoupit</td><td></td></tr>
                 <tr><td></td><td></td><td></td><td></td><td></td></tr>
                 </table>
-        </p>
+				</p>
+				<div class="tlacitka">
+						<a href="{{ url_for('newautoinput_bp.show_newautoinput') }}" class="btn btn-default">
+							PŘIDAT AUTO K ZÁVODU
+						</a>
+				</div>
+		
 
      <!-- Řekne Flasku, že tady končí blok "body" //-->
      {% endblock %}

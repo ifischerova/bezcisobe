@@ -7,42 +7,57 @@
 
 <!-- První element na stránce: říka, že tohle je HTML dokument //-->
 <!DOCTYPE HTML>
+<html>
 <!-- Začátek hlavičky - hlavička obsahuje metadata pro prohlížeč, která se nezobrazují
      nikde na stránce //-->
+
 <head>
 
-    <!-- Nastaví titulek stránky - to je to, co se objeví v názvu tabu v prohlížeči //-->
-		<title>Běžci sobě</title>
+	<!-- Nastaví titulek stránky - to je to, co se objeví v názvu tabu v prohlížeči //-->
+	<title>Běžci sobě</title>
 
-    <!-- Připojí ke stránce soubor, který obsahuje spoustu předpřipravených stylů,
+	<!-- Připojí ke stránce soubor, který obsahuje spoustu předpřipravených stylů,
          které nám usnadní upravovat, jak má stránka vypadat //-->
-				 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-				 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	 crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	 crossorigin="anonymous"></script>
 
-    <!-- Připojí ke stránce soubor, který obsahuje naše vlastní styly.
+	<!-- Připojí ke stránce soubor, který obsahuje naše vlastní styly.
          Všechno mezi {{ a }} Flask nahradí za skutečné hodnoty. V tomhle případě
          nahrádí url_for('static', filename='style.css') za skutečnou adresu, na
          které prohlížeč může najít soubor static/style.css //-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 
-<!-- Konec hlavičky //-->
+	<!-- Konec hlavičky //-->
 </head>
 <!-- Začátek těla stránky - všechno mezi <body> a </body> se zobrazí jako obsah
      stránky //-->
+
 <body>
-    <!-- Začátek oddílu (division) stránky. class="container" říká, že tento oddíl
+	<!-- Začátek oddílu (division) stránky. class="container" říká, že tento oddíl
          je třídy "container". V jednom z těch .css souborů, které jsme připojili
          nahoře je specifikované, jak mají oddíly třídy container vypadat (velikost
          písma, odsazení atd.).//-->
-    <div class="container">
-    <!-- {$ a $} jsou zase instrukce pro Flask, které říkají, že sem se má vložit
+	<div class="container">
+		<nav class="navbar navbar-light bg-light">
+			<a class="navbar-brand" href="/">
+				<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top"
+				 palt="">
+				BĚŽCI SOBĚ
+			</a>
+		</nav>
+		<div class="nadpis h1">
+				<h1>{% block title %}{% endblock %}</h1>
+			</div>
+		<!-- {$ a $} jsou zase instrukce pro Flask, které říkají, že sem se má vložit
          block s názvem "body" z jednotlivých templatů, které tento "layout" rozšiřují //-->
-    {% block body %}
-    {% endblock %}
+		{% block body %}
+		{% endblock %}
 
-    <!-- Konec oddilu stránky //-->
-    </div>
-<!-- Konec těla stránky. Za tíhle prvkem už nic nesmí být //-->
+		<!-- Konec oddilu stránky //-->
+	</div>
+	<!-- Konec těla stránky. Za tíhle prvkem už nic nesmí být //-->
 </body>
 
-
+</html>
