@@ -24,11 +24,11 @@
 			</div>
 			<div class="zarovnani">
 					<p>Podívej se na seznam závodů.</p>            
-            <select name="zavod" onchange="javascript:location.href='/zavody/'+this.value">
+            <select name="id_zavod" onchange="javascript:location.href='/zavody/'+this.value" style="width: 80%;">
                 <option value="">Vyber si závod.</option>
                 {% for zavod in zavody %}
                 <option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod == id_vybraneho %}selected{% endif %}>
-                    {{ zavod.datum_zavodu.strftime("%d-%m-%Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
+                    {{ zavod.datum_zavodu.strftime("%d. %m. %Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
                 </option>
                 {% endfor %}
                 </select>

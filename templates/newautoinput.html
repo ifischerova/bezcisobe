@@ -9,22 +9,33 @@
 		</div>
 <div class="zarovnani">
 Vyplň prosím všechny kolonky.
-<form>
-Vyjíždím z:
-<input tabindex=1 type="text" size=50 name="odjezd" required><br />
+<form method="POST" action="{{ url_for('newautoinput_bp.add_new_car') }}" target="_blank">
+Jedu na:
+<select name="id_zavod" style="width: 80%;">
+	<option value="">Vyber si závod.</option>
+	{% for zavod in zavody %}
+	<option value="{{ zavod.id_zavod }}">
+		{{ zavod.datum_zavodu.strftime("%d. %m. %Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
+	</option>
+	{% endfor %}
+	</select><br />
+Místo odjezdu:
+<input tabindex=1 type="text" size=50 name="misto_odjezdu" required><br />
 
-Vyjíždím v:
-<input tabindex=1 type="text" size=50 name="datumodjezdu" required><br />
+Vyjíždím dne:
+<input tabindex=1 type="text" size=50 name="datum_odjezdu" required><br />
 
 Mám v autě volných míst:
-<input tabindex=1 type="text" size=10 name="pocetmist" required><br />
+<input tabindex=1 type="text" size=10 name="mist_auto_nabidka" required><br />
 
 Poznámky:
 <textarea rows="6" columns="15" name="poznamky"></textarea><br />
-</form>
+
 <p class="tlacitka">
-		<a href="{{ url_for('autook_bp.show_autook') }}" class="btn btn-default"><br />
-		OK
+	<input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
+		<!-- Puvodni varianta <a href="{{ url_for('autook_bp.show_autook') }}" class="btn btn-default"><br />
+		OK //-->
 </p>
 </div>
+</form>
 {% endblock %}
