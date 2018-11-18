@@ -83,20 +83,20 @@ def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_
     return id_uzivatele
 
 
-def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka):
+def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky):
     """ prida nove auto s ridicem do databaze """
 
-    sql = """INSERT INTO nabidka_spolujizdy(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka)
-             VALUES(%s, %s, %s, %s, %s) RETURNING id_jizdy;"""
+    sql = """INSERT INTO nabidka_spolujizdy(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky)
+             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_jizdy;"""
     conn = get_db()
-    id_uzivatele = None
+    id_jizdy = None
     
     try:
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka))
+        cur.execute(sql, (ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky))
         # get the generated id back
-        id_spolujizdy = cur.fetchone()[0]
+        id_jizdy = cur.fetchone()[0]
         # commit the changes to the database
         conn.commit()
         # close communication with the database
@@ -106,12 +106,13 @@ def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka):
     finally:
         if conn is not None:
             conn.close()
+    return id_jizdy
 
 
 def nabidky_spolujizdy(id_zavodu):
     """ nabidne volna auta ke konkretnimu zavodu """
     
-    sql = """SELECT ridic, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
+    sql = """SELECT jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
     volnych_mist FROM
     nabidka_spolujizdy as ns 
     left join 
@@ -119,6 +120,10 @@ def nabidky_spolujizdy(id_zavodu):
         spolujezdci as s 
         group by s.id_jizdy) as s
     on ns.id_jizdy = s.id_jizdy
+    left join
+		(select jmeno, id_uzivatele from
+		 uzivatele as u) as u
+	on ns.ridic = u.id_uzivatele
      where (mist_auto_nabidka > sum_obsazena_mista or s.id_jizdy is null) AND id_zavod=%s
      order by misto_odjezdu;
      """
@@ -135,6 +140,29 @@ def nabidky_spolujizdy(id_zavodu):
     finally:
         if conn is not None:
             conn.close()
+
+
+def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
+    """ vlozi spolujezdce do db """
+
+    sql = """INSERT INTO spolujezdci(id_jizdy, spolujezdec, chci_mist)
+             VALUES(%s, %s, %s);"""
+
+    conn = get_db()
+    id_jizdy = None
+    try:
+        cur = conn.cursor()
+        # execute the SELECT statement
+        cur.execute(sql, (id_jizdy, spolujezdec, chci_mist))
+        # close communication with the database
+        return cur.fetchall()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+    
 
 '''
 if __name__ == '__main__':
