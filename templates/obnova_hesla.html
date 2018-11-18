@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}OBNOVA HESLA{% endblock %}
+{% block body %}
+
+{% if error is defined %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+{%if success is defined %}
+<div class="alert alert-success">Na email jsme Ti poslali odkaz na obnovení hesla.</div>
+{% endif %}
+	
+<div class="zarovnani">
+Zadej prosím email, na který Ti máme poslat instrukce.
+
+<div class="form-group row">
+
+	<label for="email" class="col-sm-2 col-form-label">E-mail*:</label>
+	<div class="col-sm-10">
+	<input type="email" class="form-control form-control-sm" name="email" required id="email" value="">
+	</div>	
+</div>
+
+<p class="tlacitka">
+		<a href="" class="btn btn-default">
+		Odeslat
+</p>
+</div>
+{% endblock %}

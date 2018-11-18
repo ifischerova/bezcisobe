@@ -1,30 +1,59 @@
 {% extends "layout.html" %}
+{% block title %}PŘIDÁNÍ AUTA{% endblock %}
 {% block body %}
-<nav class="navbar navbar-light bg-light">
-	<a class="navbar-brand" href="#">
-		<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
-		BĚŽCI SOBĚ
-		<div class="nadpis h1">
-			<h1>PŘIDAT AUTO K ZÁVODU</h1>
-		</div>
+
+{% if error is defined %}
+<div class="alert alert-danger">Na tenhle závod už auto nabízíš:)</div>
+{% endif %}
+
+{%if success is defined %}
+<div class="alert alert-success">Auto jsme přidali k závodu a shrnutí nabídky Ti poslali do mailu.</div>
+{% endif %}
+
 <div class="zarovnani">
 Vyplň prosím všechny kolonky.
-<form>
-Vyjíždím z:
-<input tabindex=1 type="text" size=50 name="odjezd" required><br />
 
-Vyjíždím v:
-<input tabindex=1 type="text" size=50 name="datumodjezdu" required><br />
+<div class="form-group row">
+	
+		<label for="odjezd" class="col-sm-2 col-form-label">Místo odjezdu:</label>
+		<div class="col-sm-10">
+		<input type="text" class="form-control form-control-sm" name="odjezd" required id="odjezd" value="">
+	 </div>	
+	</div>
 
-Mám v autě volných míst:
-<input tabindex=1 type="text" size=10 name="pocetmist" required><br />
+	<div class="form-group row">
+	
+		<label for="odjezd_datum" class="col-sm-2 col-form-label">Datum odjezdu:</label>
+		<div class="col-sm-10">
+		<input type="date" class="form-control form-control-sm" name="datum" required id="datum" value="RRRR-MM-DD	">
+		</div>	
+	</div>
 
-Poznámky:
-<textarea rows="6" columns="15" name="poznamky"></textarea><br />
-</form>
+<div class="form-group row">
+
+	<label for="pocet_mist" class="col-sm-2 col-form-label">Volná místa v autě:</label>
+	<div class="col-sm-10">
+	<input type="number" class="form-control form-control-sm" name="pocet_mist" required id="pocet_mist" value="pocet_mist">
+	</div>	
+</div>
+
+<select name="zavod">
+	<option value="">Vyber si závod.</option>
+	{% for zavod in zavody %}
+	<option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod == id_vybraneho %}selected{% endif %}>
+			{{ zavod.datum_zavodu.strftime("%d-%m-%Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
+	</option>
+	{% endfor %}
+</select>
+
+<div class="form-group">
+	<label for="poznamky">Poznámky</label>
+	<textarea class="form-control" id="poznamky" rows="5"></textarea>
+</div>
+
 <p class="tlacitka">
-		<a href="{{ url_for('autook_bp.show_autook') }}" class="btn btn-default"><br />
-		OK
+		<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
+		PŘIDAT AUTO
 </p>
 </div>
 {% endblock %}
