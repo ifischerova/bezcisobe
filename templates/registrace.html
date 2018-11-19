@@ -12,39 +12,69 @@
  </div>	
 </div>
 
+<div class="form-group row">
 
-	<p class="formular">
-Příjmení*:
-<input tabindex=1 type="text" size=50 name="prijmeni" required>
-	</p>
-	<p class="formular">
-Ulice,č.p./č.o.:
-<input tabindex=1 type="text" size=50 name="ulice" required>
-	</p>
-	<p class="formular">
-Město/Obec*:
-<input tabindex=1 type="text" size=50 name="mesto" required>
-	</p>
-	<p class="formular">
-PSČ*:
-<input tabindex=1 type="text" size=50 name="psc" required>
-	</p>
-	<p class="formular">
-E-mail*:
-<input tabindex=1 type="email" size=50 name="email" required>
-	</p>
-	<p class="formular">
-Telefon*:
-<input tabindex=1 type="tel" size=50 name="telefon" required>
-	</p>
-	<p class="formular">
-Heslo*:
-<input tabindex=1 type="password" minlength="8" size=50 name="heslo" required>
-	</p>
-	<p class="formular">
-Potvrzeni hesla*:
-<input tabindex=1 type="password" minlength="8" size=50 name="heslo_potvrzeni" required>
-	</p>
+	<label for="prijmeni" class="col-sm-2 col-form-label">Příjmení*:</label>
+	<div class="col-sm-10">
+	<input type="text" class="form-control form-control-sm" name="prijmeni" required id="prijmeni" value="{{ values.prijmeni }}">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="ulice" class="col-sm-2 col-form-label">Ulice,č.p./č.o.*:</label>
+	<div class="col-sm-10">
+	<input type="text" class="form-control form-control-sm" name="ulice" required id="ulice" value="{{ values.ulice }}">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="mesto_obec" class="col-sm-2 col-form-label">Město/Obec*:</label>
+	<div class="col-sm-10">
+	<input type="text" class="form-control form-control-sm" name="mesto_obec" required id="mesto_obec" value="{{values.mesto_obec }}">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="PSC" class="col-sm-2 col-form-label">PSČ*:</label>
+	<div class="col-sm-10">
+	<input type="number" class="form-control form-control-sm" name="psc" required id="psc" value="{{ values.psc }}">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="email" class="col-sm-2 col-form-label">E-mail*:</label>
+	<div class="col-sm-10">
+	<input type="email" class="form-control form-control-sm" name="email" required id="email" value="{{ values.email }}">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="telefon" class="col-sm-2 col-form-label">Telefon*:</label>
+	<div class="col-sm-10">
+	<input type="tel" class="form-control form-control-sm" name="telefon" required id="telefon" value="{{ values.telefon }}">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="heslo" class="col-sm-2 col-form-label">Heslo*:</label>
+	<div class="col-sm-10">
+	<input type="password" class="form-control form-control-sm" min-width=8 name="heslo" required id="heslo" value="{{ values.heslo }}">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="heslo_potvrzeni" class="col-sm-2 col-form-label">Potvrzení hesla*:</label>
+	<div class="col-sm-10">
+	<input type="password" class="form-control form-control-sm" min-width=8 name="heslo_potvrzeni" required id="heslo_potvrzeni" value="{{ values.heslo_potvrzeni }}">
+	</div>	
+</div>
 </div>
 
 <div>

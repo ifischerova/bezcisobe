@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}NOVÉ HESLO{% endblock %}
+{% block body %}
+
+{% if error is defined %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+{%if success is defined %}
+<div class="alert alert-success"></div>
+{% endif %}
+
+<div class="zarovnani">
+Zadej prosím nové heslo.
+<div class="form-group row">
+
+	<label for="heslo" class="col-sm-2 col-form-label">Heslo*:</label>
+	<div class="col-sm-10">
+	<input type="password" class="form-control form-control-sm" min-width=8 name="heslo" required id="heslo" value="">
+	</div>	
+</div>
+
+<div class="form-group row">
+
+	<label for="heslo_potvrzeni" class="col-sm-2 col-form-label">Potvrzení hesla*:</label>
+	<div class="col-sm-10">
+	<input type="password" class="form-control form-control-sm" min-width=8 name="heslo_potvrzeni" required id="heslo_potvrzeni" value="">
+	</div>	
+</div>
+</div>
+<p class="tlacitka">
+		<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
+		OK
+</p>
+</div>
+{% endblock %}

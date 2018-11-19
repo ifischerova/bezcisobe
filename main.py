@@ -9,7 +9,7 @@ import about_bp
 
 import zavody_bp
 
-import kdo_co_bp
+import onas_bp
 
 import registrace_bp
 
@@ -17,9 +17,7 @@ import prihlaseni_bp
 
 import potvrzeni_registrace_bp
 
-import obnova_bp
-
-import heslonew_bp
+import obnova_hesla_bp
 
 import newautoinput_bp
 
@@ -35,12 +33,11 @@ login_manager.init_app(bezciSobe)
 # Stejně tak zaregistrujeme about_bp blueprint
 bezciSobe.register_blueprint(about_bp.blueprint)
 bezciSobe.register_blueprint(zavody_bp.blueprint)
-bezciSobe.register_blueprint(kdo_co_bp.blueprint)
+bezciSobe.register_blueprint(onas_bp.blueprint)
 bezciSobe.register_blueprint(registrace_bp.blueprint)
 bezciSobe.register_blueprint(prihlaseni_bp.blueprint)
 bezciSobe.register_blueprint(potvrzeni_registrace_bp.blueprint)
-bezciSobe.register_blueprint(obnova_bp.blueprint)
-bezciSobe.register_blueprint(heslonew_bp.blueprint)
+bezciSobe.register_blueprint(obnova_hesla_bp.blueprint)
 bezciSobe.register_blueprint(newautoinput_bp.blueprint)
 bezciSobe.register_blueprint(autook_bp.blueprint)
 bezciSobe.register_blueprint(autonotok_bp.blueprint)
