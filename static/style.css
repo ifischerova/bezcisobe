@@ -4,6 +4,15 @@ body{
 	padding-bottom:20px;
 }
 
+.btn{
+	display: block;
+	margin:20px auto;
+	color:green;
+	font-size:2.5m;
+	font-weight:bold;
+	background-color: #d5e1df;
+}
+
 .nadpis h1{
 	font-size: 48px; 
 	color: green; 
@@ -19,25 +28,16 @@ body{
 .hlavicka{
 	text-align: center;
 }
+
 .tlacitka .btn{
-	display: block;
 	width: 250px;
-	margin:20px auto;
-	color:green;
-	font-size:2.5m;
-	font-weight:bold;
-	background-color: #d5e1df;
 }
 
-.tlacitka1 .btn{
-	display: block;
-	width: 150px;
-	margin:20px auto;
-	color:green;
-	font-size:2.5m;
-	font-weight:bold;
-	background-color: #d5e1df;
+.tabulka .btn {
+	margin:0;
+	display:inline-block;
 }
+
 
 .kontakty{
 	text-align: center;
@@ -103,6 +103,9 @@ body{
 	text-align:center;
 	padding-bottom:60px;
 	padding-top:30px;
+}
+.tabulka td, .tabulka th{
+	vertical-align:middle;
 }
 
 .lista{
