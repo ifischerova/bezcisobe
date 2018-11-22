@@ -5,7 +5,7 @@ blueprint = Blueprint('newautoinput_bp', __name__)
 @blueprint.route('/noveauto')
 def show_newautoinput():
 	zavody = db_funkce.zavody()
-	return render_template('newautoinput.html', zavody=zavody)
+	return render_template('newautoinput.html', zavody=zavody, values={} )
 
 
 @blueprint.route('/noveauto', methods=['POST'])
@@ -15,6 +15,7 @@ def add_new_car():
 	result = dict(result)
 	# Tohle musime nahradit id prihlaseneho uzivatele, az zprovoznime prihlaseni!!
 	result['ridic'] = 1
+	print(result)
 	id_jizdy = db_funkce.nove_auto(**result)
 
 	if id_jizdy:
