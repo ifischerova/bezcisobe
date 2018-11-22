@@ -3,7 +3,7 @@ Spusteni flasku v Powershell Terminalu ve Viscual Studio Code:
 ```
 $env:FLASK_ENV="development"
 $env:FLASK_APP="main.py"
-$env:DATABASE_URL="posgtres://sem-dej-url-k-databazi-v-heroku"
+$env:DATABASE_URL="postgres://sem-dej-url-k-databazi-v-heroku"
 flask run
 ```
 
