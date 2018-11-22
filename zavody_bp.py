@@ -7,7 +7,7 @@ import db_funkce
 blueprint = Blueprint('zavody_bp', __name__)
 
 # Zaregistruje funkci show_about() jako funkci, kterou má Flask zavolat, když 
-# uživatel otevře v prohlížeči stránku "/about"
+# uživatel otevře v prohlížeči stránku "/zavody"
 @blueprint.route('/zavody', defaults={'id_zavod':0})
 @blueprint.route('/zavody/<id_zavod>')
 def show_zavody(id_zavod):

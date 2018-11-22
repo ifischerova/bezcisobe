@@ -113,7 +113,7 @@ def nabidky_spolujizdy(id_zavodu):
     """ nabidne volna auta ke konkretnimu zavodu """
     
     sql = """SELECT jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
-    volnych_mist FROM
+    volnych_mist, poznamky FROM
     nabidka_spolujizdy as ns 
     left join 
         (select id_jizdy, sum(chci_mist) as sum_obsazena_mista from 

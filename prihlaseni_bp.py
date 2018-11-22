@@ -6,12 +6,16 @@ from wtforms import Form, TextField, PasswordField, validators
 # pip install flask-wtf flask-login
 
 class LoginForm(Form):
-    username = TextField('Username', [validators.Required(), validators.Length(min=4, max=25)])
-    password = PasswordField('Password', [validators.Required(), validators.Length(min=6, max=200)])
+    email = TextField('E-mail', [validators.Required(), validators.Length(min=4, max=25)])
+    password = PasswordField('Heslo', [validators.Required(), validators.Length(min=6, max=200)])
 
 class User(UserMixin):
     def __init__(self,id):
         self.id = id
+
+#@login_manager.user_loader
+#def load_user(user_id):
+#    return User(user_id)
 
 blueprint = Blueprint('prihlaseni_bp', __name__)
 @blueprint.route('/prihlaseni')

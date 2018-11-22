@@ -20,7 +20,11 @@
 				</a>
 			</nav>
 			<div class="nadpis h1">
-					<h1>Závody {{ id_vybraneho }}</h1>
+                    {% if id_vybraneho > 0 %}
+                    <h1>Závody {{ id_vybraneho }}</h1>
+                    {% else %}
+                    <h1>Seznam závodů</h1>
+                    {% endif %}
 			</div>
 			<div class="zarovnani">
 					<p>Podívej se na seznam závodů.</p>            
@@ -36,11 +40,34 @@
 				 <br/>
 			</div>
          <p>
-             {{ nabidka_spolujizdy }}
-         <table>
-                <tr><td>Kdo</td><td>Nástupní místo</td><td>Kolik má míst</td><td>Poznámka</td><td>Chci nastoupit</td><td></td></tr>
-                <tr><td></td><td></td><td></td><td></td><td></td></tr>
-                </table>
+        {% if id_vybraneho > 0 and nabidka_spolujizdy %}
+        <table border=1>
+                <tr>
+                    <td>Řidič/ka</td>
+                    <td>Odjíždí z</td>
+                    <td>Odjíždí dne</td>
+                    <td>Volná místa v autě</td>
+                    <td>Poznámky</td>
+                    <td>Chci nastoupit</td>
+                </tr>
+                {% for record in nabidka_spolujizdy %}
+                <tr>
+                    <td>{{ record.jmeno }}</td>
+                    <td>{{ record.misto_odjezdu }}</td>
+                    <td>{{ record.datum_odjezdu.strftime('%d. %m. %Y') }}</td>
+                    <td>{{ record.volnych_mist }}</td>
+                    {% if record.poznamky %}
+                    <td>{{ record.poznamky }}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    <td>Chci nastoupit</td>
+                </tr>
+                {% endfor %}
+        </table>
+        {% elif id_vybraneho > 0 %}
+        <h6>Je nám líto. Na tento závod není aktuálně k dispozici žádné volné auto. Zkus se sem vrátit později.</h6>
+        {% endif %}
 				</p>
 				<div class="tlacitka">
 						<a href="{{ url_for('newautoinput_bp.show_newautoinput') }}" class="btn btn-default">
