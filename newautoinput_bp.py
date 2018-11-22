@@ -5,7 +5,7 @@ blueprint = Blueprint('newautoinput_bp', __name__)
 @blueprint.route('/noveauto')
 def show_newautoinput():
 	zavody = db_funkce.zavody()
-	return render_template('newautoinput.html', zavody=zavody)
+	return render_template('newautoinput.html', zavody=zavody, values={} )
 
 
 @blueprint.route('/noveauto', methods=['POST'])
