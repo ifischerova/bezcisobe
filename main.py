@@ -2,7 +2,9 @@
 # používat v tomto programu
 import os
 from flask import Flask, g
+from flask_login import LoginManager
 # Stejně tak pro about_bp modul
+
 import about_bp
 
 import zavody_bp
@@ -26,6 +28,9 @@ import autonotok_bp
 import potvrzeni_jizdy_bp
 
 bezciSobe = Flask(__name__)
+bezciSobe.secret_key = b"\xc1'\xa6T<\x85\x9b\x9d\xdc\x96\x83\x9cx\xad\xf0v"
+login_manager = LoginManager()
+login_manager.init_app(bezciSobe)
 
 # Stejně tak zaregistrujeme about_bp blueprint
 bezciSobe.register_blueprint(about_bp.blueprint)
@@ -52,5 +57,4 @@ def close_db(error):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    bezciSobe.run(host='0.0.0.0', port=port)
-
+    bezciSobe.run(host='0.0.0.0', port=port, debug=True)
