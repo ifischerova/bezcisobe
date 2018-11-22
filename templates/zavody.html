@@ -36,9 +36,9 @@
 										<th scope="col">Poznámky</th>
 										<th scope="col">Chci nastoupit</th>
 									</tr>
-									{% for record in nabidka_spolujizdy %}
 								</thead>
 								<tbody>
+									{% for record in nabidka_spolujizdy %}
 									<tr>
 										<th scope="row">{{ record.jmeno }}</th>
 										<td>{{ record.misto_odjezdu }}</td>
@@ -50,10 +50,10 @@
 										<td></td>
 										{% endif %}
 										<td>
-											<a type="button" href="{{ url_for('potvrzeni_jizdy_bp.show_potvrzenijizdy') }}" class ="btn btn-outline-success btn-sm" >Ano</a>
+											<a href="{{ url_for('potvrzeni_jizdy_bp.show_potvrzenijizdy') }}" class ="btn btn-success btn-sm" >Ano</a>
 										</td>
-										{% endfor %}
 									</tr>
+									{% endfor %}
 								</tbody>
 							</table>
 					</div>
