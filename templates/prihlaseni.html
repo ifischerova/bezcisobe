@@ -2,9 +2,8 @@
 {% block title %}PŘIHLÁŠENÍ{% endblock %}
 {% block body %}
 
-<div>
-	<form action=prihlaseni.html target="_blank">
-</div>
+<form method="POST" action="{{ url_for('prihlaseni_bp.login') }}">
+
 <div>
 		<p class="zarovnani">
 	Zadej prosím svůj email a heslo.
@@ -33,22 +32,13 @@
 
 <div>
 		<p class="tlacitka">
-				<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
-				Přihlásit se
+				<input tabindex=1 type="submit" value="Přihlásit se" class="btn btn-default">
 				<a href="{{ url_for('registrace_bp.show_registrace') }}"  class="btn btn-default">
-				Nemám zatím účet
+				Nemám zatím účet</a>
 				<a href="{{ url_for('obnova_hesla_bp.show_obnova') }}" class="btn btn-default">
-				Zapomněl/a jsem heslo
+				Zapomněl/a jsem heslo</a>
 		</p>
 	</div>
-
-
-
-
-
-
-
-
 
 </form>
 {% endblock %}

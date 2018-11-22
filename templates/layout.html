@@ -46,6 +46,10 @@
 				 palt="">
 				BĚŽCI SOBĚ
 			</a>
+			{% if current_user.is_authenticated %}
+  				{{ current_user.jmeno }} {{ current_user.prijmeni }}
+    			<!-- TODO tlačítko na odhlášení -->
+			{% endif %}
 		</nav>
 		<div class="nadpis h1">
 				<h1>{% block title %}{% endblock %}</h1>
