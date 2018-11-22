@@ -14,7 +14,7 @@
 	Nejprve prosím vyber závod, ke kterému chceš nabídnout auto.
 </div>
 
-<form method="POST" action="{{ url_for('newautoinput_bp.add_new_car') }}'" target="_blank">
+<form method="POST" action="{{ url_for('newautoinput_bp.add_new_car') }}" target="_blank">
 
 <div class="lista">
 		<select name="id_zavod">
@@ -36,7 +36,7 @@
 	
 		<label for="odjezd" class="col-sm-2 col-form-label">Místo odjezdu:</label>
 		<div class="col-sm-10">
-		<input type="text" class="form-control form-control-sm" name="odjezd" required id="misto_odjezdu" value="{{ values.odjezd }}">
+		<input type="text" class="form-control form-control-sm" name="misto_odjezdu" required id="misto_odjezdu" value="{{ values.misto_odjezdu }}">
 	 </div>	
 	</div>
 
@@ -44,7 +44,7 @@
 	
 		<label for="odjezd_datum" class="col-sm-2 col-form-label">Datum odjezdu:</label>
 		<div class="col-sm-10">
-		<input type="date" class="form-control form-control-sm" name="datum" required id="datum_odjezdu" value="{{ values.datum }}">
+		<input type="date" class="form-control form-control-sm" name="datum_odjezdu" required id="datum_odjezdu" value="{{ values.datum_odjezdu }}">
 		</div>	
 	</div>
 
@@ -52,7 +52,7 @@
 
 	<label for="pocet_mist" class="col-sm-2 col-form-label">Volná místa v autě:</label>
 	<div class="col-sm-10">
-	<input type="number" class="form-control form-control-sm" name="pocet_mist" required id="mist_auto_nabidka" value="{{ values.pocet_mist }}">
+	<input type="number" class="form-control form-control-sm" name="mist_auto_nabidka" required id="mist_auto_nabidka" value="{{ values.mist_auto_nabidka }}">
 	</div>	
 </div>
 
@@ -61,13 +61,12 @@
 	<label for="poznamky">Poznámky:</label>
 	<textarea class="form-control" rows="5" name="poznamky" required id="poznamky" value="{{ values.poznamky }}"></textarea>
 </div>
+
+<p class="tlacitka">
+		<input tabindex=1 type="submit" value="PŘIDAT AUTO" class="btn btn-default">
+</p>
+
 </div>
 </form>
 
-<div>
-<p class="tlacitka">
-		<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
-		PŘIDAT AUTO
-</p>
-</div>
 {% endblock %}
