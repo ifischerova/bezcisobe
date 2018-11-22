@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}POTVRZENÍ JÍZDY{% endblock %}
+{% block body %}
+
+{%if success is defined %}
+<div class="alert alert-success">Hotovo! Na mail jsme Ti poslali kontaktní údaje na řidiče. Doladit případné detaily už je na vás, my přejeme šťastnou cestu a super sportovní zážitek.</div>
+{% endif %}
+
+<div class="tabulka">
+	<table class="table table-bordered table-sm">
+		 <thead class="zahlavitabulky">
+			 <tr>
+				 <th scope="col">Řidič/ka</th>
+				 <th scope="col">Odjíždí z</th>
+				 <th scope="col">Odjíždí dne</th>
+				 <th scope="col">Zamluvených míst</th>
+				 <th scope="col">Poznámky</th>
+			 </tr>
+		 </thead>
+		 <tbody>
+			 <tr>
+				 <th scope="row">Iva</th>
+				 <td>Brno</td>
+				 <td>22.11.2018</td>
+				 <td>1</td>
+				 <td>Nechci jet po dálnici.</td>
+			 </tr>
+		 </tbody>
+	 </table>
+</div>
+
+{% endblock %}

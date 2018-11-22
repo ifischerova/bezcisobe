@@ -14,8 +14,9 @@ def get_db():
     """ Spojeni s dtb. """
 
     if not hasattr(g, 'db'):
-        # https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
+		# https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
         database_url = os.environ["DATABASE_URL"]
+    #database_url = os.environ["DATABASE_URL"]
         con = psycopg2.connect(database_url, sslmode='require', cursor_factory=psycopg2.extras.NamedTupleCursor)
         g.db = con
     return g.db

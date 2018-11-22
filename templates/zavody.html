@@ -9,21 +9,12 @@
      a strukturu a liší se jenom v jedné části (třeba v hlavním obsahu) a nechceš
      pokaždý tu hlavičku opakovat ve všech šablonách //-->
      {% extends "layout.html" %}
-     <!-- Řekne flasku, že tedy začíná blok body - Flask vezme to, co je tedy mezi touhle
-          značkou a značkou {$ endblock $} a vloží to na stejně označené místo v layout.html
-     //-->
+     {% block title %}ZÁVODY{% endblock %}
 		 {% block body %}
-		 <nav class="navbar navbar-light bg-light">
-				<a class="navbar-brand" href="#">
-					<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top" palt="">
-					BĚŽCI SOBĚ
-				</a>
-			</nav>
-			<div class="nadpis h1">
-					<h1>Závody {{ id_vybraneho }}</h1>
+		 
 			</div>
-			<div class="zarovnani">
-					<p>Podívej se na seznam závodů.</p>            
+			<div class="lista lista-zarovnani">
+					<p>Nejprve si prosím vyber ze seznamu závodů.</p>            
             <select name="id_zavod" onchange="javascript:location.href='/zavody/'+this.value" style="width: 80%;">
                 <option value="">Vyber si závod.</option>
                 {% for zavod in zavody %}
@@ -31,21 +22,53 @@
                     {{ zavod.datum_zavodu.strftime("%d. %m. %Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
                 </option>
                 {% endfor %}
-                </select>
+							</select>
+				</div>
+				{% if id_vybraneho > 0 and nabidka_spolujizdy %}
+				<div class="tabulka">
+						 <table class="table table-bordered table-sm">
+								<thead class="zahlavitabulky">
+									<tr>
+										<th scope="col">Řidič/ka</th>
+										<th scope="col">Odjíždí z</th>
+										<th scope="col">Odjíždí dne</th>
+										<th scope="col">Volná místa v autě</th>
+										<th scope="col">Poznámky</th>
+										<th scope="col">Chci nastoupit</th>
+									</tr>
+									{% for record in nabidka_spolujizdy %}
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row">{{ record.jmeno }}</th>
+										<td>{{ record.misto_odjezdu }}</td>
+										<td>{{ record.datum_odjezdu.strftime('%d. %m. %Y') }}</td>
+										<td>{{ record.volnych_mist }}</td>
+										{% if record.poznamky %}
+										<td>{{ record.poznamky }}</td>
+										{% else %}
+										<td></td>
+										{% endif %}
+										<td>
+											<a type="button" href="{{ url_for('potvrzeni_jizdy_bp.show_potvrzenijizdy') }}" class ="btn btn-outline-success btn-sm" >Ano</a>
+										</td>
+										{% endfor %}
+									</tr>
+								</tbody>
+							</table>
+					</div>
 
-				 <br/>
-			</div>
-         <p>
-             {{ nabidka_spolujizdy }}
-         <table>
-                <tr><td>Kdo</td><td>Nástupní místo</td><td>Kolik má míst</td><td>Poznámka</td><td>Chci nastoupit</td><td></td></tr>
-                <tr><td></td><td></td><td></td><td></td><td></td></tr>
-                </table>
+					{% elif id_vybraneho > 0 %}
+					<p class = "zarovnani1">Je nám líto. Na tento závod není aktuálně k dispozici žádné volné auto. Můžeš ho sem přidat, anebo se vrátit později.</p>
+					{% endif %} 
+
+
+
 				</p>
 				<div class="tlacitka">
 						<a href="{{ url_for('newautoinput_bp.show_newautoinput') }}" class="btn btn-default">
-							PŘIDAT AUTO K ZÁVODU
-						</a>
+								PŘIDAT AUTO K ZÁVODU
+							</a>
 				</div>
 		
 

@@ -2,16 +2,19 @@
 {% block title %}O NÁS{% endblock %}
 {% block body %}
 <div class="kontakt clearfix">
-	<img src="{{ url_for('static', filename='botyiva.jpg') }}" alt="Boty_Iva">
-	<p> 
+	<img src="{{ url_for('static', filename='botyiva.jpg') }}" alt="Boty_Iva" class="rounded">
+
+	<p class="popis"> 
 		<h3>IVA</h3>
+	</p>
+	<p>
 		Zatím z domu pracující máma na rodičovské, která chce změnit kariéru a tím i svůj život:) IT ji neskutečně oslovilo a baví ji! 
 	</p>
 </div>
 
 <div class="kontakt clearfix">
-	<img src="{{ url_for('static', filename='botypetra.jpg') }}" alt="Boty_Petra">
-	<p> 
+	<img src="{{ url_for('static', filename='botypetra.jpg') }}" alt="Boty_Petra" class="rounded">
+	<p class="popis"> 
 		<h3>PETRA</h3>
 		Celkem aktivní maminka na rodičovské dovolené, která je ráda venku a potřebuje nenechat zreznout mozkové závity. Její “datové dovednosti a zkušenosti” jsou zatím jen ty, které jií dala Akademie. Baví ji Python i SQL.
 	</p>
@@ -19,7 +22,7 @@
 
 <div class="kontakty" >
 	<h2>KONTAKTY</h2>
-	<p>Pokud nám chceš cokoli napsat, můžeš <a href='mailto:info@bezcisobe.cz'>tady.</a></p>
-	<p>Samozřejmě nás najdeš i na <a href='https://www.facebook.com/trenerkb/'>FACEBOOKU.</a></p>
+	<p>Pokud nám chceš cokoli napsat, můžeš <a class="odkaz" href='mailto:info@bezcisobe.cz'>tady.</a></p>
+	<p>Samozřejmě nás najdeš i na <a class="odkaz" href='https://www.facebook.com/trenerkb/'>FACEBOOKU.</a></p>
 </div>
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %}POTVRZENÍ JÍZDY{% endblock %}
+{% block body %}
+
+<div class="zarovnani">
+		Potvrď prosím svoji volbu spolujízdy na závod.
+</div>
+
+<div class="tabulka">
+	<table class="table table-bordered table-sm">
+		 <thead class="zahlavitabulky">
+			 <tr>
+				 <th scope="col">Řidič/ka</th>
+				 <th scope="col">Odjíždí z</th>
+				 <th scope="col">Odjíždí dne</th>
+				 <th scope="col">Zamluvených míst</th>
+				 <th scope="col">Poznámky</th>
+			 </tr>
+		 </thead>
+		 <tbody>
+			 <tr>
+				 <th scope="row">Iva</th>
+				 <td>Brno</td>
+				 <td>22.11.2018</td>
+				 <td>1</td>
+				 <td>Nechci jet po dálnici.</td>
+			 </tr>
+		 </tbody>
+	 </table>
+</div>
+
+<div class="tlacitka">
+		<a href="{{ url_for('potvrzeni_jizdy_bp.show_potvrzenijizdyOK') }}" class="btn btn-default">
+				POTVRZUJI
+			</a>
+</div>
+
+<div class="tlacitka">
+	<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
+			CHCI JET JINAK
+		</a>
+</div>
+{% endblock %}
