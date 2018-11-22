@@ -3,11 +3,19 @@ import psycopg2.extras
 import os
 from flask import g
 from hashlib import sha512
+from flask_login import UserMixin
 
 from geopy.geocoders import Here as locator
 from geopy.exc import GeopyError
 from functools import lru_cache
 
+class User(UserMixin):
+    def __init__(self, id, db_id, password_hash, jmeno, prijmeni):
+        self.id = id  # id-čkem je pro nás email uživatele
+        self.db_id = db_id
+        self.password_hash = password_hash
+        self.jmeno = jmeno
+        self.prijmeni = prijmeni
 
 
 def get_db():
@@ -82,6 +90,31 @@ def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_
         if conn is not None:
             conn.close()
     return id_uzivatele
+
+
+def najdi_uzivatele(email):
+    """ najde uzivatele v databazi """
+
+    sql = """SELECT id_uzivatele, jmeno, prijmeni, email, heslo FROM uzivatele WHERE lower(email)=%s;"""
+    conn = get_db()
+
+    uzivatel = None
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, (email.lower(),))
+        # get the generated id back
+        uzivatel = cur.fetchone()
+        # close communication with the database
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+    if uzivatel:
+        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2])
+    else:
+        return None
 
 
 def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky):

@@ -27,10 +27,18 @@ import autonotok_bp
 
 import potvrzeni_jizdy_bp
 
+from db_funkce import najdi_uzivatele
+
+
 bezciSobe = Flask(__name__)
 bezciSobe.secret_key = b"\xc1'\xa6T<\x85\x9b\x9d\xdc\x96\x83\x9cx\xad\xf0v"
 login_manager = LoginManager()
 login_manager.init_app(bezciSobe)
+
+@login_manager.user_loader
+def load_user(user_id):
+    print("load user")
+    return najdi_uzivatele(user_id)
 
 # Stejně tak zaregistrujeme about_bp blueprint
 bezciSobe.register_blueprint(about_bp.blueprint)
