@@ -7,6 +7,7 @@ from wtforms import Form, TextField, PasswordField, validators
 # pip install flask-wtf flask-login
 from db_funkce import najdi_uzivatele
 
+
 class LoginForm(Form):
     email = TextField('email', [validators.Required(), validators.Length(min=4, max=25)])
     password = PasswordField('heslo', [validators.Required(), validators.Length(min=6, max=200)])
@@ -19,7 +20,7 @@ def login():
     form = LoginForm(request.form)
     chyba = None
     if request.method == 'POST':
-        # TODO: validace poli formulare
+        # TODO: validace poli formulare??
 
         email = request.form["email"]
         heslo = request.form["heslo"]

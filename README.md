@@ -11,6 +11,8 @@ Je třeba nainstalovat geopy modul:
 pip install geopy
 requirements:
 flask==1.0.2
+flask-login==0.4.1
 gunicorn==19.9.0
 psycopg2==2.7.6
 geopy==1.17.0
+flask-wtf==2.2.1

@@ -2,11 +2,9 @@ from flask import Blueprint, render_template, request, redirect,url_for
 import db_funkce
 
 blueprint = Blueprint('registrace_bp', __name__)
-@blueprint.route('/registrace') # , methods = ['POST'])
+@blueprint.route('/registrace')
 def show_registrace():
-	#if request.method == 'POST':
-      #result = request.form
-	return render_template('registrace.html',values={})
+	return render_template('registrace.html', values={})
 
 @blueprint.route('/registrace', methods=['POST'])
 def add_new():

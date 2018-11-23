@@ -12,23 +12,23 @@ def show_newautoinput():
 
 @blueprint.route('/noveauto', methods=['POST'])
 def add_new_car():
+	print('test_hned_za_def')
 	result = dict(request.form)
-	# result vyse vraci ImmutableDict => nejde do nej nic pridat, nize si zmenime na normalni dict
+	# result vyse vraci ImmutableDict => nejde do nej nic pridat, proto ho zmenime na normalni dict
 	uzivatel = current_user
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
 	else:
 		print("Neni prihlasenej")
 
-	# Tohle musime nahradit id prihlaseneho uzivatele, az zprovoznime prihlaseni!!
-	result['ridic'] = 1
+	result['ridic'] = uzivatel.db_id
+	print('test_pod_ridic')
+	print(result)
 	id_jizdy = db_funkce.nove_auto(**result)
 
 	if id_jizdy:
-		#print('probehlo')
 		return render_template('autook.html')
 		#return redirect(url_for("autook_bp.show_index"))
 	else:
 		return render_template('autonotok.html')
-		#print('neprobehlo')
 		#return redirect(url_for("autonotok_bp.show_index"))

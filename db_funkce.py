@@ -21,7 +21,7 @@ class User(UserMixin):
 def get_db():
     """ Spojeni s dtb. """
 
-    if not hasattr(g, 'db'):
+    if not hasattr(g, 'db') or g.db.closed == 1:
 		# https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
         database_url = os.environ["DATABASE_URL"]
     #database_url = os.environ["DATABASE_URL"]
@@ -42,9 +42,9 @@ def zavody():
 
 
 def hash_heslo(heslo):
-    """ Hashovani hesel do dtb pri regostraci noveho uzivatele. """
+    """ Hashovani hesel do dtb pri registraci noveho uzivatele. """
 
-    return sha512(b'heslo').hexdigest()
+    return sha512(heslo.encode()).hexdigest()
 
 
 @lru_cache(maxsize=None)
@@ -73,11 +73,12 @@ def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_
     conn = get_db()
     id_uzivatele = None
     latitude, longitude = get_gps(ulice, psc)
+    heslo = hash_heslo(heslo)
 
     try:
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (jmeno, prijmeni, ulice, mesto, psc, email, telefon, hash_heslo(heslo), latitude, longitude))
+        cur.execute(sql, (jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, latitude, longitude))
         # get the generated id back
         id_uzivatele = cur.fetchone()[0]
         # commit the changes to the database
@@ -146,7 +147,7 @@ def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, 
 def nabidky_spolujizdy(id_zavodu):
     """ nabidne volna auta ke konkretnimu zavodu """
     
-    sql = """SELECT jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
+    sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
     volnych_mist, poznamky FROM
     nabidka_spolujizdy as ns 
     left join 
@@ -162,13 +163,43 @@ def nabidky_spolujizdy(id_zavodu):
      order by misto_odjezdu;
      """
     conn = get_db()
-    id_jizdy = None
     try:
         cur = conn.cursor()
         # execute the SELECT statement
         cur.execute(sql, (id_zavodu,))
         # close communication with the database
         return cur.fetchall()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def vyber_spolujizdu(id_jizdy):
+    """ Vybere konkretni id jizdy pro spolujizdu """
+
+    sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
+    volnych_mist, poznamky FROM
+    nabidka_spolujizdy as ns 
+    left join 
+        (select id_jizdy, sum(chci_mist) as sum_obsazena_mista from 
+        spolujezdci as s 
+        group by s.id_jizdy) as s
+    on ns.id_jizdy = s.id_jizdy
+    left join
+		(select jmeno, id_uzivatele from
+		 uzivatele as u) as u
+	on ns.ridic = u.id_uzivatele
+            WHERE ns.id_jizdy=%s;"""
+
+    conn = get_db()
+    try:
+        cur = conn.cursor()
+        # execute the SELECT statement
+        cur.execute(sql, (id_jizdy,))
+        # close communication with the database
+        return cur.fetchone()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -183,13 +214,13 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
              VALUES(%s, %s, %s);"""
 
     conn = get_db()
-    id_jizdy = None
     try:
         cur = conn.cursor()
         # execute the SELECT statement
         cur.execute(sql, (id_jizdy, spolujezdec, chci_mist))
+        conn.commit()
         # close communication with the database
-        return cur.fetchall()
+        # return cur.fetchall()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
