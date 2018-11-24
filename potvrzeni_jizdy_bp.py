@@ -9,14 +9,15 @@ def show_potvrzenijizdy(zvoleno):
 	return render_template('potvrzeni_jizdy.html', values=zvoleno)
 
 
-@blueprint.route('/potvrzenijizdy', methods=['POST'])
+@blueprint.route('/potvrzenijizdy/', methods=['POST'])
 def chci_nastoupit():
 	uzivatel = current_user
+	
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
 	else:
 		print("Neni prihlasenej")
-
+	
 	parametry = dict()
 	# Vytvorim novy slovnik, ktery plnim.
 	parametry['chci_mist'] = int(request.form['chci_mist'])
@@ -24,15 +25,22 @@ def chci_nastoupit():
 	# Prevadi hodnoty ze stringu na cisla, coz vyzaduje pro zapis dtb.
 	parametry['spolujezdec'] = uzivatel.db_id
 	db_funkce.chci_nastoupit(**parametry)
-	print(parametry)
-	return render_template('potvrzeni_jizdy_OK.html', success=True)
+	
+	udaje = dict()
+	udaje['id_jizdy'] = int(request.form['id_jizdy'])
+	udaje['spolujezdec'] = uzivatel.db_id
+	souhrn = db_funkce.potvrzeni_spolujizdy(**udaje)
+	return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
 
 
+'''
 @blueprint.route('/potvrzenijizdyOK')
 def show_potvrzenijizdyOK():
 	potvrzuji = True
 
 	if potvrzuji:
 		return render_template('potvrzeni_jizdy_OK.html', success=True)
+'''
+# Tohle asi muzeme umazat.
 
 	

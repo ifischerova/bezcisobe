@@ -4,15 +4,15 @@ import db_funkce
 
 
 blueprint = Blueprint('newautoinput_bp', __name__)
-@blueprint.route('/noveauto')
-def show_newautoinput():
+@blueprint.route('/noveauto', defaults={'id_zavod':0})
+@blueprint.route('/noveauto/<zvoleno>')
+def show_newautoinput(id_zavod):
 	zavody = db_funkce.zavody()
-	return render_template('newautoinput.html', zavody=zavody, values={} )
+	return render_template('newautoinput.html', zvoleno=int(id_zavod), zavody=zavody, values={} )
 
 
 @blueprint.route('/noveauto', methods=['POST'])
 def add_new_car():
-	print('test_hned_za_def')
 	result = dict(request.form)
 	# result vyse vraci ImmutableDict => nejde do nej nic pridat, proto ho zmenime na normalni dict
 	uzivatel = current_user
@@ -20,10 +20,7 @@ def add_new_car():
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
 	else:
 		print("Neni prihlasenej")
-
 	result['ridic'] = uzivatel.db_id
-	print('test_pod_ridic')
-	print(result)
 	id_jizdy = db_funkce.nove_auto(**result)
 
 	if id_jizdy:

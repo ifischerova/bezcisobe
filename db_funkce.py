@@ -210,14 +210,27 @@ def vyber_spolujizdu(id_jizdy):
 def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
     """ vlozi spolujezdce do db """
 
-    sql = """INSERT INTO spolujezdci(id_jizdy, spolujezdec, chci_mist)
-             VALUES(%s, %s, %s);"""
+    sql_zjisti = """SELECT * FROM spolujezdci
+                   WHERE id_jizdy = %s
+                   AND spolujezdec = %s"""
+
+    sql_zapis = """BEGIN IF NOT EXISTS (SELECT * FROM spolujezdci
+                   WHERE id_jizdy = %s
+                   AND spolujezdec = %s
+                  	)
+                BEGIN
+                    INSERT INTO spolujezdci(id_jizdy, spolujezdec, chci_mist)
+                        VALUES(%s, %s, %s)
+                END
+                END;"""
+
 
     conn = get_db()
+
     try:
         cur = conn.cursor()
         # execute the SELECT statement
-        cur.execute(sql, (id_jizdy, spolujezdec, chci_mist))
+        cur.execute(sql_zapis, (id_jizdy, spolujezdec, chci_mist))
         conn.commit()
         # close communication with the database
         # return cur.fetchall()
@@ -227,7 +240,35 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
         if conn is not None:
             conn.close()
 
-    
+
+def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
+    """ Najde jizdu podle id_jizdy a spolujezdce """
+
+    sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, chci_mist, spolujezdec, poznamky FROM
+    nabidka_spolujizdy as ns 
+    left join 
+        (select id_jizdy, spolujezdec, chci_mist from 
+        spolujezdci as s) as s
+    on ns.id_jizdy = s.id_jizdy
+    left join
+		(select jmeno, id_uzivatele from
+		 uzivatele as u) as u
+	on ns.ridic = u.id_uzivatele
+            WHERE ns.id_jizdy=%s and spolujezdec=%s;"""
+
+    conn = get_db()
+    try:
+        cur = conn.cursor()
+        # execute the SELECT statement
+        cur.execute(sql, (id_jizdy, spolujezdec))
+        # close communication with the database
+        return cur.fetchone()
+        # print(cur.fetchone())
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 '''
 if __name__ == '__main__':

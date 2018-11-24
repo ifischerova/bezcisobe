@@ -3,7 +3,6 @@ from flask import Blueprint, render_template
 import db_funkce
 
 
-
 blueprint = Blueprint('zavody_bp', __name__)
 
 # Zaregistruje funkci show_about() jako funkci, kterou má Flask zavolat, když 
