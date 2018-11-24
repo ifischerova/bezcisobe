@@ -12,8 +12,9 @@
      {% block title %}ZÁVODY{% endblock %}
 		 {% block body %}
 		 
-		
-			<div class="lista lista-zarovnani">
+	<form method="GET" action="{{ url_for('newautoinput_bp.show_newautoinput') }}">
+
+			<div class="formular">
 					<p>Nejprve si prosím vyber ze seznamu závodů.</p>            
             <select name="id_zavod" onchange="javascript:location.href='/zavody/'+this.value" style="width: 80%;">
                 <option value="">Vyber si závod.</option>
@@ -66,9 +67,9 @@
 
 				</p>
 				<div class="tlacitka">
-						<a href="{{ url_for('newautoinput_bp.show_newautoinput') }}" class="btn btn-default">
-								PŘIDAT AUTO K ZÁVODU
-							</a>
+						<input tabindex=1 type="submit" value="PŘIDAT AUTO K ZÁVODU" class="btn btn-default">
+						
+					
 				</div>
 		
 

@@ -47,7 +47,9 @@
 				BĚŽCI SOBĚ
 			</a>
 			{% if current_user.is_authenticated %}
-  				{{ current_user.jmeno }} {{ current_user.prijmeni }}
+				  Přihlášený uživatel: {{ current_user.jmeno }} {{ current_user.prijmeni }}
+				  <a href="{{ url_for('prihlaseni_bp.logout') }}"  class="btn btn-default">
+						Odhlásit se.</a>
     			<!-- TODO tlačítko na odhlášení -->
 			{% endif %}
 		</nav>

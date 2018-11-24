@@ -5,10 +5,16 @@ import db_funkce
 
 blueprint = Blueprint('newautoinput_bp', __name__)
 @blueprint.route('/noveauto', defaults={'id_zavod':0})
-@blueprint.route('/noveauto/<zvoleno>')
+@blueprint.route('/noveauto/<id_zavod>')
 def show_newautoinput(id_zavod):
 	zavody = db_funkce.zavody()
-	return render_template('newautoinput.html', zvoleno=int(id_zavod), zavody=zavody, values={} )
+	promenna = dict(request.args)
+	id_zavod = promenna['id_zavod']
+	uzivatel = current_user
+	if uzivatel.is_authenticated:
+		return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={} )
+	else:
+		return render_template('prihlaseni.html')
 
 
 @blueprint.route('/noveauto', methods=['POST'])

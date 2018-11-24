@@ -17,10 +17,10 @@
 <form method="POST" action="{{ url_for('newautoinput_bp.add_new_car') }}" target="_blank">
 
 <div class="lista">
-		<select name="id_zavod" onchange="javascript:location.href='/noveauto/'+this.value">
+		<select name="id_zavod">
 				<option value="">Vyber si závod.</option>
 				{% for zavod in zavody %}
-				<option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod == zvoleno %}selected{% endif %}>
+				<option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod == id_vybraneho %}selected{% endif %}>
 						{{ zavod.datum_zavodu.strftime("%d. %m. %Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
 				</option>
 				{% endfor %}

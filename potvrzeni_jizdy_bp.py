@@ -6,7 +6,12 @@ blueprint = Blueprint('potvrzeni_jizdy_bp', __name__)
 @blueprint.route('/potvrzenijizdy/<zvoleno>')
 def show_potvrzenijizdy(zvoleno):
 	zvoleno = db_funkce.vyber_spolujizdu(zvoleno)
-	return render_template('potvrzeni_jizdy.html', values=zvoleno)
+	uzivatel = current_user
+	if uzivatel.is_authenticated:
+		return render_template('potvrzeni_jizdy.html', values=zvoleno)
+	else:
+		return render_template('prihlaseni.html')
+	# return render_template('potvrzeni_jizdy.html', values=zvoleno)
 
 
 @blueprint.route('/potvrzenijizdy/', methods=['POST'])
