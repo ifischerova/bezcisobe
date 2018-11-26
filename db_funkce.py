@@ -47,7 +47,6 @@ def hash_heslo(heslo):
     return sha512(heslo.encode()).hexdigest()
 
 
-@lru_cache(maxsize=None)
 def get_gps(ulice, PSC):
     """ Ziska GPS souradnice z Here map."""
 
@@ -121,15 +120,23 @@ def najdi_uzivatele(email):
 def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky):
     """ prida nove auto s ridicem do databaze """
 
-    sql = """INSERT INTO nabidka_spolujizdy(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky)
-             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_jizdy;"""
+    sql_najdi_auto = """SELECT * from nabidka_spolujizdy WHERE ridic = %s and id_zavod = %s;"""
+
+    sql_zapis_auto = """INSERT INTO nabidka_spolujizdy(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky)
+             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_jizdy; """
+
     conn = get_db()
     id_jizdy = None
     
     try:
         cur = conn.cursor()
+        cur.execute(sql_najdi_auto, (ridic, id_zavod))
+        # execute the SELECT statement
+        vysledek = cur.fetchall()
+        if vysledek:
+            return None
         # execute the INSERT statement
-        cur.execute(sql, (ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky))
+        cur.execute(sql_zapis_auto, (ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky))
         # get the generated id back
         id_jizdy = cur.fetchone()[0]
         # commit the changes to the database
@@ -214,22 +221,19 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
                    WHERE id_jizdy = %s
                    AND spolujezdec = %s"""
 
-    sql_zapis = """BEGIN IF NOT EXISTS (SELECT * FROM spolujezdci
-                   WHERE id_jizdy = %s
-                   AND spolujezdec = %s
-                  	)
-                BEGIN
-                    INSERT INTO spolujezdci(id_jizdy, spolujezdec, chci_mist)
-                        VALUES(%s, %s, %s)
-                END
-                END;"""
+    sql_zapis = """INSERT INTO spolujezdci(id_jizdy, spolujezdec, chci_mist)
+                        VALUES(%s, %s, %s);"""
 
 
     conn = get_db()
 
     try:
         cur = conn.cursor()
+        cur.execute(sql_zjisti, (id_jizdy, spolujezdec))
         # execute the SELECT statement
+        vysledek = cur.fetchall()
+        if vysledek:
+            return vysledek[0].id_jizdy
         cur.execute(sql_zapis, (id_jizdy, spolujezdec, chci_mist))
         conn.commit()
         # close communication with the database
@@ -260,6 +264,8 @@ def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
     try:
         cur = conn.cursor()
         # execute the SELECT statement
+        print('SQL TEST')
+        print(sql % (id_jizdy, spolujezdec))
         cur.execute(sql, (id_jizdy, spolujezdec))
         # close communication with the database
         return cur.fetchone()

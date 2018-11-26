@@ -37,7 +37,7 @@ def login():
 
     # TODO: zobrazit upozorneni o spatne zadanem jmenu/heslu
     # TODO: presmerovani po uspesnem prihlaseni - kam?
-    # TODO: při neúspěšném pokusu o přihlášení zachovat ve formuláři zadaný email
+    # TODO: při neúspěšném pokusu o přihlášení zachovat ve formuláři zadaný email??s
     return render_template('prihlaseni.html', form=form, chyba=chyba)
 
 @blueprint.route('/odhlaseni')

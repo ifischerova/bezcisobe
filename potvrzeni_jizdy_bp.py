@@ -29,8 +29,10 @@ def chci_nastoupit():
 	parametry['id_jizdy'] = int(request.form['id_jizdy'])
 	# Prevadi hodnoty ze stringu na cisla, coz vyzaduje pro zapis dtb.
 	parametry['spolujezdec'] = uzivatel.db_id
-	db_funkce.chci_nastoupit(**parametry)
-	
+	id_jizdy = db_funkce.chci_nastoupit(**parametry)
+	if id_jizdy:
+		return '<h1> Nevyšlo to, v tomhle autě už máš místo rezervované. </h1>'
+
 	udaje = dict()
 	udaje['id_jizdy'] = int(request.form['id_jizdy'])
 	udaje['spolujezdec'] = uzivatel.db_id
