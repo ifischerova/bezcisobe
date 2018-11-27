@@ -21,22 +21,21 @@ def chci_nastoupit():
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
 	else:
+		# TODO: redirect na prihlasovaci stranku
 		print("Neni prihlasenej")
 	
-	parametry = dict()
-	# Vytvorim novy slovnik, ktery plnim.
-	parametry['chci_mist'] = int(request.form['chci_mist'])
-	parametry['id_jizdy'] = int(request.form['id_jizdy'])
-	# Prevadi hodnoty ze stringu na cisla, coz vyzaduje pro zapis dtb.
-	parametry['spolujezdec'] = uzivatel.db_id
-	id_jizdy = db_funkce.chci_nastoupit(**parametry)
+	id_jizdy = db_funkce.chci_nastoupit(
+		int(request.form.get("id_jizdy")),
+		uzivatel.db_id,
+		int(request.form.get("chci_mist"))
+	)
 	if id_jizdy:
 		return '<h1> Nevyšlo to, v tomhle autě už máš místo rezervované. </h1>'
 
-	udaje = dict()
-	udaje['id_jizdy'] = int(request.form['id_jizdy'])
-	udaje['spolujezdec'] = uzivatel.db_id
-	souhrn = db_funkce.potvrzeni_spolujizdy(**udaje)
+	souhrn = db_funkce.potvrzeni_spolujizdy(
+		int(request.form.get("id_jizdy")),
+		uzivatel.db_id
+	)
 	return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
 
 

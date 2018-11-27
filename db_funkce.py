@@ -63,7 +63,7 @@ def get_gps(ulice, PSC):
     return (.0, .0) if data is None else (data.latitude, data.longitude)
 
 
-def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_potvrzeni, skrtatko):
+def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_potvrzeni):
     """ vlozi noveho uzivatele do databaze """
 
     sql = """INSERT INTO uzivatele
