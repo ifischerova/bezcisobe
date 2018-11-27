@@ -8,8 +8,8 @@ blueprint = Blueprint('newautoinput_bp', __name__)
 @blueprint.route('/noveauto/<id_zavod>')
 def show_newautoinput(id_zavod):
 	zavody = db_funkce.zavody()
-	promenna = dict(request.args)
-	id_zavod = promenna['id_zavod']
+	promenna = request.args
+	id_zavod = promenna.get('id_zavod')
 	uzivatel = current_user
 	if uzivatel.is_authenticated:
 		return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={} )
@@ -19,15 +19,23 @@ def show_newautoinput(id_zavod):
 
 @blueprint.route('/noveauto', methods=['POST'])
 def add_new_car():
-	result = dict(request.form)
-	# result vyse vraci ImmutableDict => nejde do nej nic pridat, proto ho zmenime na normalni dict
+	result = request.form
+	
 	uzivatel = current_user
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
 	else:
+		# TODO: redirect na prihlasovaci stranku
 		print("Neni prihlasenej")
-	result['ridic'] = uzivatel.db_id
-	id_jizdy = db_funkce.nove_auto(**result)
+	
+	id_jizdy = db_funkce.nove_auto(
+		uzivatel.db_id,
+		result.get("id_zavod"),
+		result.get("misto_odjezdu"),
+		result.get("datum_odjezdu"),
+		result.get("mist_auto_nabidka"),
+		result.get("poznamky")
+	)
 
 	if id_jizdy:
 		return render_template('autook.html')

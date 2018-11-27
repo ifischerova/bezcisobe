@@ -9,7 +9,31 @@ def show_registrace():
 @blueprint.route('/registrace', methods=['POST'])
 def add_new():
 	result = request.form
-	id_uzivatele = db_funkce.registrace(**result)
+
+	heslo = result.get("heslo")
+	heslo_potvrzeni = result.get("heslo_potvrzeni")
+
+	if not heslo == heslo_potvrzeni:
+		# TODO: validace shody hesel
+		pass
+
+	if not result.get("skrtatko", "") == "ano":
+		# pokud uzivatel nezaskrtne "skrtatko", bude
+		# klic "skrtatko" v request.form chybet, proto
+		# jsme zavolali .get s defaultni hodnotou ""
+		pass
+
+	id_uzivatele = db_funkce.registrace(
+		result.get("jmeno"),
+		result.get("prijmeni"),
+		result.get("ulice"),
+		result.get("mesto"),
+		result.get("psc"),
+		result.get("email"),
+		result.get("telefon"),
+		heslo,
+		heslo_potvrzeni
+	)
 
 	if id_uzivatele:
 		return render_template("potvrzeni_registrace.html")
