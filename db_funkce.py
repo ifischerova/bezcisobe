@@ -39,7 +39,7 @@ def zavody():
     cur.execute(sql)
     data = cur.fetchall()
     return data
-
+    
 
 def hash_heslo(heslo):
     """ Hashovani hesel do dtb pri registraci noveho uzivatele. """
