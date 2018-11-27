@@ -264,8 +264,6 @@ def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
     try:
         cur = conn.cursor()
         # execute the SELECT statement
-        print('SQL TEST')
-        print(sql % (id_jizdy, spolujezdec))
         cur.execute(sql, (id_jizdy, spolujezdec))
         # close communication with the database
         return cur.fetchone()
