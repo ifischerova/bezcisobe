@@ -13,6 +13,31 @@ body{
 	background-color: #d5e1df;
 }
 
+.tlacitka .btn{
+	width: 250px;
+}
+
+.tlacitka_nav .btn{
+	width:100px;
+	color: green;
+	background-color: #d5e1df;
+
+}
+
+.tlacitka_login .btn{
+	align-content: flex-end;
+	margin-left:600px;
+}
+
+.tlacitka_logged .btn{
+	align-content: flex-end;
+	margin-left: 650px;
+}
+
+.tlacitka_signup .btn{
+	width:160px;
+}
+
 .nadpis h1{
 	font-size: 48px; 
 	color: green; 
@@ -29,9 +54,7 @@ body{
 	text-align: center;
 }
 
-.tlacitka .btn{
-	width: 250px;
-}
+
 
 .tabulka .btn {
 	margin:0;

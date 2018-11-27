@@ -30,7 +30,7 @@ def login():
             if sha512(heslo.encode()).hexdigest() == uzivatel.password_hash:
                 if login_user(uzivatel, force=True):
                     uspesne_prihlasen = True
-                    return redirect(url_for('about_bp.show_index'))
+                    return redirect(url_for('zavody_bp.show_zavody'))
         
         if not uspesne_prihlasen:
             chyba = "Neplatné přihlašovací údaje"

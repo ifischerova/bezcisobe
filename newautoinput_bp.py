@@ -25,7 +25,6 @@ def add_new_car():
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
 	else:
-		# TODO: redirect na prihlasovaci stranku
 		print("Neni prihlasenej")
 	
 	id_jizdy = db_funkce.nove_auto(
