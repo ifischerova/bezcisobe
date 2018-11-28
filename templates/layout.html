@@ -39,8 +39,8 @@
          je třídy "container". V jednom z těch .css souborů, které jsme připojili
          nahoře je specifikované, jak mají oddíly třídy container vypadat (velikost
          písma, odsazení atd.).//-->
-	<div class="container">
-			<nav class="navbar navbar-light bg-light">
+	<div class="container rounded">
+		<nav class="navbar navbar-light bg-light rounded">
 				<a class="navbar-brand" href="/">
 					<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top"
 					 palt="">
@@ -58,16 +58,16 @@
 				</div>
 				{% endif %}
 
-			{% if not current_user.is_authenticated %}
-			<div class="tlacitka_login">
-				<a href="{{ url_for('prihlaseni_bp.login') }}" class="btn btn-default">Přihlásit se</a>
-			</div>
+				{% if not current_user.is_authenticated %}
+				<div class="tlacitka_login">
+					<a href="{{ url_for('prihlaseni_bp.login') }}" class="btn btn-default">Přihlásit se</a>
+				</div>
 
-			<div class="tlacitka_signup">
+				<div class="tlacitka_signup">
 					<a href="{{ url_for('registrace_bp.show_registrace') }}" class="btn btn-default">Registrovat se</a>
-			</div>		
-			{% endif %}
-			</nav>
+				</div>
+				{% endif %}
+		</nav>
 
 		<div class="nadpis h1">
 			<h1>{% block title %}{% endblock %}</h1>

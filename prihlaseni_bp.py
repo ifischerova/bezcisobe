@@ -30,7 +30,6 @@ def redirect_back(endpoint, **values):
         target = url_for(endpoint, **values)
     return redirect(target)
 
-#
 
 class LoginForm(Form):
     email = TextField('email', [validators.Required(), validators.Length(min=4, max=25)])
@@ -60,7 +59,6 @@ def login():
                     if next.endswith('prihlaseni'):
                         return redirect(url_for('zavody_bp.show_zavody'))
                     return redirect(next)
-        
         if not uspesne_prihlasen:
             chyba = "Neplatné přihlašovací údaje"
         
