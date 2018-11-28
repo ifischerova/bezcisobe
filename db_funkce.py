@@ -39,7 +39,7 @@ def zavody():
     cur.execute(sql)
     data = cur.fetchall()
     return data
-    
+
 
 def hash_heslo(heslo):
     """ Hashovani hesel do dtb pri registraci noveho uzivatele. """
@@ -116,6 +116,25 @@ def najdi_uzivatele(email):
     else:
         return None
 
+
+
+def uz_existuje_auto(ridic, id_zavod):
+    """ podiva se do db, jestli uz tam neni ridic pro dany zavod """
+
+    sql_najdi_auto = """SELECT * from nabidka_spolujizdy WHERE ridic = %s and id_zavod = %s;"""
+
+    conn = get_db()
+    
+    try:
+        cur = conn.cursor()
+        cur.execute(sql_najdi_auto, (ridic, id_zavod))
+        # execute the SELECT statement
+        vysledek = cur.fetchall()
+        cur.close()
+    finally:
+        if conn is not None:
+            conn.close()
+    return vysledek
 
 def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky):
     """ prida nove auto s ridicem do databaze """
@@ -212,6 +231,34 @@ def vyber_spolujizdu(id_jizdy):
     finally:
         if conn is not None:
             conn.close()
+
+
+def najdi_pocet_mist(id_jizdy):
+    """ Najde pocet mist v aute pro overeni poctu pozadovanych mist pri nastupu do auta."""
+
+    sql = """SELECT ns.id_jizdy, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
+    volnych_mist FROM
+    nabidka_spolujizdy as ns 
+    left join 
+        (select id_jizdy, sum(chci_mist) as sum_obsazena_mista from 
+        spolujezdci as s 
+        group by s.id_jizdy) as s
+    on ns.id_jizdy = s.id_jizdy
+            WHERE ns.id_jizdy=%s;"""
+
+    conn = get_db()
+    try:
+        cur = conn.cursor()
+        # execute the SELECT statement
+        cur.execute(sql, (id_jizdy,))
+        # close communication with the database
+        volnych_mist = cur.fetchone().volnych_mist
+        return volnych_mist
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()    
 
 
 def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):

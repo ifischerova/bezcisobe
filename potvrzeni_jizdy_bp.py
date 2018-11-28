@@ -24,6 +24,10 @@ def chci_nastoupit():
 		# TODO: redirect na prihlasovaci stranku
 		print("Neni prihlasenej")
 	
+	volnych_mist = db_funkce.najdi_pocet_mist(int(request.form.get("id_jizdy")))
+	if int(request.form.get("chci_mist")) > int(volnych_mist):
+		return '<h1> Nevyšlo to, chceš víc míst, než kolik je volných. </h1>'
+	
 	id_jizdy = db_funkce.chci_nastoupit(
 		int(request.form.get("id_jizdy")),
 		uzivatel.db_id,
