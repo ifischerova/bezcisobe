@@ -4,21 +4,56 @@ body{
 	padding-bottom:20px;
 }
 
+.container{
+	background-color: #F9DE97;
+	height: 1000px;
+}
+
+.navbar{
+	backround-color:#846413;
+}
+
 .btn{
 	display: block;
 	margin:20px auto;
-	color:green;
+	color:#584000;
 	font-size:2.5m;
 	font-weight:bold;
 	background-color: #d5e1df;
 }
 
+.tlacitka .btn{
+	width: 250px;
+}
+
+.tlacitka_nav .btn{
+	width:100px;
+	color: #584000;
+	background-color: #d5e1df;
+
+}
+
+.tlacitka_login .btn{
+	align-content: flex-end;
+	margin-left:600px;
+}
+
+.tlacitka_logged .btn{
+	align-content: flex-end;
+	margin-left: 650px;
+}
+
+.tlacitka_signup .btn{
+	width:160px;
+}
+
 .nadpis h1{
 	font-size: 48px; 
-	color: green; 
+	color: #584000; 
 	font-weight: bold;
 	font-family:  "Helvetica";
 	text-align: center;
+	padding-top:30px;
 	margin:40px;
 }
 
@@ -29,15 +64,10 @@ body{
 	text-align: center;
 }
 
-.tlacitka .btn{
-	width: 250px;
-}
-
 .tabulka .btn {
 	margin:0;
 	display:inline-block;
 }
-
 
 .kontakty{
 	text-align: center;
@@ -45,7 +75,7 @@ body{
 .kontakty h2{
 	margin: 40px 0 10px 0;
 	font-size:36px;
-	color:green;
+	color:#584000;
 	font-weight: bold;
 	font-family: "Helvetica";
 }
@@ -93,7 +123,7 @@ body{
 	font-family:"Helvetica";
 	font-weight:bold;
 	text-align:center;
-	color: green;
+	color:#584000;
 	padding:20px;
 }
 
@@ -132,7 +162,7 @@ body{
 }
 
 .odkaz{
-	color:green;
+	color:#584000;
 }
 
 .popis{
@@ -140,5 +170,5 @@ body{
 }
 
 .popis h3{
-	color:green;
+	color:#584000;
 }
