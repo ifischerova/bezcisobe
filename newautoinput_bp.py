@@ -12,7 +12,11 @@ def show_newautoinput(id_zavod):
 	id_zavod = promenna.get('id_zavod')
 	uzivatel = current_user
 	if uzivatel.is_authenticated:
-		return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={} )
+		vysledek = db_funkce.uz_existuje_auto(uzivatel.db_id, id_zavod)
+		if vysledek:
+			return render_template('autonotok.html')
+		else:
+			return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={} )
 	else:
 		return render_template('prihlaseni.html')
 
