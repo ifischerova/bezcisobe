@@ -35,7 +35,6 @@ def add_new_car():
 		result.get("mist_auto_nabidka"),
 		result.get("poznamky")
 	)
-
 	if id_jizdy:
 		return render_template('autook.html')
 		#return redirect(url_for("autook_bp.show_index"))

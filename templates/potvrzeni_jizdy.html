@@ -26,7 +26,7 @@
 				<td>{{ values.misto_odjezdu }}</td>
 				<td>{{ values.datum_odjezdu.strftime('%d. %m. %Y') }}</td>
 				<td>{{ values.volnych_mist }}</td>
-				<td><input type="text" class="form-control form-control-sm" name="chci_mist" required id="chci_mist" value="Prosím vyplň"></td>
+				<td><input type="number" class="form-control form-control-sm" name="chci_mist" required id="chci_mist" value=""></td>
 				{% if values.poznamky %}
 				<td>{{ values.poznamky }}</td>
 				{% else %}

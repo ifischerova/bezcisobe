@@ -35,40 +35,38 @@
      stránky //-->
 
 <body>
-	<!-- Začátek oddílu (division) stránky. class="container" říká, že tento oddíl
-         je třídy "container". V jednom z těch .css souborů, které jsme připojili
-         nahoře je specifikované, jak mají oddíly třídy container vypadat (velikost
-         písma, odsazení atd.).//-->
-	<div class="container rounded">
-		<nav class="navbar navbar-light bg-light rounded">
+	<div class="stranka">
+		<nav class="navbar navbar-light bg-light rounded container">
 				<a class="navbar-brand" href="/">
-					<img src="{{ url_for('static', filename='bezec.png') }}" width="30" height="30" class="d-inline-block align-top"
-					 palt="">
+					<img src="{{ url_for('static', filename='bezec5.png') }}" width="30" height="30" class="d-inline-block align-top"
+					 alt="">
 					BĚŽCI SOBĚ
 				</a>
-
-				{% if current_user.is_authenticated %}
-				<div class="tlacitka_logged">
-					<div class="btn btn-default">{{ current_user.jmeno }} {{ current_user.prijmeni }}</div>
-				</div>
-
-				<div class="tlacitka_nav">
-					<a href="{{ url_for('prihlaseni_bp.logout') }}" class="btn btn-default btn-sm">
-						Odhlásit</a>
-				</div>
-				{% endif %}
-
-				{% if not current_user.is_authenticated %}
 				<div class="tlacitka_login">
-					<a href="{{ url_for('prihlaseni_bp.login') }}" class="btn btn-default">Přihlásit se</a>
+					{% if current_user.is_authenticated %}
+					<div class="tlacitko_login">
+						<div class="btn btn-default">{{ current_user.jmeno }} {{ current_user.prijmeni }}</div>
+					</div>
+	
+					<div class="tlacitko_login">
+						<a href="{{ url_for('prihlaseni_bp.logout') }}" class="btn btn-default btn-sm">
+							Odhlásit</a>
+					</div>
+					{% endif %}
+	
+					{% if not current_user.is_authenticated %}
+					<div class="tlacitko_login">
+						<a href="{{ url_for('prihlaseni_bp.login') }}" class="btn btn-default">Přihlásit se</a>
+					</div>
+	
+					<div class="tlacitko_login">
+						<a href="{{ url_for('registrace_bp.show_registrace') }}" class="btn btn-default">Registrovat se</a>
+					</div>
+					{% endif %}
 				</div>
-
-				<div class="tlacitka_signup">
-					<a href="{{ url_for('registrace_bp.show_registrace') }}" class="btn btn-default">Registrovat se</a>
-				</div>
-				{% endif %}
-		</nav>
-
+			</nav>
+	<div class="container container_telo rounded">
+		
 		<div class="nadpis h1">
 			<h1>{% block title %}{% endblock %}</h1>
 		</div>
@@ -80,6 +78,8 @@
 		<!-- Konec oddilu stránky //-->
 	</div>
 	<!-- Konec těla stránky. Za tíhle prvkem už nic nesmí být //-->
+
+</div>
 </body>
 
 </html>

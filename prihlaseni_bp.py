@@ -71,4 +71,4 @@ def login():
 @blueprint.route('/odhlaseni')
 def logout():
     logout_user()
-    return redirect(url_for('prihlaseni_bp.login'))
+    return redirect(url_for('about_bp.show_index'))
