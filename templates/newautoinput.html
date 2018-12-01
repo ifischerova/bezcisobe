@@ -7,11 +7,11 @@
 {% endif %}
 
 {%if success is defined %}
-<div class="alert alert-success">Auto jsme přidali k závodu a shrnutí nabídky Ti poslali do mailu.</div>
+<div class="alert alert-success">Auto jsme přidali do nabídky spolujízdy na závod a je zpřístupněno zájemcům:) Potvrzení najdeš i ve svém mailu.</div>
 {% endif %}
 
 <div class="zarovnani">
-	Nejprve prosím vyber závod, ke kterému chceš nabídnout auto.
+	Nejprve prosím zkontroluj závod, ke kterému chceš nabídnout auto.
 </div>
 
 <form method="POST" action="{{ url_for('newautoinput_bp.add_new_car') }}">
@@ -61,6 +61,8 @@
 	<label for="poznamky">Poznámky:</label>
 	<textarea class="form-control" rows="5" name="poznamky" value="{{ values.poznamky }}"></textarea>
 </div>
+
+<input type="hidden" name="id_zavod" value="{{ values.id_zavod }}">
 
 <p class="tlacitka">
 		<input tabindex=1 type="submit" value="PŘIDAT AUTO" class="btn btn-default">
