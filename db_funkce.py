@@ -40,6 +40,16 @@ def zavody():
     data = cur.fetchall()
     return data
 
+def zavod(id_zavod):
+    """ Vypise datum, misto zavodu a nazev do mailu"""
+
+    sql = """SELECT datum_zavodu, misto_zavodu, nazev FROM zavody WHERE id_zavod = %s"""
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(sql, (id_zavod, ))
+    data = cur.fetchone()
+    return data
+
 
 def hash_heslo(heslo):
     """ Hashovani hesel do dtb pri registraci noveho uzivatele. """

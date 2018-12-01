@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect,url_for, flash, abort
 from flask_login import current_user
 import db_funkce
+import posta_funkce
 
 
 blueprint = Blueprint('newautoinput_bp', __name__)
@@ -52,6 +53,7 @@ def add_new_car():
 		result.get("poznamky")
 	)
 	if id_jizdy:
+		posta_funkce.email_o_pridani_auta(uzivatel, result.get("id_zavod"))
 		return render_template('autook.html')
 	else:
 		chyba = 'Na tento závod už auto nabízíš.'
