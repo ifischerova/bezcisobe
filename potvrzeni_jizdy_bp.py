@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect,url_for
+from flask import Blueprint, render_template, request, redirect,url_for, flash, abort
 from flask_login import current_user
 import db_funkce
 
@@ -10,6 +10,7 @@ def show_potvrzenijizdy(zvoleno):
 	if uzivatel.is_authenticated:
 		return render_template('potvrzeni_jizdy.html', values=zvoleno)
 	else:
+		flash('Abys mohl nastoupit, musíš se nejdřív přihlásit.')
 		return render_template('prihlaseni.html')
 	# return render_template('potvrzeni_jizdy.html', values=zvoleno)
 
@@ -17,30 +18,32 @@ def show_potvrzenijizdy(zvoleno):
 @blueprint.route('/potvrzenijizdy/', methods=['POST'])
 def chci_nastoupit():
 	uzivatel = current_user
-	
+	zvoleno = db_funkce.vyber_spolujizdu(request.form.get("id_jizdy"))
+
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
 	else:
-		# TODO: redirect na prihlasovaci stranku
 		print("Neni prihlasenej")
 	
 	volnych_mist = db_funkce.najdi_pocet_mist(int(request.form.get("id_jizdy")))
 	if int(request.form.get("chci_mist")) > int(volnych_mist):
-		return '<h1> Nevyšlo to, chceš víc míst, než kolik je volných. </h1>'
-	
-	id_jizdy = db_funkce.chci_nastoupit(
-		int(request.form.get("id_jizdy")),
-		uzivatel.db_id,
-		int(request.form.get("chci_mist"))
-	)
-	if id_jizdy:
-		return '<h1> Nevyšlo to, v tomhle autě už máš místo rezervované. </h1>'
-
-	souhrn = db_funkce.potvrzeni_spolujizdy(
-		int(request.form.get("id_jizdy")),
-		uzivatel.db_id
-	)
-	return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
+		chyba = 'Nevyšlo to, chceš víc míst, než kolik je volných.'
+		return render_template('potvrzeni_jizdy.html', values=zvoleno, error=chyba)
+	else:
+		id_jizdy = db_funkce.chci_nastoupit(
+			int(request.form.get("id_jizdy")),
+			uzivatel.db_id,
+			int(request.form.get("chci_mist"))
+			)
+		if id_jizdy:
+			chyba = 'Nevyšlo to, v tomhle autě už máš místo rezervované.'
+			return render_template('potvrzeni_jizdy.html', values=zvoleno, error=chyba)
+		else:
+			souhrn = db_funkce.potvrzeni_spolujizdy(
+			int(request.form.get("id_jizdy")),
+			uzivatel.db_id
+			)
+			return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
 
 
 '''

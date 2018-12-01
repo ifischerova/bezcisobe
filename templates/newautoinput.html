@@ -2,8 +2,8 @@
 {% block title %}PŘIDAT AUTO K ZÁVODU{% endblock %}
 {% block body %}
 
-{% if error is defined %}
-<div class="alert alert-danger">Na tenhle závod už auto nabízíš:)</div>
+{% if error%}
+<div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 
 {%if success is defined %}

@@ -1,30 +1,42 @@
-from flask import Blueprint, render_template, request, redirect,url_for
+from flask import Blueprint, render_template, request, redirect,url_for, flash, abort
 from flask_login import current_user
 import db_funkce
 
 
 blueprint = Blueprint('newautoinput_bp', __name__)
 @blueprint.route('/noveauto', defaults={'id_zavod':0})
-@blueprint.route('/noveauto/<id_zavod>')
+@blueprint.route('/noveauto/<id_zavod>', )
 def show_newautoinput(id_zavod):
 	zavody = db_funkce.zavody()
 	promenna = request.args
 	id_zavod = promenna.get('id_zavod')
+	if not id_zavod:
+		id_zavod = 0
+	# print(id_zavod)
 	uzivatel = current_user
+	chyba = None
+
 	if uzivatel.is_authenticated:
-		vysledek = db_funkce.uz_existuje_auto(uzivatel.db_id, id_zavod)
-		if vysledek:
-			return render_template('autonotok.html')
+		if int(id_zavod) > 0:
+			vysledek = db_funkce.uz_existuje_auto(uzivatel.db_id, id_zavod)
+			if vysledek:
+				chyba = 'Na tento závod už auto nabízíš;)'
+				return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={}, error=chyba)
+			else: 
+				return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={})
 		else:
-			return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={} )
+			return render_template('newautoinput.html', zavody=zavody, id_vybraneho=0, values={})
 	else:
+		flash('Abys mohl/a přidat auto, musíš se nejdřív přihlásit.')
 		return render_template('prihlaseni.html')
 
 
 @blueprint.route('/noveauto', methods=['POST'])
 def add_new_car():
 	result = request.form
-	
+	zavody = db_funkce.zavody()
+	id_zavod = int(result.get('id_zavod'))
+
 	uzivatel = current_user
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
@@ -41,7 +53,6 @@ def add_new_car():
 	)
 	if id_jizdy:
 		return render_template('autook.html')
-		#return redirect(url_for("autook_bp.show_index"))
 	else:
-		return render_template('autonotok.html')
-		#return redirect(url_for("autonotok_bp.show_index"))
+		chyba = 'Na tento závod už auto nabízíš.'
+		return render_template('newautoinput.html', zavody=zavody, values=result, error=chyba)

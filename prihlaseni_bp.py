@@ -41,7 +41,7 @@ blueprint = Blueprint('prihlaseni_bp', __name__)
 @blueprint.route('/prihlaseni', methods=['GET', 'POST'])
 def login():
     next = get_redirect_target()
-    print(next)
+    #print(next)
     form = LoginForm(request.form)
     chyba = None
     if request.method == 'POST':
@@ -50,23 +50,23 @@ def login():
         email = request.form["email"]
         heslo = request.form["heslo"]
         uzivatel = najdi_uzivatele(email)
-        uspesne_prihlasen = False
+        # uspesne_prihlasen = False
         if uzivatel:
-            if sha512(heslo.encode()).hexdigest() == uzivatel.password_hash:
-                flash('Uživatel byl úspěšně přihlášen.')
+            if sha512(heslo.encode()).hexdigest() != uzivatel.password_hash:
+                chyba = 'Špatně zadané heslo.'
+            elif sha512(heslo.encode()).hexdigest() == uzivatel.password_hash:
+                flash ('Uživatel byl úspěšně přihlášen.')
                 if login_user(uzivatel, force=True):
-                    uspesne_prihlasen = True
+                    # uspesne_prihlasen = True
                     if next.endswith('prihlaseni'):
                         return redirect(url_for('zavody_bp.show_zavody'))
                     return redirect(next)
-        if not uspesne_prihlasen:
-            chyba = "Neplatné přihlašovací údaje"
+        if not uzivatel:
+            chyba = "Zadaný e-mail není v naší databázi. Nejprve se, prosím, zaregistruj."
         
 
-    # TODO: zobrazit upozorneni o spatne zadanem jmenu/heslu
-    # TODO: presmerovani po uspesnem prihlaseni - kam?
     # TODO: při neúspěšném pokusu o přihlášení zachovat ve formuláři zadaný email??s
-    return render_template('prihlaseni.html', form=form, chyba=chyba)
+    return render_template('prihlaseni.html', form=form, error=chyba)
 
 @blueprint.route('/odhlaseni')
 def logout():
