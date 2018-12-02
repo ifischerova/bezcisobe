@@ -12,6 +12,10 @@
 {% block title %}ZÁVODY{% endblock %}
 {% block body %}
 
+{% if error%}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
 <form method="GET" action="{{ url_for('newautoinput_bp.show_newautoinput') }}">
 
 	<div class="zarovnani">

@@ -1,11 +1,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app
 # from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from flask_login import current_user
 import db_funkce
 
 
 blueprint = Blueprint('registrace_bp', __name__)
 @blueprint.route('/registrace')
 def show_registrace():
+	zavody = db_funkce.zavody()
+	uzivatel = current_user
+	if uzivatel.is_authenticated:
+		chyba = 'Už jsi přihlášen.'
+		return render_template ('zavody.html',  zavody=zavody, id_vybraneho=0, error=chyba)
 	return render_template('registrace.html', values={})
 
 @blueprint.route('/registrace', methods=['POST'])
@@ -42,8 +48,8 @@ def add_new():
 		# return redirect(url_for('prihlaseni_bp.login'))
 
 	if id_uzivatele:
-		flash('Díky za registraci.')
-		return redirect(url_for('prihlaseni_bp.login'))
+		uspech = 'Díky za registraci. Nyní se můžeš přihlásit.'
+		return render_template('prihlaseni.html', success=uspech)
 	else:
 		return render_template("registrace.html", values=result, error=chyba)
 
