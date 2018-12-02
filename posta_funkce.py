@@ -21,7 +21,15 @@ def email_o_pridani_auta(uzivatel,id_zavod):
 	zprava['From'] = Address('Běžci Sobě', 'bezcisobe', 'gmail.com')
 	zprava['To'] = uzivatel.id
 	zprava['Message-Id'] = make_msgid()
-	zprava.set_content("Ahoj, právě jsi na bezcisobe.cz nabídl/a spolujízdu na následující akci:" + ' ' + datum + ' ' + nazev_zavodu + ' ' + misto + ". Díky, příjemné spolucestující a super sportovní zážitek přeji! Ivka z Běžci sobě", "plain", "utf-8")
+	text = f"""Ahoj!
+
+	Právě jsi na bezcisobe.cz nabídl/a spolujízdu na následující akci: {datum} {nazev_zavodu} {misto}. 
+
+	Super!
+
+	Přeji prima společnou jízdu a skvělý sportovní zážitek!
+	Ivka z Běžci Sobě"""
+	zprava.set_content(text)
 	mail = smtplib.SMTP(host='smtp.gmail.com',port=587)
 	mail.ehlo()
 	mail.starttls()
@@ -47,7 +55,17 @@ def email_o_nastupu_do_auta(uzivatel,id_zavod,id_jizdy):
 	zprava['From'] = Address('Běžci Sobě', 'bezcisobe', 'gmail.com')
 	zprava['To'] = uzivatel.id
 	zprava['Message-Id'] = make_msgid()
-	zprava.set_content("Ahoj, právě jsi na bezcisobe.cz potvrdil/a, že chceš jet na:" + ' ' + datum + ' ' + nazev_zavodu + ' ' + misto + "s" + sofer + ' ' + odjezd + ' ' + datum_odj + ". Tady přikládáme potřebné kontakty:" + ' ' + mobil + ' ' + email_ridice + ' ' + ". Skvělý sportovní zážitek přeji! Ivka z Běžci Sobě", "plain", "utf-8")
+	text = f"""Ahoj!
+
+	Právě jsi na bezcisobe.cz potvrdil/a, že chceš jet na {datum} {nazev_zavodu} {misto} s {sofer}. Odjizdite z {odjezd} v terminu {datum_odj}.
+
+	Tady přikládáme potřebné kontakty:
+ 	* telefon: {mobil}
+ 	* mail: {email_ridice}
+
+	Skvelý zážitek přeji!
+	Ivka z Běžci Sobě"""
+	zprava.set_content(text)
 	mail = smtplib.SMTP(host='smtp.gmail.com',port=587)
 	mail.ehlo()
 	mail.starttls()

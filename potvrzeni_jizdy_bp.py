@@ -21,6 +21,7 @@ def chci_nastoupit():
 	uzivatel = current_user
 	zvoleno = db_funkce.vyber_spolujizdu(request.form.get("id_jizdy"))
 	id_zavod=request.form.get("id_zavod")
+	id_jizdy=request.form.get("id_jizdy")
 
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
@@ -29,24 +30,27 @@ def chci_nastoupit():
 	
 	volnych_mist = db_funkce.najdi_pocet_mist(int(request.form.get("id_jizdy")))
 	if int(request.form.get("chci_mist")) > int(volnych_mist):
-		chyba = 'Nevyšlo to, chceš víc míst, než kolik je volných.'
+		chyba = 'Bohužel chceš víc míst, než kolik jich je volných.'
 		return render_template('potvrzeni_jizdy.html', values=zvoleno, error=chyba)
 	else:
-		id_jizdy = db_funkce.chci_nastoupit(
+		muze_nastoupit = db_funkce.chci_nastoupit(
 			int(request.form.get("id_jizdy")),
 			uzivatel.db_id,
 			int(request.form.get("chci_mist"))
 			)
-		if id_jizdy:
-			chyba = 'Nevyšlo to, v tomhle autě už máš místo rezervované.'
-			return render_template('potvrzeni_jizdy.html', values=zvoleno, error=chyba)
-		else:
+		if muze_nastoupit:
 			souhrn = db_funkce.potvrzeni_spolujizdy(
 			int(request.form.get("id_jizdy")),
 			uzivatel.db_id
 			)
 			posta_funkce.email_o_nastupu_do_auta(uzivatel, id_zavod, id_jizdy)
 			return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
+		else:
+			chyba = 'V tomto autě už máš místo rezervované.'
+			return render_template('potvrzeni_jizdy.html', values=zvoleno, error=chyba)
+
+
+
 
 
 '''

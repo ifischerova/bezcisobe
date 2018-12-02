@@ -302,7 +302,7 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
         # execute the SELECT statement
         vysledek = cur.fetchall()
         if vysledek:
-            return vysledek[0].id_jizdy
+            return False
         cur.execute(sql_zapis, (id_jizdy, spolujezdec, chci_mist))
         conn.commit()
         # close communication with the database
@@ -311,6 +311,7 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
         print(error)
     finally:
         if conn is not None:
+            return True
             conn.close()
 
 
