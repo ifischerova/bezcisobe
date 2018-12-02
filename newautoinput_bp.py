@@ -28,8 +28,8 @@ def show_newautoinput(id_zavod):
 		else:
 			return render_template('newautoinput.html', zavody=zavody, id_vybraneho=0, values={})
 	else:
-		flash('Abys mohl/a přidat auto, musíš se nejdřív přihlásit.')
-		return render_template('prihlaseni.html')
+		chyba='Abys mohl/a přidat auto, musíš se nejdřív přihlásit.'
+		return render_template('prihlaseni.html', error=chyba)
 
 
 @blueprint.route('/noveauto', methods=['POST'])

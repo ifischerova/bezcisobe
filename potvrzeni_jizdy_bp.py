@@ -11,8 +11,8 @@ def show_potvrzenijizdy(zvoleno):
 	if uzivatel.is_authenticated:
 		return render_template('potvrzeni_jizdy.html', values=zvoleno)
 	else:
-		flash('Abys mohl nastoupit, musíš se nejdřív přihlásit.')
-		return render_template('prihlaseni.html')
+		chyba='Abys mohl nastoupit, musíš se nejdřív přihlásit.'
+		return render_template('prihlaseni.html', error=chyba)
 	# return render_template('potvrzeni_jizdy.html', values=zvoleno)
 
 
