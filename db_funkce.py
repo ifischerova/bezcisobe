@@ -10,12 +10,13 @@ from geopy.exc import GeopyError
 from functools import lru_cache
 
 class User(UserMixin):
-    def __init__(self, id, db_id, password_hash, jmeno, prijmeni):
+    def __init__(self, id, db_id, password_hash, jmeno, prijmeni, telefon):
         self.id = id  # id-čkem je pro nás email uživatele
         self.db_id = db_id
         self.password_hash = password_hash
         self.jmeno = jmeno
         self.prijmeni = prijmeni
+        self.telefon = telefon
 
 
 def get_db():
@@ -56,6 +57,15 @@ def posta_ridic(id_jizdy):
     sql = """SELECT id_uzivatele, jmeno, telefon, email, ns.ridic, ns.misto_odjezdu, ns.datum_odjezdu, ns.id_jizdy from uzivatele as u
     left join (select ridic, misto_odjezdu, datum_odjezdu, id_jizdy from nabidka_spolujizdy as ns) as ns
     on u.id_uzivatele = ns.ridic WHERE id_jizdy= %s"""
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(sql, (int(id_jizdy), ))
+    data = cur.fetchone()
+    return data 
+
+def email_ridic(id_jizdy):
+    """Vypíše email řidiče pro pole adresáta emailu, který odejde řdiči ve chvíli, kdy někdo potvrdí nástup do jím nabízeného auta"""
+    sql = """SELECT id_uzivatele, email, ns.ridic from uzivatele as u left join (select ns.ridic, id_jizdy from nabidka_spolujizdy as ns) as ns on ns.ridic = u.id_uzivatele WHERE id_jizdy = %s"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql, (int(id_jizdy), ))
@@ -117,7 +127,7 @@ def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_
 def najdi_uzivatele(email):
     """ najde uzivatele v databazi """
 
-    sql = """SELECT id_uzivatele, jmeno, prijmeni, email, heslo FROM uzivatele WHERE lower(email)=%s;"""
+    sql = """SELECT id_uzivatele, jmeno, prijmeni, email, heslo, telefon FROM uzivatele WHERE lower(email)=%s;"""
     conn = get_db()
 
     uzivatel = None
@@ -134,7 +144,7 @@ def najdi_uzivatele(email):
         if conn is not None:
             conn.close()
     if uzivatel:
-        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2])
+        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2],uzivatel[5])
     else:
         return None
 

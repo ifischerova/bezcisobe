@@ -43,6 +43,7 @@ def chci_nastoupit():
 			int(request.form.get("id_jizdy")),
 			uzivatel.db_id
 			)
+			posta_funkce.email_spolujizda_ridic(uzivatel,id_zavod,id_jizdy)
 			posta_funkce.email_o_nastupu_do_auta(uzivatel, id_zavod, id_jizdy)
 			return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
 		else:

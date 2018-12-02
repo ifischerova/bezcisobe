@@ -59,9 +59,45 @@ def email_o_nastupu_do_auta(uzivatel,id_zavod,id_jizdy):
 
 	Právě jsi na bezcisobe.cz potvrdil/a, že chceš jet na {datum} {nazev_zavodu} {misto} s {sofer}. Odjizdite z {odjezd} v terminu {datum_odj}.
 
-	Tady přikládáme potřebné kontakty:
+	Tady jsou potřebné kontakty  na řidiče:
  	* telefon: {mobil}
  	* mail: {email_ridice}
+
+	Skvělý zážitek přeji!
+	Ivka z Běžci Sobě"""
+	zprava.set_content(text)
+	mail = smtplib.SMTP(host='smtp.gmail.com',port=587)
+	mail.ehlo()
+	mail.starttls()
+	mail.login('bezcisobe@gmail.com','behamespolu')
+	mail.sendmail('bezcisobe@gmail.com',email, zprava.as_string())
+	mail.close()
+
+#mail se odešle ve chvíli kdy někdo nastoupí do nabízeného auta
+def email_spolujizda_ridic(uzivatel,id_zavod,id_jizdy):
+	server = smtplib.SMTP('smtp.gmail.com',587)
+	ridic = db_funkce.email_ridic(id_jizdy)
+	zavod = db_funkce.zavod(id_zavod)
+	nazev_zavodu = zavod.nazev
+	datum = zavod.datum_zavodu.strftime('%d.%m.%Y')
+	misto = zavod.misto_zavodu
+	jmeno_spolucestujiciho = uzivatel.jmeno #jmeno aktuálně prihlášeného uživatele, který potvrdil nástup do auta
+	email_uzivatele = uzivatel.id #uzivatel.id aktuálně prihlášeného uživatele, který potvrdil nástup do auta
+	mobil_uzivatele = uzivatel.telefon #telefon aktuálně přihlášeného uživatele, který potvrdil nástup do auta
+	zprava = EmailMessage()
+	zprava['Subject'] = "Jedete spolu!"
+	zprava['From'] = Address('Běžci Sobě', 'bezcisobe', 'gmail.com')
+	zprava['To'] = ridic.email
+	zprava['Message-Id'] = make_msgid()
+	text = f"""Ahoj!
+
+	{jmeno_spolucestujiciho} si Tě právě na bezcisobe.cz vybral/a jako svého řidiče na {datum} {nazev_zavodu} {misto}.
+
+	Tady jsou potřebné kontakty spolucestujícího:
+	* telefon: {mobil_uzivatele}
+	* mail: {email_uzivatele}
+
+	Doladění detailů už je na vás:)
 
 	Skvelý zážitek přeji!
 	Ivka z Běžci Sobě"""
@@ -70,5 +106,5 @@ def email_o_nastupu_do_auta(uzivatel,id_zavod,id_jizdy):
 	mail.ehlo()
 	mail.starttls()
 	mail.login('bezcisobe@gmail.com','behamespolu')
-	mail.sendmail('bezcisobe@gmail.com',email, zprava.as_string())
+	mail.sendmail('bezcisobe@gmail.com',ridic.email, zprava.as_string())
 	mail.close()
