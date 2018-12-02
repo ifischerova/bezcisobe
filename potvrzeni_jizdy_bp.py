@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect,url_for, flash, abort
 from flask_login import current_user
 import db_funkce
+import posta_funkce
 
 blueprint = Blueprint('potvrzeni_jizdy_bp', __name__)
 @blueprint.route('/potvrzenijizdy/<zvoleno>')
@@ -19,6 +20,7 @@ def show_potvrzenijizdy(zvoleno):
 def chci_nastoupit():
 	uzivatel = current_user
 	zvoleno = db_funkce.vyber_spolujizdu(request.form.get("id_jizdy"))
+	id_zavod=request.form.get("id_zavod")
 
 	if uzivatel.is_authenticated:
 		print("Prihlaseny uzivatel je: ", uzivatel.db_id)
@@ -43,6 +45,7 @@ def chci_nastoupit():
 			int(request.form.get("id_jizdy")),
 			uzivatel.db_id
 			)
+			posta_funkce.email_o_nastupu_do_auta(uzivatel, id_zavod, id_jizdy)
 			return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
 
 

@@ -50,6 +50,18 @@ def zavod(id_zavod):
     data = cur.fetchone()
     return data
 
+def posta_ridic(id_jizdy):
+    """Vypíše jméno řidiče, místo odjezdu, datum odjezdu, email a telefon řidiče do mailu o potvrzeni nástupu do auta"""
+
+    sql = """SELECT id_uzivatele, jmeno, telefon, email, ns.ridic, ns.misto_odjezdu, ns.datum_odjezdu, ns.id_jizdy from uzivatele as u
+    left join (select ridic, misto_odjezdu, datum_odjezdu, id_jizdy from nabidka_spolujizdy as ns) as ns
+    on u.id_uzivatele = ns.ridic WHERE id_jizdy= %s"""
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(sql, (int(id_jizdy), ))
+    data = cur.fetchone()
+    return data 
+
 
 def hash_heslo(heslo):
     """ Hashovani hesel do dtb pri registraci noveho uzivatele. """
@@ -215,7 +227,7 @@ def nabidky_spolujizdy(id_zavodu):
 def vyber_spolujizdu(id_jizdy):
     """ Vybere konkretni id jizdy pro spolujizdu """
 
-    sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
+    sql = """SELECT ns.id_jizdy, ns.id_zavod, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
     volnych_mist, poznamky FROM
     nabidka_spolujizdy as ns 
     left join 
