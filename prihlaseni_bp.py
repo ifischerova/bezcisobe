@@ -43,8 +43,7 @@ def login():
     next = get_redirect_target()
     #print(next)
     form = LoginForm(request.form)
-    chyba = None
-    uspech = False
+
     if request.method == 'POST':
         # TODO: validace poli formulare??
 
@@ -54,7 +53,7 @@ def login():
         # uspesne_prihlasen = False
         if uzivatel:
             if sha512(heslo.encode()).hexdigest() != uzivatel.password_hash:
-                chyba = 'Špatně zadané heslo.'
+                flash ('Špatně zadané heslo.', "danger")
             elif sha512(heslo.encode()).hexdigest() == uzivatel.password_hash:
                 if login_user(uzivatel, force=True):
                     flash ('Uživatel byl úspěšně přihlášen.', "success")
@@ -62,11 +61,11 @@ def login():
                         return redirect(url_for('zavody_bp.show_zavody'))
                     return redirect(next)
         if not uzivatel:
-            chyba = "Zadaný e-mail není v naší databázi. Nejprve se, prosím, zaregistruj."
+            flash ("Zadaný e-mail není v naší databázi. Nejprve se, prosím, zaregistruj.", "danger")
         
 
     # TODO: při neúspěšném pokusu o přihlášení zachovat ve formuláři zadaný email??
-    return render_template('prihlaseni.html', form=form, error=chyba)
+    return render_template('prihlaseni.html', form=form)
 
 @blueprint.route('/odhlaseni')
 def logout():

@@ -10,8 +10,8 @@ def show_registrace():
 	zavody = db_funkce.zavody()
 	uzivatel = current_user
 	if uzivatel.is_authenticated:
-		chyba = 'Už jsi přihlášen.'
-		return render_template ('zavody.html',  zavody=zavody, id_vybraneho=0, error=chyba)
+		flash ('Už jsi přihlášen.', "error")
+		return render_template ('zavody.html',  zavody=zavody, id_vybraneho=0)
 	return render_template('registrace.html', values={})
 
 @blueprint.route('/registrace', methods=['POST'])
@@ -21,16 +21,16 @@ def add_new():
 
 	uz_registrovany = db_funkce.najdi_uzivatele(result.get("email"))
 	if uz_registrovany:
-		chyba = 'Zadaný e-mail už existuje v databázi. Můžeš se přihlásit.'
+		flash ('Zadaný e-mail už existuje v databázi. Můžeš se přihlásit.', "danger")
 
 	heslo = result.get("heslo")
 	heslo_potvrzeni = result.get("heslo_potvrzeni")
 	if not heslo == heslo_potvrzeni:
-		chyba = 'Hesla se neshodují.'
+		flash ('Hesla se neshodují.', "danger")
 		return render_template("registrace.html", values=result, error=chyba)
 	
 	if not result.get("skrtatko", "") == "ano":
-		chyba = 'Prosím, potvrď souhlas se zpracováním osobních údajů.'
+		flash ('Prosím, potvrď souhlas se zpracováním osobních údajů.', "danger")
 		return render_template("registrace.html", values=result, error=chyba)
 	
 	id_uzivatele = db_funkce.registrace(
@@ -48,8 +48,8 @@ def add_new():
 		# return redirect(url_for('prihlaseni_bp.login'))
 
 	if id_uzivatele:
-		uspech = 'Díky za registraci. Nyní se můžeš přihlásit.'
-		return render_template('prihlaseni.html', success=uspech)
+		flash ('Díky za registraci. Nyní se můžeš přihlásit.', "success")
+		return render_template('prihlaseni.html')
 	else:
 		return render_template("registrace.html", values=result, error=chyba)
 

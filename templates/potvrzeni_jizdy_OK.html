@@ -2,9 +2,6 @@
 {% block title %}POTVRZENÍ JÍZDY{% endblock %}
 {% block body %}
 
-{%if success is defined %}
-<div class="alert alert-success">Hotovo! Na mail jsme Ti poslali kontaktní údaje na řidiče. Doladit případné detaily už je na vás, my přejeme šťastnou cestu a super sportovní zážitek.</div>
-{% endif %}
 
 <form method="POST" action="{{ url_for('potvrzeni_jizdy_bp.chci_nastoupit') }}">
 
@@ -29,6 +26,11 @@
 			 </tr>
 		 </tbody>
 	 </table>
+</div>
+<div class="tlacitka">
+	<a href="{{ url_for('zavody_bp.show_zavody') }}"  class="btn btn-default">
+		OK
+	</a>
 </div>
 </form>
 

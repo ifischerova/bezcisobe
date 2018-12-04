@@ -15,21 +15,20 @@ def show_newautoinput(id_zavod):
 		id_zavod = 0
 	# print(id_zavod)
 	uzivatel = current_user
-	chyba = None
 
 	if uzivatel.is_authenticated:
 		if int(id_zavod) > 0:
 			vysledek = db_funkce.uz_existuje_auto(uzivatel.db_id, id_zavod)
 			if vysledek:
-				chyba = 'Na tento závod už auto nabízíš;)'
+				flash ('Na tento závod už auto nabízíš;)', "error")
 				return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={}, error=chyba)
 			else: 
 				return render_template('newautoinput.html', zavody=zavody, id_vybraneho=int(id_zavod), values={})
 		else:
 			return render_template('newautoinput.html', zavody=zavody, id_vybraneho=0, values={})
 	else:
-		chyba='Abys mohl/a přidat auto, musíš se nejdřív přihlásit.'
-		return render_template('prihlaseni.html', error=chyba)
+		flash ('Abys mohl/a přidat auto, musíš se nejdřív přihlásit.', "error")
+		return render_template('prihlaseni.html')
 
 
 @blueprint.route('/noveauto', methods=['POST'])
@@ -54,7 +53,9 @@ def add_new_car():
 	)
 	if id_jizdy:
 		posta_funkce.email_o_pridani_auta(uzivatel, result.get("id_zavod"))
-		return render_template('autook.html')
+		#return render_template('autook.html')
+		flash ('Hotovo! Auto jsme přidali do nabídky spolujízdy na závod a je zpřístupněno zájemcům:) Potvrzení najdeš i ve svém mailu.', 'success')
+		return render_template ('zavody.html', zavody=zavody, id_vybraneho=0)
 	else:
-		chyba = 'Na tento závod už auto nabízíš.'
-		return render_template('newautoinput.html', zavody=zavody, values=result, error=chyba)
+		flash ('Na tento závod už auto nabízíš.', "danger")
+		return render_template('newautoinput.html', zavody=zavody, values=result)

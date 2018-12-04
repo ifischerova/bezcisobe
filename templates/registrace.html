@@ -2,10 +2,6 @@
 {% block title %}REGISTRAČNÍ FORMULÁŘ{% endblock %}
 {% block body %}
 
-{% if error %}
-<div class="alert alert-danger"> {{ error }} </div>
-{% endif %}
-
 <form method="POST" action="{{ url_for('registrace_bp.add_new') }}">
 
 	<div class="formular">

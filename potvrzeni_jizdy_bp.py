@@ -11,8 +11,8 @@ def show_potvrzenijizdy(zvoleno):
 	if uzivatel.is_authenticated:
 		return render_template('potvrzeni_jizdy.html', values=zvoleno)
 	else:
-		chyba='Abys mohl nastoupit, musíš se nejdřív přihlásit.'
-		return render_template('prihlaseni.html', error=chyba)
+		flash ('Abys mohl nastoupit, musíš se nejdřív přihlásit.', "danger")
+		return render_template('prihlaseni.html')
 	# return render_template('potvrzeni_jizdy.html', values=zvoleno)
 
 
@@ -30,8 +30,8 @@ def chci_nastoupit():
 	
 	volnych_mist = db_funkce.najdi_pocet_mist(int(request.form.get("id_jizdy")))
 	if int(request.form.get("chci_mist")) > int(volnych_mist):
-		chyba = 'Bohužel chceš víc míst, než kolik jich je volných.'
-		return render_template('potvrzeni_jizdy.html', values=zvoleno, error=chyba)
+		flash ('Bohužel chceš víc míst, než kolik jich je volných.', "danger")
+		return render_template('potvrzeni_jizdy.html', values=zvoleno)
 	else:
 		muze_nastoupit = db_funkce.chci_nastoupit(
 			int(request.form.get("id_jizdy")),
@@ -47,8 +47,8 @@ def chci_nastoupit():
 			posta_funkce.email_o_nastupu_do_auta(uzivatel, id_zavod, id_jizdy)
 			return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
 		else:
-			chyba = 'V tomto autě už máš místo rezervované.'
-			return render_template('potvrzeni_jizdy.html', values=zvoleno, error=chyba)
+			flash ('V tomto autě už máš místo rezervované.', "danger")
+			return render_template('potvrzeni_jizdy.html', values=zvoleno)
 
 
 

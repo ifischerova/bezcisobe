@@ -2,14 +2,6 @@
 {% block title %}PŘIHLÁŠENÍ{% endblock %}
 {% block body %}
 
-	{% if error %}
-	<div class="alert alert-danger"> {{ error }} </div>
-	{% endif %}
-
-	{%if success%}
-	<div class="alert alert-success"> {{ success }} </div>
-	{% endif %}
-
 <form method="POST" action="{{ url_for('prihlaseni_bp.login') }}">
 
 <div>
