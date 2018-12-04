@@ -57,7 +57,7 @@ def login():
             elif sha512(heslo.encode()).hexdigest() == uzivatel.password_hash:
                 if login_user(uzivatel, force=True):
                     flash ('Uživatel byl úspěšně přihlášen.', "success")
-                    if next.endswith('prihlaseni'):
+                    if next.endswith('prihlaseni') or next.endswith('registrace'):
                         return redirect(url_for('zavody_bp.show_zavody'))
                     return redirect(next)
         if not uzivatel:
