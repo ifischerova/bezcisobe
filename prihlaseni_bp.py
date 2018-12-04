@@ -57,7 +57,7 @@ def login():
                 chyba = 'Špatně zadané heslo.'
             elif sha512(heslo.encode()).hexdigest() == uzivatel.password_hash:
                 if login_user(uzivatel, force=True):
-                    uspech = 'Uživatel byl úspěšně přihlášen.'
+                    flash ('Uživatel byl úspěšně přihlášen.', "success")
                     if next.endswith('prihlaseni'):
                         return redirect(url_for('zavody_bp.show_zavody'))
                     return redirect(next)
