@@ -10,7 +10,7 @@ def show_registrace():
 	zavody = db_funkce.zavody()
 	uzivatel = current_user
 	if uzivatel.is_authenticated:
-		flash ('Už jsi přihlášen.', "error")
+		flash ('Už jsi přihlášen.', "danger")
 		return render_template ('zavody.html',  zavody=zavody, id_vybraneho=0)
 	return render_template('registrace.html', values={})
 
