@@ -6,6 +6,10 @@
 <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 
+{%if success%}
+<div class="alert alert-success">{{ success }}</div>
+{% endif %}
+
 {%if success is defined %}
 <div class="alert alert-success">Auto jsme přidali do nabídky spolujízdy na závod a je zpřístupněno zájemcům:) Potvrzení najdeš i ve svém mailu.</div>
 {% endif %}

@@ -353,7 +353,7 @@ def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
     finally:
         if conn is not None:
             conn.close()
-
+            
 '''
 if __name__ == '__main__':
     print(get_gps('Otokara Breziny 1109', 25082))
