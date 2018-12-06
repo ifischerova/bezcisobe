@@ -15,11 +15,19 @@
 <form method="GET" action="{{ url_for('newautoinput_bp.show_newautoinput') }}">
 
 	<div class="zarovnani">
-		<p>Nejprve si prosím vyber ze seznamu závodů.</p>
+			<p>Vyber si datum závodu a následně konkrétní závod pro daný den.</p>
+			<p>Nebo si rovnou vyber z kompletního seznamu závodů.</p>
 	</div>
 
+	<div class="lista">
+			<input id="date" type="date" data-date-inline-picker="true" name="datum_zavodu" value="{{ datum_zavodu }}"></input>
+			<a href="#" class="btn btn-default" onclick="javascript:location.href='/zavody/?datum_zavodu='+document.getElementById('date').value">
+					vybrat datum
+				</a>
+   </div>
+
 <div class="lista">
-		<select name="id_zavod" onchange="javascript:location.href='/zavody/'+this.value">
+		<select name="id_zavod" onchange="javascript:location.href='/zavody/?id_zavod='+this.value">
 			<option value="">Vyber si závod.</option>
 			{% for zavod in zavody %}
 			<option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod==id_vybraneho %}selected{% endif %}>
@@ -75,7 +83,7 @@
 
 
 	</div>
-
+</form>
 
 	<!-- Řekne Flasku, že tady končí blok "body" //-->
 	{% endblock %}
