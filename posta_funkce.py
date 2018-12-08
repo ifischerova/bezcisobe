@@ -108,3 +108,31 @@ def email_spolujizda_ridic(uzivatel,id_zavod,id_jizdy):
 	mail.login('bezcisobe@gmail.com','behamespolu')
 	mail.sendmail('bezcisobe@gmail.com',ridic.email, zprava.as_string())
 	mail.close()
+
+def email_reset_hesla(uzivatel, token):
+	""" Posle mail pro reset hesla."""
+
+	server = smtplib.SMTP('smtp.gmail.com',587)
+	email = uzivatel.id
+	token = 
+	zprava = EmailMessage()
+	zprava['Subject'] = "Link pro obnovu hesla z Běžci sobě"
+	zprava['From'] = Address('Běžci Sobě', 'bezcisobe', 'gmail.com')
+	zprava['To'] = uzivatel.id
+	zprava['Message-Id'] = make_msgid()
+	text = f"""Ahoj!
+
+	Právě jsí na Běžci sobě požádal/a o obnovení zapomenutého hesla.
+
+	Klikni, prosím, na následující link a heslo si restuj.
+
+	{ token }
+
+	Ivka z Běžci Sobě"""
+	zprava.set_content(text)
+	mail = smtplib.SMTP(host='smtp.gmail.com',port=587)
+	mail.ehlo()
+	mail.starttls()
+	mail.login('bezcisobe@gmail.com','behamespolu')
+	mail.sendmail('bezcisobe@gmail.com',email, zprava.as_string())
+	mail.close()

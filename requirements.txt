@@ -4,3 +4,4 @@ gunicorn==19.9.0
 psycopg2==2.7.6
 geopy==1.17.0
 flask-wtf==0.14.2
+cryptography==2.4.2

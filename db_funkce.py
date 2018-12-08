@@ -144,7 +144,7 @@ def najdi_uzivatele(email):
         if conn is not None:
             conn.close()
     if uzivatel:
-        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2],uzivatel[5])
+        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2], uzivatel[5])
     else:
         return None
 
