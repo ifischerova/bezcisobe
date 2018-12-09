@@ -354,6 +354,30 @@ def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
         if conn is not None:
             conn.close()
             
+def zmena_hesla(heslo, id_uzivatele):
+    """ zmeni uzivateli heslo v db. """
+
+    sql = """UPDATE uzivatele
+            SET heslo = %s 
+            WHERE id_uzivatele = %s;"""
+    conn = get_db()
+    heslo = hash_heslo(heslo)
+
+    try:
+        cur = conn.cursor()
+        # execute the INSERT statement
+        cur.execute(sql, (heslo, ))
+        cur.fetchone()
+        # commit the changes to the database
+        conn.commit()
+        # close communication with the database
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            return True
+            conn.close()
 '''
 if __name__ == '__main__':
     print(get_gps('Otokara Breziny 1109', 25082))

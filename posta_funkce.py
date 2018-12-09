@@ -114,7 +114,7 @@ def email_reset_hesla(uzivatel, token):
 
 	server = smtplib.SMTP('smtp.gmail.com',587)
 	email = uzivatel.id
-	token = 
+	#token = ???
 	zprava = EmailMessage()
 	zprava['Subject'] = "Link pro obnovu hesla z Běžci sobě"
 	zprava['From'] = Address('Běžci Sobě', 'bezcisobe', 'gmail.com')

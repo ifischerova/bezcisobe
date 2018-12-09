@@ -2,14 +2,6 @@
 {% block title %}NOVÉ HESLO{% endblock %}
 {% block body %}
 
-{% if error is defined %}
-<div class="alert alert-danger">{{ error }}</div>
-{% endif %}
-
-{%if success is defined %}
-<div class="alert alert-success">{{ success }}</div>
-{% endif %}
-
 <div class="zarovnani">
 Zadej prosím nové heslo.
 </div>
@@ -34,7 +26,7 @@ Zadej prosím nové heslo.
 
 <div>
 <p class="tlacitka">
-		<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
+		<a href="{{ url_for('obnova_hesla.???') }}" class="btn btn-default">
 		OK
 </p>
 </div>
