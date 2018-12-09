@@ -20,38 +20,45 @@ def find_user():
 		flash ('Na zadaný e-mail jsme poslali link pro obnovu hesla.', "success")
 		id = uzivatel.db_id
 		token_data = {"id": id}
-		f = Fernet(os.environ["PASSWORD_RESET_KEY"].encode("ascii"))
 		token = f.encrypt(json.dumps(token_data).encode("ascii")).decode("ascii")
+		password_reset_url = url_for('.show_heslonew', token=token, _external=True)
+		print(password_reset_url)
+		return render_template('obnova_hesla.html')
 	else:
 		flash ('Tento e-mail v naší databázi není.', "danger")
+		return render_template('obnova_hesla.html')
 
 @blueprint.route('/noveheslo/<token>')
-def show_heslonew():
-	token = request.args.get('token')
+def show_heslonew(token):
 	try:
 		token_data = json.loads(f.decrypt(token.encode("ascii"), ttl=60*60*24))
+		#print(token_data)
 	except InvalidToken:
 		print("Neplatný token.")
 		flash ("Neplatný link.", "danger")
-	return render_template('noveheslo.html')
+	return render_template('noveheslo.html', token=token)
 
 
 @blueprint.route('/noveheslo', methods=['POST'])
-def heslo_new(id_uzivatele, heslo):
+def heslo_new():
 	result = request.form
 	chyba = None
-	id_uzivatele = request.args.get('token_data')
-
+	token = result.get("token")
+	id_uzivatele = json.loads(f.decrypt(token.encode("ascii"), ttl=60*60*24))['id']
 	heslo = result.get("heslo")
 	heslo_potvrzeni = result.get("heslo_potvrzeni")
 	if not heslo == heslo_potvrzeni:
 		flash ('Hesla se neshodují.', "danger")
 		return render_template("noveheslo.html", error=chyba)
 	else:
-		zmeneno = db_funkce.zmena_hesla(result.get("heslo"), id_uzivatele)
+		zmeneno = db_funkce.zmena_hesla(heslo, id_uzivatele)
 
 	if zmeneno == True:
 		flash ('Heslo bylo úspěšně změněno. Nyní se můžeš přihlásit.', "success")
+		return render_template('prihlaseni.html')
+	else:
+		flash ('Interní chyba aplikace. Kontaktuj nás, prosím, na bezcisobe@gmail.com')
+		return render_template('prihlaseni.html')
 		
 '''
 	if poslano:

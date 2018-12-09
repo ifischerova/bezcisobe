@@ -366,14 +366,14 @@ def zmena_hesla(heslo, id_uzivatele):
     try:
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (heslo, ))
-        cur.fetchone()
+        cur.execute(sql, (heslo, id_uzivatele))
         # commit the changes to the database
         conn.commit()
         # close communication with the database
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+        return False
     finally:
         if conn is not None:
             return True
