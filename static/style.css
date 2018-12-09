@@ -95,6 +95,16 @@ min-height:100vh;
 	padding-bottom:40px;
 }
 
+.zarovnani .col-sm-2{
+	text-align: center;
+	margin: auto;
+	font-family:"Helvetica";
+	font-size:20px;
+	padding-bottom:20px;
+	padding-top: 40px;
+	display: inline-block;
+}
+
 .formular{
 	text-align: left;
 	font-weight: bold;
@@ -137,7 +147,7 @@ min-height:100vh;
 	margin:auto;
 	font-family:"Helvetica";
 	font-size: 1em;
-	max-width:600px;
+	width:600px;
 	padding-top:20px;
 	padding-bottom:40px;
 }
