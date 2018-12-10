@@ -50,7 +50,7 @@ def heslo_new():
 	heslo_potvrzeni = result.get("heslo_potvrzeni")
 	if not heslo == heslo_potvrzeni:
 		flash ('Hesla se neshodují.', "danger")
-		return render_template("noveheslo.html", error=chyba)
+		return render_template("noveheslo.html")
 	else:
 		zmeneno = db_funkce.zmena_hesla(heslo, id_uzivatele)
 
