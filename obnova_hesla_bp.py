@@ -23,6 +23,7 @@ def find_user():
 		token = f.encrypt(json.dumps(token_data).encode("ascii")).decode("ascii")
 		password_reset_url = url_for('.show_heslonew', token=token, _external=True)
 		print(password_reset_url)
+		posta_funkce.email_reset_hesla(uzivatel, password_reset_url)
 		return render_template('obnova_hesla.html')
 	else:
 		flash ('Tento e-mail v naší databázi není.', "danger")
