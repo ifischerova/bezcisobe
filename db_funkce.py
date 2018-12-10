@@ -310,7 +310,7 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
         cur = conn.cursor()
         cur.execute(sql_zjisti, (id_jizdy, spolujezdec))
         # execute the SELECT statement
-        vysledek = cur.fetchall()
+        vysledek = cur.fetchone()
         if vysledek:
             return False
         cur.execute(sql_zapis, (id_jizdy, spolujezdec, chci_mist))
@@ -321,8 +321,8 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
         print(error)
     finally:
         if conn is not None:
-            return True
             conn.close()
+    return True
 
 
 def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
