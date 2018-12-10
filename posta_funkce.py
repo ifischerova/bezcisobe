@@ -116,13 +116,13 @@ def email_reset_hesla(uzivatel, password_reset_url):
 	email = uzivatel.id
 	#password_reset_url = ???
 	zprava = EmailMessage()
-	zprava['Subject'] = "Žádost o obnovu hesla z Běžci sobě"
+	zprava['Subject'] = "Žádost o obnovu hesla na Běžci Sobě"
 	zprava['From'] = Address('Běžci Sobě', 'bezcisobe', 'gmail.com')
 	zprava['To'] = uzivatel.id
 	zprava['Message-Id'] = make_msgid()
 	text = f"""Ahoj!
 
-	Právě jsí na Běžci sobě požádal/a o obnovení zapomenutého hesla.
+	Právě jsi na Běžci sobě požádal/a o obnovení zapomenutého hesla.
 
 	Klikni, prosím, na následující link a heslo si resetuj.
 
