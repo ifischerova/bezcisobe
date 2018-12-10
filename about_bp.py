@@ -1,5 +1,6 @@
 # Z flasku naimportuje spoustu různých funkcí, které budeme potřebovat
 from flask import Blueprint, render_template
+from flask_login import LoginManager, current_user
 import db_funkce
 
 
@@ -18,4 +19,4 @@ def show_about():
 
 @blueprint.route('/')
 def show_index():
-    return render_template('index.html')
+    return render_template('index.html', current_user=current_user)

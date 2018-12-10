@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, flash, abort, url_for, g
+from flask import Blueprint, render_template, request, redirect, flash, abort, url_for, g
+from flask_login import current_user, logout_user
 import os
 import db_funkce
 from cryptography.fernet import Fernet, InvalidToken
@@ -31,13 +32,17 @@ def find_user():
 
 @blueprint.route('/noveheslo/<token>')
 def show_heslonew(token):
-	try:
-		token_data = json.loads(f.decrypt(token.encode("ascii"), ttl=60*60*24))
-		#print(token_data)
-	except InvalidToken:
-		print("Neplatný token.")
-		flash ("Neplatný link.", "danger")
-	return render_template('noveheslo.html', token=token)
+	if current_user.is_authenticated:
+		logout_user()
+		return redirect(url_for('.show_heslonew', token=token))
+	else:
+		try:
+			token_data = json.loads(f.decrypt(token.encode("ascii"), ttl=60*60*24))
+			#print(token_data)
+		except InvalidToken:
+			print("Neplatný token.")
+			flash ("Neplatný link.", "danger")
+		return render_template('noveheslo.html', token=token)
 
 
 @blueprint.route('/noveheslo', methods=['POST'])
