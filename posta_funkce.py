@@ -128,7 +128,7 @@ def email_reset_hesla(uzivatel, password_reset_url):
 
 	{ password_reset_url }
 
-	Ivka z Běžci Sobě"""
+	Petra z Běžci Sobě"""
 	zprava.set_content(text)
 	mail = smtplib.SMTP(host='smtp.gmail.com',port=587)
 	mail.ehlo()
