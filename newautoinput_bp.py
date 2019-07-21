@@ -53,7 +53,6 @@ def add_new_car():
 	)
 	if id_jizdy:
 		posta_funkce.email_o_pridani_auta(uzivatel, result.get("id_zavod"))
-		#return render_template('autook.html')
 		flash ('Hotovo! Auto jsme přidali do nabídky spolujízdy na závod a je zpřístupněno zájemcům:) Potvrzení najdeš i ve svém mailu.', 'success')
 		return render_template ('zavody.html', zavody=zavody, id_vybraneho=0)
 	else:

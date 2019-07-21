@@ -21,10 +21,6 @@ import obnova_hesla_bp
 
 import newautoinput_bp
 
-import autook_bp
-
-import autonotok_bp
-
 import potvrzeni_jizdy_bp
 
 from db_funkce import najdi_uzivatele
@@ -51,8 +47,6 @@ bezciSobe.register_blueprint(prihlaseni_bp.blueprint)
 bezciSobe.register_blueprint(potvrzeni_registrace_bp.blueprint)
 bezciSobe.register_blueprint(obnova_hesla_bp.blueprint)
 bezciSobe.register_blueprint(newautoinput_bp.blueprint)
-bezciSobe.register_blueprint(autook_bp.blueprint)
-bezciSobe.register_blueprint(autonotok_bp.blueprint)
 bezciSobe.register_blueprint(potvrzeni_jizdy_bp.blueprint)
 #bezciSobe.register_blueprint(potvrzeni_jizdy_bp.blueprint)
 # Zaregistruje funkci close_db() do naší aplikace jako funkci, která se má spustit,
