@@ -1,11 +1,8 @@
 # Z modulu flask naimportuje "Flask" a "g" tak, abychom je mohli
 # používat v tomto programu
 import os
-from flask import Flask, g
+from flask import Flask, g, render_template
 from flask_login import LoginManager
-# Stejně tak pro about_bp modul
-
-import about_bp
 
 import zavody_bp
 
@@ -36,8 +33,6 @@ def load_user(user_id):
     print("load user")
     return najdi_uzivatele(user_id)
 
-# Stejně tak zaregistrujeme about_bp blueprint
-bezciSobe.register_blueprint(about_bp.blueprint)
 bezciSobe.register_blueprint(zavody_bp.blueprint)
 bezciSobe.register_blueprint(onas_bp.blueprint)
 bezciSobe.register_blueprint(registrace_bp.blueprint)
@@ -48,6 +43,10 @@ bezciSobe.register_blueprint(potvrzeni_jizdy_bp.blueprint)
 #bezciSobe.register_blueprint(potvrzeni_jizdy_bp.blueprint)
 # Zaregistruje funkci close_db() do naší aplikace jako funkci, která se má spustit,
 # když se ukončuje naše aplikace
+
+@bezciSobe.route('/')
+def show_index():
+    return render_template('index.html')
 
 @bezciSobe.teardown_appcontext
 def close_db(error):
