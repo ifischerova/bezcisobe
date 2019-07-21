@@ -15,8 +15,6 @@ import registrace_bp
 
 import prihlaseni_bp
 
-import potvrzeni_registrace_bp
-
 import obnova_hesla_bp
 
 import newautoinput_bp
@@ -44,7 +42,6 @@ bezciSobe.register_blueprint(zavody_bp.blueprint)
 bezciSobe.register_blueprint(onas_bp.blueprint)
 bezciSobe.register_blueprint(registrace_bp.blueprint)
 bezciSobe.register_blueprint(prihlaseni_bp.blueprint)
-bezciSobe.register_blueprint(potvrzeni_registrace_bp.blueprint)
 bezciSobe.register_blueprint(obnova_hesla_bp.blueprint)
 bezciSobe.register_blueprint(newautoinput_bp.blueprint)
 bezciSobe.register_blueprint(potvrzeni_jizdy_bp.blueprint)
