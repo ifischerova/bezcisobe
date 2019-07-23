@@ -45,6 +45,7 @@ def chci_nastoupit():
 			)
 			posta_funkce.email_spolujizda_ridic(uzivatel,id_zavod,id_jizdy)
 			posta_funkce.email_o_nastupu_do_auta(uzivatel, id_zavod, id_jizdy)
+			flash ("Hotovo! V mailu najdeš kontakt na řidiče. On už zase ví o Tobě. Doladit detaily už je na vás. My přejeme pohodovou cestu a skvělý sportovní zážitek!", "success")
 			return render_template('potvrzeni_jizdy_OK.html', success=True, values=souhrn)
 		else:
 			flash ('V tomto autě už máš místo rezervované.', "danger")

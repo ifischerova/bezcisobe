@@ -2,16 +2,11 @@
 {% block title %}OBNOVA HESLA{% endblock %}
 {% block body %}
 
-{% if error is defined %}
-<div class="alert alert-danger">{{ error }}</div>
-{% endif %}
+<form method="POST" action="{{ url_for('obnova_hesla_bp.find_user') }}">
 
-{%if success is defined %}
-<div class="alert alert-success">Na email jsme Ti poslali odkaz na obnovení hesla.</div>
-{% endif %}
 
 <div class="zarovnani">
-	Zadej prosím email, na který Ti máme poslat instrukce.
+	Zadej prosím e-mail, ke kterému by měl existovat účet v naší databázi. Pokud tomu tak opravdu je, zašleme Ti na něj link pro obnovu hesla.
 </div>
 
 <div class="formular">
@@ -24,7 +19,7 @@
 	</div>
 
 	<p class="tlacitka">
-		<a href="" class="btn btn-default">Odeslat</a>
+		<input tabindex=1 type="submit" value="Odeslat" class="btn btn-default"></a>
 	</p>
 </div>
 {% endblock %}

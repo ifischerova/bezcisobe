@@ -31,6 +31,8 @@ from db_funkce import najdi_uzivatele
 
 
 bezciSobe = Flask(__name__)
+# pokus o nastaveni server_name z env kvuli plnemu url na obnovu hesla (aktualne bude mozna vracet http://0.0.0.0/
+#bezciSobe.config['SERVER_NAME'] = os.environ.get('SERVER_NAME')
 bezciSobe.secret_key = b"\xc1'\xa6T<\x85\x9b\x9d\xdc\x96\x83\x9cx\xad\xf0v"
 login_manager = LoginManager()
 login_manager.init_app(bezciSobe)
@@ -66,3 +68,4 @@ def close_db(error):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     bezciSobe.run(host='0.0.0.0', port=port, debug=True)
+   

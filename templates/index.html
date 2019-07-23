@@ -38,7 +38,7 @@
 		<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
 			ZÁVODY
 		</a>
-   
+		{% if not current_user.is_authenticated %}
 		<a href="{{ url_for('prihlaseni_bp.login') }}"class="btn btn-default">
 				PŘIHLÁŠENÍ
 		</a>
@@ -46,10 +46,15 @@
 		<a href="{{ url_for('registrace_bp.show_registrace') }}" class="btn btn-default">
 				REGISTRACE
 		</a>
-
+		{% endif %}
 		<a href="{{ url_for('onas_bp.show_onas') }}" class="btn btn-default">
 				O NÁS
 		</a>
+		{% if current_user.is_authenticated %}
+		<a href="{{ url_for('prihlaseni_bp.logout') }}" class="btn btn-default">
+			ODHLÁSIT
+		</a>
+		{% endif %}
 	</div>
 
     <!-- Konec oddilu stránky //-->

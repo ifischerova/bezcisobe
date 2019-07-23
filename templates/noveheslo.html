@@ -2,13 +2,7 @@
 {% block title %}NOVÉ HESLO{% endblock %}
 {% block body %}
 
-{% if error is defined %}
-<div class="alert alert-danger">{{ error }}</div>
-{% endif %}
-
-{%if success is defined %}
-<div class="alert alert-success">{{ success }}</div>
-{% endif %}
+<form method="POST" action="{{ url_for('obnova_hesla_bp.heslo_new') }}">
 
 <div class="zarovnani">
 Zadej prosím nové heslo.
@@ -30,12 +24,14 @@ Zadej prosím nové heslo.
 	<input type="password" class="form-control form-control-sm" min-width=8 name="heslo_potvrzeni" required id="heslo_potvrzeni" value="">
 	</div>	
 </div>
+<input type="hidden" name="token" required id="token" value="{{ token }}">
 </div>
 
 <div>
-<p class="tlacitka">
-		<a href="{{ url_for('zavody_bp.show_zavody') }}" class="btn btn-default">
-		OK
-</p>
+	<p class="tlacitka">
+		<input tabindex=1 type="submit" value="Změnit heslo" class="btn btn-default">
+	</p>
 </div>
+
+</form>
 {% endblock %}

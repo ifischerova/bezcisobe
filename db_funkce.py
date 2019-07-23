@@ -144,7 +144,7 @@ def najdi_uzivatele(email):
         if conn is not None:
             conn.close()
     if uzivatel:
-        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2],uzivatel[5])
+        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2], uzivatel[5])
     else:
         return None
 
@@ -310,7 +310,7 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
         cur = conn.cursor()
         cur.execute(sql_zjisti, (id_jizdy, spolujezdec))
         # execute the SELECT statement
-        vysledek = cur.fetchall()
+        vysledek = cur.fetchone()
         if vysledek:
             return False
         cur.execute(sql_zapis, (id_jizdy, spolujezdec, chci_mist))
@@ -321,8 +321,8 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
         print(error)
     finally:
         if conn is not None:
-            return True
             conn.close()
+    return True
 
 
 def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
@@ -354,6 +354,30 @@ def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
         if conn is not None:
             conn.close()
             
+def zmena_hesla(heslo, id_uzivatele):
+    """ zmeni uzivateli heslo v db. """
+
+    sql = """UPDATE uzivatele
+            SET heslo = %s 
+            WHERE id_uzivatele = %s;"""
+    conn = get_db()
+    heslo = hash_heslo(heslo)
+
+    try:
+        cur = conn.cursor()
+        # execute the INSERT statement
+        cur.execute(sql, (heslo, id_uzivatele))
+        # commit the changes to the database
+        conn.commit()
+        # close communication with the database
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return False
+    finally:
+        if conn is not None:
+            return True
+            conn.close()
 '''
 if __name__ == '__main__':
     print(get_gps('Otokara Breziny 1109', 25082))
