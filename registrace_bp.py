@@ -21,7 +21,8 @@ def add_new():
 
 	uz_registrovany = db_funkce.najdi_uzivatele(result.get("email"))
 	if uz_registrovany:
-		flash ('Zadaný e-mail už existuje v databázi. Můžeš se přihlásit.', "danger")
+		flash ('Už jsi u nás byl/a, tak se prosím přihlaš.', "danger")
+		return redirect(url_for('prihlaseni_bp.login'))
 
 	heslo = result.get("heslo")
 	heslo_potvrzeni = result.get("heslo_potvrzeni")
