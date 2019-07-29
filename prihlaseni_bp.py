@@ -62,6 +62,7 @@ def login():
                     return redirect(next)
         if not uzivatel:
             flash ("Zadaný e-mail není v naší databázi. Nejprve se, prosím, zaregistruj.", "danger")
+            return redirect(url_for('registrace_bp.add_new'))
         
 
     # TODO: při neúspěšném pokusu o přihlášení zachovat ve formuláři zadaný email??
@@ -70,4 +71,4 @@ def login():
 @blueprint.route('/odhlaseni')
 def logout():
     logout_user()
-    return redirect(url_for('main.show_index'))
+    return redirect(url_for('show_index'))
