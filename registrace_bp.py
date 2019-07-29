@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app, Markup
 # from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from flask_login import current_user
 import db_funkce
@@ -21,7 +21,7 @@ def add_new():
 
 	uz_registrovany = db_funkce.najdi_uzivatele(result.get("email"))
 	if uz_registrovany:
-		flash ('Zadaný e-mail už existuje v databázi. Můžeš se přihlásit.', "danger")
+		flash (Markup('Zadaný e-mail už existuje v databázi. <a href="/prihlaseni" class="alert-link"> Tady se přihlaš.</a>'), "danger")
 
 	heslo = result.get("heslo")
 	heslo_potvrzeni = result.get("heslo_potvrzeni")
