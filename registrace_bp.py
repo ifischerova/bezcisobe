@@ -49,10 +49,11 @@ def add_new():
 		# return redirect(url_for('prihlaseni_bp.login'))
 
 	if id_uzivatele:
-		flash ('Díky za registraci. Nyní se můžeš přihlásit.', "success")
+		flash ('Vítáme Tě! Teď se prosím přihlaš.', "success")
 		return render_template('prihlaseni.html')
 	else:
 		return render_template("registrace.html", values=result, error=chyba)
+		flash ('Mrzí nás to, ale registrace se nepovedla. Dej nám pár minut a zkus to znvu.')
 
 '''
 class RegistrationForm(Form):

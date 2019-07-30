@@ -53,15 +53,15 @@ def login():
         # uspesne_prihlasen = False
         if uzivatel:
             if sha512(heslo.encode()).hexdigest() != uzivatel.password_hash:
-                flash ('Špatně zadané heslo.', "danger")
+                flash ('Tohle heslo to nebylo.', "danger")
             elif sha512(heslo.encode()).hexdigest() == uzivatel.password_hash:
                 if login_user(uzivatel, force=True):
-                    flash ('Uživatel byl úspěšně přihlášen.', "success")
+                    flash ('Rádi Tě tu zase vidíme.', "success")
                     if next.endswith('prihlaseni') or next.endswith('registrace') or 'noveheslo' in next:
                         return redirect(url_for('zavody_bp.show_zavody'))
                     return redirect(next)
         if not uzivatel:
-            flash ("Zadaný e-mail není v naší databázi. Nejprve se, prosím, zaregistruj.", "danger")
+            flash ("Tenhle email u nás ještě nemáme. Nejprve se, prosím, zaregistruj.", "danger")
             return redirect(url_for('registrace_bp.add_new'))
         
 
