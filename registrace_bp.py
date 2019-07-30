@@ -53,7 +53,7 @@ def add_new():
 		return render_template('prihlaseni.html')
 	else:
 		return render_template("registrace.html", values=result, error=chyba)
-		flash ('Mrzí nás to, ale registrace se nepovedla. Dej nám pár minut a zkus to znvu.')
+		flash ('Mrzí nás to, ale registrace se nepovedla. Dej nám pár minut a zkus to znovu.')
 
 '''
 class RegistrationForm(Form):
