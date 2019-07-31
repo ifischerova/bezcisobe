@@ -49,11 +49,12 @@ def add_new():
 		# return redirect(url_for('prihlaseni_bp.login'))
 
 	if id_uzivatele:
-		flash ('Díky za registraci. Nyní se můžeš přihlásit.', "success")
+		flash ('Vítáme Tě! Teď se prosím přihlaš.', "success")
 		return render_template('prihlaseni.html')
 	else:
+		flash ('Mrzí nás to, ale registrace se nepovedla. Dej nám pár minut a zkus to znovu.', "danger")
 		return render_template("registrace.html", values=result, error=chyba)
-
+		
 '''
 class RegistrationForm(Form):
 	jmeno = StringField('Jméno', [validators.DataRequired()])
