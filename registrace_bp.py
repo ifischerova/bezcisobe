@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     phone = IntegerField('Telefon*:', [validators.Required(message='Bez telefonního čísla to nepůjde.'), '''validators.Length(
         min=11, max=11, message='Telefonní číslo zadej bez předvolby a ve tvaru xxx xxx xxx.')'''])
     password = PasswordField('Heslo*:', [validators.Required(message='Bez hesla to nepůjde.'), validators.EqualTo(
-        'confirm_password', message='Hesla se musejí shodovat.'), validators.Length(min=8, max=20, message='Heslo musí být alespoň 6 znaků dlouhé.')])
+        'confirm_password', message='Hesla se musejí shodovat.'), validators.Length(min=8, message='Heslo musí být alespoň 6 znaků dlouhé.')])
     confirm_password = PasswordField(
         'Potvrzení hesla*:', [validators.Required(message='Zadané heslo je třeba potvrdit.')])
     gdpr = BooleanField('Souhlasím ze zpracováním osobních údajů.*', [validators.Required(
