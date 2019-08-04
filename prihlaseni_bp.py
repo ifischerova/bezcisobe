@@ -32,8 +32,8 @@ def redirect_back(endpoint, **values):
 
 
 class LoginForm(Form):
-    email = TextField('email', [validators.Required(), validators.Email(message='Chybný tvar emailové adresy.'),validators.Length(min=4, max=40)])
-    password = PasswordField('heslo', [validators.Required(), validators.Length(min=6, max=20, message = 'Heslo musí být alespoň 6 znaků dlouhé.')])
+    email = TextField('email', [validators.Required(), validators.Email(message='Chybný tvar emailové adresy.'),validators.Length(min=4)])
+    password = PasswordField('heslo', [validators.Required(), validators.Length(min=6, message = 'Heslo musí být alespoň 6 znaků dlouhé.')])
 
 
 blueprint = Blueprint('prihlaseni_bp', __name__)
