@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app
-#from flask_wtf import FlaskForm
 from wtforms import Form, BooleanField, StringField, PasswordField, IntegerField, validators
 from flask_login import current_user
 import db_funkce
