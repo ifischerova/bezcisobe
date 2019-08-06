@@ -3,22 +3,23 @@
 {% block body %}
 
 <form method="POST" action="{{ url_for('registrace_bp.add_new') }}">
-		{{form.csrf_token}}
-{% if form.errors["city"] %} 
-	<div class="alert alert-danger" role="alert">
-	{{form.errors["city"]}}
-	</div>
-{%endif%}
+	{{form.csrf_token}}
+
 	<div class="formular">
 		<div class="form-group row">
 			<div class="col-sm-2">
 				{{form.username.label}}
 			</div>
 			<div class="col-sm-10 ">
-					{{form.username(class="form-control form-control-sm")}}
+				{{form.username(class="form-control form-control-sm")}}
 			</div>
+			{% if form.errors["username"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["username"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
 		</div>
-		
+
 		<div class="form-group row">
 			<div class="col-sm-2">
 				{{form.surname.label}}
@@ -26,90 +27,133 @@
 			<div class="col-sm-10">
 				{{form.surname(class="form-control form-control-sm")}}
 			</div>
-		</div>
-
-
-		<div class="form-group row">
-
-			<label for="ulice" class="col-sm-2 col-form-label">Ulice,č.p./č.o.*:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control form-control-sm" name="ulice" required id="ulice" value="{{ values.ulice }}">
+			{% if form.errors["surname"] %}
+			<div class="alert alert-danger col-sm-10 " role="alert">
+				<ul>{% for error in form.errors["surname"] %} <li>{{error}}</li>{% endfor %}</ul>
 			</div>
+			{%endif%}
 		</div>
 
 
 		<div class="form-group row">
-			<label for="mesto_obec" class="col-sm-2 col-form-label">Město/Obec*:</label>
+			<div class="col-sm-2">
+				{{form.street.label}}
+			</div>
 			<div class="col-sm-10">
-				<input type="text" class="form-control form-control-sm" name="mesto" required id="mesto_obec" value="{{values.mesto }}">
-				{% if form.errors["city"] %} 
-				<div class="alert alert-danger" role="alert">
+				{{form.street(class="form-control form-control-sm")}}
+			</div>
+			{% if form.errors["street"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["street"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
+		</div>
+
+
+		<div class="form-group row">
+			<div class="col-sm-2">
+				{{form.city.label}}
+			</div>
+			<div class="col-sm-10">
+				{{form.city(class="form-control form-control-sm")}}
+			</div>
+			{% if form.errors["city"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
 				<ul>{% for error in form.errors["city"] %} <li>{{error}}</li>{% endfor %}</ul>
-			  </div>
-				{%endif%}
 			</div>
-
-
+			{%endif%}
 		</div>
 
 		<div class="form-group row">
-
-			<label for="PSC" class="col-sm-2 col-form-label">PSČ*:</label>
-			<div class="col-sm-10">
-				<input type="number" class="form-control form-control-sm" name="psc" required id="psc" value="{{values.psc}}">
+			<div class="col-sm-2">
+				{{form.postcode.label}}
 			</div>
-		</div>
-
-
-		<div class="form-group row">
-
-			<label for="email" class="col-sm-2 col-form-label">E-mail*:</label>
 			<div class="col-sm-10">
-				<input type="email" class="form-control form-control-sm" name="email" required id="email" value="{{ values.email }}">
+				{{form.postcode(class="form-control form-control-sm")}}
 			</div>
+			{% if form.errors["postcode"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["postcode"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
 		</div>
 
 
 		<div class="form-group row">
-
-			<label for="telefon" class="col-sm-2 col-form-label">Telefon*:</label>
-			<div class="col-sm-10">
-				<input type="tel" class="form-control form-control-sm" name="telefon" required id="telefon" value="{{ values.telefon }}">
+			<div class="col-sm-2">
+				{{form.email.label}}
 			</div>
-		</div>
-
-
-
-		<div class="form-group row">
-
-			<label for="heslo" class="col-sm-2 col-form-label">Heslo*:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control form-control-sm" min-width=8 name="heslo" required id="heslo" value="{{ values.heslo }}">
+				{{form.email(class="form-control form-control-sm")}}
 			</div>
+			{% if form.errors["email"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["email"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
 		</div>
 
 
 		<div class="form-group row">
-
-			<label for="heslo_potvrzeni" class="col-sm-2 col-form-label">Potvrzení hesla*:</label>
-			<div class="col-sm-10">
-				<input type="password" class="form-control form-control-sm" min-width=8 name="heslo_potvrzeni" required id="heslo_potvrzeni"
-				 value="{{ values.heslo_potvrzeni }}">
+			<div class="col-sm-2">
+				{{form.phone.label}}
 			</div>
+			<div class="col-sm-10">
+				{{form.phone(class="form-control form-control-sm")}}
+			</div>
+			{% if form.errors["phone"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["phone"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
 		</div>
-	</div>
 
-	<div>
-		<p class="hlavicka">
-			<input tabindex=1 type="checkbox" name="skrtatko" value="ano"> Souhlasím ze zpracováním osobních údajů.*
-		</p>
-	</div>
+		<div class="form-group row">
+			<div class="col-sm-2">
+				{{form.password.label}}
+			</div>
+			<div class="col-sm-10">
+				{{form.password(class="form-control form-control-sm")}}
+			</div>
+			{% if form.errors["password"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["password"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
+		</div>
 
-	<div>
-		<p class="tlacitka">
-			<input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
-		</p>
-	</div>
+
+		<div class="form-group row">
+			<div class="col-sm-2">
+				{{form.confirm_password.label}}
+			</div>
+			<div class="col-sm-10">
+				{{form.confirm_password(class="form-control form-control-sm")}}
+			</div>
+			{% if form.errors["confirm_password"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["confirm_password"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
+		</div>
+
+		<div>
+			<div class="hlavicka">
+				{{form.gdpr.label}}
+				{{form.gdpr(class="form-control form-control-sm")}}
+			</div>
+			{% if form.errors["gdpr"] %}
+			<div class="alert alert-danger col-sm-10" role="alert">
+				<ul>{% for error in form.errors["gdpr"] %} <li>{{error}}</li>{% endfor %}</ul>
+			</div>
+			{%endif%}
+		</div>
+
+		<div>
+			<p class="tlacitka">
+				<input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
+			</p>
+		</div>
 </form>
 
 {% endblock %}
