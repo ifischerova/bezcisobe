@@ -43,8 +43,6 @@ def show_registrace():
 
 @blueprint.route('/registrace', methods=['POST', 'GET'])
 def add_new():
-    result = request.form
-    chyba = None
     form = RegistrationForm()
 
     if form.validate_on_submit():
@@ -53,30 +51,28 @@ def add_new():
             flash('Už jsi u nás byl/a, tak se prosím přihlaš.', "danger")
             return redirect(url_for('prihlaseni_bp.login'))
 
-        heslo = result.get("password")
-        heslo_potvrzeni = result.get("confirm_password")
-        if not heslo == heslo_potvrzeni:
+        if not form.password.data == form.confirm_password.data:
             flash('Hesla se neshodují.', "danger")
-            return render_template("registrace.html", values=result, error=chyba, form=form)
+            return render_template("registrace.html", form=form)
 
         id_uzivatele = db_funkce.registrace(
-            result.get("username"),
-            result.get("surname"),
-            result.get("street"),
-            result.get("city"),
-            result.get("postcode"),
-            result.get("email"),
-            result.get("phone"),
-            heslo,
-            heslo_potvrzeni
+            form.username.data,
+            form.surname.data,
+            form.street.data,
+            form.city.data,
+            form.postcode.data,
+            form.email.data,
+            form.phone.data,
+            form.password.data,
+            form.confirm_password.data
         )
 
         if id_uzivatele:
             flash('Vítáme Tě! Teď se prosím přihlaš.', "success")
-            return render_template('prihlaseni.html')
+            return redirect(url_for('prihlaseni_bp.login'))
         else:
             flash(
                 'Mrzí nás to, ale registrace se nepovedla. Dej nám pár minut a zkus to znovu.', "danger")
-            return render_template("registrace.html", values=result, error=chyba, form=form)
+            return render_template("registrace.html", form=form)
     else:
-        return render_template("registrace.html", values=result, form=form)
+        return render_template("registrace.html", form=form)
