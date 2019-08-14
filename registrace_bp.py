@@ -46,7 +46,7 @@ def add_new():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        uz_registrovany = db_funkce.najdi_uzivatele(result.get("email"))
+        uz_registrovany = db_funkce.najdi_uzivatele(form.email.data)
         if uz_registrovany:
             flash('Už jsi u nás byl/a, tak se prosím přihlaš.', "danger")
             return redirect(url_for('prihlaseni_bp.login'))
