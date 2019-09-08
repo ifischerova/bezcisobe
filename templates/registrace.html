@@ -5,6 +5,7 @@
 
 <form method="POST" action="{{ url_for('registrace_bp.add_new') }}">
   {{form.csrf_token}}
+  
   {{ render_field(form.username,class="form-control form-control-sm"  ) }}
   {{ render_field(form.surname, class="form-control form-control-sm") }}
   {{ render_field(form.street, class="form-control form-control-sm") }}
