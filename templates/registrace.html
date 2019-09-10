@@ -6,15 +6,15 @@
 <form method="POST" action="{{ url_for('registrace_bp.add_new') }}">
   {{form.csrf_token}}
 
-  {{ render_field(form.username,class="form-control form-control-sm"  ) }}
-  {{ render_field(form.surname, class="form-control form-control-sm") }}
-  {{ render_field(form.street, class="form-control form-control-sm") }}
-  {{ render_field(form.city, class="form-control form-control-sm") }}
-  {{ render_field(form.postcode, class="form-control form-control-sm") }}
-  {{ render_field(form.email, class="form-control form-control-sm") }}
-  {{ render_field(form.phone, class="form-control form-control-sm") }}
-  {{ render_field(form.password, class="form-control form-control-sm") }}
-  {{ render_field(form.confirm_password, class="form-control form-control-sm") }}
+  {{ render_field(form.username) }}
+  {{ render_field(form.surname) }}
+  {{ render_field(form.street) }}
+  {{ render_field(form.city) }}
+  {{ render_field(form.postcode) }}
+  {{ render_field(form.email) }}
+  {{ render_field(form.phone) }}
+  {{ render_field(form.password) }}
+  {{ render_field(form.confirm_password) }}
   <div class="hlavicka">
     {{form.gdpr.label}}
     {{form.gdpr(class="form-control form-control-sm")}}
@@ -30,160 +30,5 @@
       <input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
     </p>
   </div>
-
 </form>
-
 {% endblock %}
-
-
-
-<!---původní HTML pro registrační formulář 
-	<div class="formular">
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.username.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.username(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["username"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["username"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.surname.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.surname(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["surname"] %}
-			<div class="alert alert-danger col-sm-10 " role="alert">
-				<ul>{% for error in form.errors["surname"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.street.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.street(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["street"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["street"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.city.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.city(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["city"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["city"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.postcode.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.postcode(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["postcode"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["postcode"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.email.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.email(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["email"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["email"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.phone.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.phone(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["phone"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["phone"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.password.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.password(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["password"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["password"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-
-		<div class="form-group row">
-			<div class="col-sm-2">
-				{{form.confirm_password.label}}
-			</div>
-			<div class="col-sm-10">
-				{{form.confirm_password(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["confirm_password"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["confirm_password"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-    </div>
-  
-  		<div>
-			<div class="hlavicka">
-				{{form.gdpr.label}}
-				{{form.gdpr(class="form-control form-control-sm")}}
-			</div>
-			{% if form.errors["gdpr"] %}
-			<div class="alert alert-danger col-sm-10" role="alert">
-				<ul>{% for error in form.errors["gdpr"] %} <li>{{error}}</li>{% endfor %}</ul>
-			</div>
-			{%endif%}
-		</div>
-
-		<div>
-			<p class="tlacitka">
-				<input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
-			</p>
-    </div>-->
