@@ -16,7 +16,7 @@ class RegistrationForm(FlaskForm):
     postcode = IntegerField('PSČ*:', [validators.Required(message='Bez PSČ to nepůjde.'),
                                       validators.Length(min=5, max=5, message='PSČ zadej bez mezer.')])
     email = StringField('E-mail*:', [validators.Required(message='Bez mailu to nepůjde.', ),
-                                     validators.Email(message='Chybný tvar emailové adresy.'), validators.Length(message="Email musím mít mezi 4 a 250 znaky.", min=4, max=250)])
+                                     validators.Email(message='Chybný tvar emailové adresy.'), validators.Length(message="Email musí mít mezi 4 a 250 znaky.", min=4, max=250)])
     phone = IntegerField('Telefon*:', [validators.Required(message='Bez telefonního čísla to nepůjde.'), '''validators.Length(
         min=11, max=11, message='Telefonní číslo zadej bez předvolby a ve tvaru xxx xxx xxx.')'''])
     password = PasswordField('Heslo*:', [validators.Required(message='Bez hesla to nepůjde.'), validators.EqualTo(
