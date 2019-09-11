@@ -3,6 +3,7 @@
 {% block title %}REGISTRAČNÍ FORMULÁŘ{% endblock %}
 {% block body %}
 
+<div class="formular">
 <form method="POST" action="{{ url_for('registrace_bp.add_new') }}">
   {{form.csrf_token}}
 
@@ -31,4 +32,5 @@
     </p>
   </div>
 </form>
+</div>
 {% endblock %}
