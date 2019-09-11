@@ -1,5 +1,4 @@
 {% macro render_field(field) %}
-<div class="formular">
   <div class="form-group row">
     <div class="col-sm-2">{{ field.label }}</div>
     <div class="col-sm-10">{{ field(class="form-control form-control-sm")|safe }}
@@ -10,5 +9,4 @@
     {% endif %}
     </div>
   </div>
-</div>
 {% endmacro %}
