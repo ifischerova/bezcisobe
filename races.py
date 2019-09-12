@@ -9,7 +9,7 @@ for p in page_list:
     #filename = "races.csv"
     #f = open(filename, "w")
 
-    #page = str(p)
+    page = str(p)
 
     my_url = 'https://ceskybeh.cz/terminovka/?region=0&dfrom=01.%2001.%202019&dto=31.%2003.%202021&rlength=0&rtype=0&advanced=1&search=&page=' + page
 
