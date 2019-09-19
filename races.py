@@ -6,8 +6,8 @@ win_unicode_console.enable()
 #I need import this because I have s problem with encoding in my notebook
 
 filename = "races.csv"
-f = open(filename, "w")
-headers="date_of_race, place_of_race, name_of_race\n"
+f = open(filename, "w", encoding='UTF-8')
+headers="Date_of_race,Place_of_race,Name_of_race\n"
 f.write(headers)
 
 page_list = list(range(0, 91))
@@ -28,7 +28,7 @@ for p in page_list:
     # I found by trial-error method that container with relevant content is the 12th one.
     # So I need to select container with index 11.
     # print(container)
-    container = containers[11]
+    container = containers[12]
     # This function will find a list of items, which contains two kinds of span with "class = text-muted iframe-hidden".
     # First is for date of the race, the second for the place of the race.
     date_place = container.findAll("span", {"class" : "text-muted iframe-hidden"})
@@ -94,19 +94,20 @@ for p in page_list:
         # the name of the column in our database in PostgreSQL should be the same -> "date_of_race" instead of "datum_zavodu"
         date_of_race = year + '-' + month + '-' + day
         print(date_of_race)
-        f.write(date_of_race + "," + "\n")
+        f.write(date_of_race + "\n")
 
     place = container.findAll("p", {"class" : "iframe-visible cb-iframe-place"})
     for p in place:
         # the name of the column in our database in PostgreSQL should be the same -> "place_of_race" instead of "misto_zavodu"
         place_of_race = p.text.strip('()')
         print(place_of_race)
-        f.write(place_of_race + "," + "\n")
+        f.write(place_of_race + "\n")
 
     name = container.findAll("h4", {"class": "mt-0 mb-0"})
     for n in name:
         #the name of the column in our database in PostgreSQL should be the same -> "name_of_race" instead of "nazev_zavodu"
+        #some of the names have "DOPORUČUJEME" in the name co we need to delete this word
         name_of_race = n.text.strip()
         print(name_of_race)
-        f.write(name_of_race + "," + "\n")
+        f.write(name_of_race + "\n")
 f.close()
