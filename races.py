@@ -5,20 +5,16 @@ import win_unicode_console
 win_unicode_console.enable()
 #I need import this because I have s problem with encoding in my notebook
 
+filename = "races.csv"
+f = open(filename, "w")
+headers="date_of_race, place_of_race, name_of_race\n"
+f.write(headers)
 
 page_list = list(range(0, 91))
 
 for p in page_list:
-    #filename = "races.csv"
-    #f = open(filename, "w")
-
-    #headers="date_of_race; place_of_race; name_of_race\n"
-    #f.write(headers)
-
     page = str(p)
-
     my_url = 'https://ceskybeh.cz/terminovka/?region=0&dfrom=01.%2001.%202019&dto=31.%2003.%202021&rlength=0&rtype=0&advanced=1&search=&page=' + page
-
     uClient = uReq(my_url)
     page_html = uClient.read()
     uClient.close()
@@ -29,16 +25,10 @@ for p in page_list:
     # Unfortunately I am not able to find more relevant selector in the web page to find a specific container with races.
     # print(len(containers))
     containers = page_soup.findAll("div", { "class" : "row"})
-
     # I found by trial-error method that container with relevant content is the 12th one.
     # So I need to select container with index 11.
     # print(container)
     container = containers[11]
-
-    filename = "dates.csv"
-    f = open(filename, "w")
-    headers="date_of_race\n"
-    f.write(headers)
     # This function will find a list of items, which contains two kinds of span with "class = text-muted iframe-hidden".
     # First is for date of the race, the second for the place of the race.
     date_place = container.findAll("span", {"class" : "text-muted iframe-hidden"})
@@ -105,7 +95,6 @@ for p in page_list:
         date_of_race = year + '-' + month + '-' + day
         print(date_of_race)
         f.write(date_of_race + "," + "\n")
-    f.close()
 
     place = container.findAll("p", {"class" : "iframe-visible cb-iframe-place"})
     for p in place:
@@ -120,3 +109,4 @@ for p in page_list:
         name_of_race = n.text.strip()
         print(name_of_race)
         f.write(name_of_race + "," + "\n")
+f.close()
