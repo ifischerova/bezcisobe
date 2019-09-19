@@ -64,7 +64,7 @@ for p in page_list:
             month = names_of_months[name_of_month]
             #print(month)
         else:
-            raise Exception("U závodu není uvedeno datum v potřebném formátu.")
+            raise RuntimeError("U závodu není uvedeno datum v potřebném formátu.")
 
         #Original way how I was trying to change names of months to its values.
         #if month_in_word == 'ledna':
