@@ -12,6 +12,9 @@ for p in page_list:
     #filename = "races.csv"
     #f = open(filename, "w")
 
+    #headers="date_of_race; place_of_race; name_of_race\n"
+    #f.write(headers)
+
     page = str(p)
 
     my_url = 'https://ceskybeh.cz/terminovka/?region=0&dfrom=01.%2001.%202019&dto=31.%2003.%202021&rlength=0&rtype=0&advanced=1&search=&page=' + page
@@ -32,6 +35,10 @@ for p in page_list:
     # print(container)
     container = containers[11]
 
+    filename = "dates.csv"
+    f = open(filename, "w")
+    headers="date_of_race\n"
+    f.write(headers)
     # This function will find a list of items, which contains two kinds of span with "class = text-muted iframe-hidden".
     # First is for date of the race, the second for the place of the race.
     date_place = container.findAll("span", {"class" : "text-muted iframe-hidden"})
@@ -39,20 +46,16 @@ for p in page_list:
     # I need only each second item from the list (starting from the first item).
     # I decided delete every second item from the list (starting from the second item).
     del date_place[1::2]
-
     dates = date_place
-
     for d in dates:
         d = dates[0]
         date_with_days = d.text
         sliced_date = date_with_days.split(' ')
-
         day_with_one_digit = int(sliced_date[1].strip('.'))
         if day_with_one_digit < 10:
             day = '0' + str(day_with_one_digit)
         else:
             day = str(day_with_one_digit)
-
         #Because of our database I need to change names of months to numbers, 
         #starting with 0, if the number of the month is smaller than 10. At first I made it with a condition,
         #but it is a quite long and same code. So I tried to make it through dictionary.
@@ -65,7 +68,6 @@ for p in page_list:
             #print(month)
         else:
             raise RuntimeError("U závodu není uvedeno datum v potřebném formátu.")
-
         #Original way how I was trying to change names of months to its values.
         #if month_in_word == 'ledna':
             #sliced_date[2] = '01'
@@ -93,7 +95,6 @@ for p in page_list:
             #sliced_date[2] = '12'
         #else:
             #print("There is no month!")
-
         year = sliced_date[3].replace(',', ' ').strip()
         sliced_date[1] = year
         sliced_date[2] = month
@@ -103,18 +104,19 @@ for p in page_list:
         # the name of the column in our database in PostgreSQL should be the same -> "date_of_race" instead of "datum_zavodu"
         date_of_race = year + '-' + month + '-' + day
         print(date_of_race)
-        #f.write(date_of_race)
+        f.write(date_of_race + "," + "\n")
+    f.close()
 
     place = container.findAll("p", {"class" : "iframe-visible cb-iframe-place"})
     for p in place:
         # the name of the column in our database in PostgreSQL should be the same -> "place_of_race" instead of "misto_zavodu"
         place_of_race = p.text.strip('()')
         print(place_of_race)
-        #f.write(place_of_race)
+        f.write(place_of_race + "," + "\n")
 
     name = container.findAll("h4", {"class": "mt-0 mb-0"})
     for n in name:
         #the name of the column in our database in PostgreSQL should be the same -> "name_of_race" instead of "nazev_zavodu"
         name_of_race = n.text.strip()
         print(name_of_race)
-        #f.write(name_of_race)
+        f.write(name_of_race + "," + "\n")
