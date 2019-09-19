@@ -22,7 +22,7 @@ for p in page_list:
     page_soup = soup(page_html, "html.parser")
 
 
-    # This function find list with 35 items, which have selector/locator "class = row".
+    # This function find list with 35 items, which have selector "class = row".
     # Unfortunately I am not able to find more relevant selector in the web page to find a specific container with races.
     # print(len(containers))
     containers = page_soup.findAll("div", { "class" : "row"})
@@ -57,19 +57,14 @@ for p in page_list:
         #starting with 0, if the number of the month is smaller than 10. At first I made it with a condition,
         #but it is a quite long and same code. So I tried to make it through dictionary.
         #Keys of dictionary are names of months in the form of the word the same as at the page.
-        names_of_months = ['ledna', 'února', 'března', 'dubna', 'května', 'června', 'července', 'srpna', 'září', 'října', 'listopadu', 'prosince']
+        names_of_months = { 'ledna': '01', 'února': '02', 'března': '03', 'dubna': '04', 'května': '05', 'června':'06', 'července': '07', 'srpna': '08', 'září': '09', 'října': '10', 'listopadu': '11', 'prosince': '12' }
         #print(names_of_months)
-        #values are numbers for months, for example january = 1, etc.
-        values_of_months = list(range(1, 13))
-        #print( values_of_months)
-        months = dict(zip(names_of_months,  values_of_months))
-        #print(months)
-        month = sliced_date[2]
-        if month in months:
-            month = '0' + str(months[month])
+        name_of_month = sliced_date[2]
+        if name_of_month in names_of_months:
+            month = names_of_months[name_of_month]
             #print(month)
         else:
-            print("U závodu není uvedeno datum v potřebném formátu.")
+            raise Exception("U závodu není uvedeno datum v potřebném formátu.")
 
         #Original way how I was trying to change names of months to its values.
         #if month_in_word == 'ledna':
