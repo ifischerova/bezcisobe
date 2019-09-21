@@ -5,12 +5,10 @@ import win_unicode_console
 win_unicode_console.enable()
 #I need import this because I have s problem with encoding in my notebook
 
-filename = "races.csv"
-f = open(filename, "w", encoding='UTF-8')
-headers="Date_of_race,Place_of_race,Name_of_race\n"
-f.write(headers)
-
 page_list = list(range(0, 91))
+date_column = []
+place_column = []
+name_column = []
 
 for p in page_list:
     page = str(p)
@@ -23,8 +21,8 @@ for p in page_list:
 
     # This function find list with 35 items, which have selector "class = row".
     # Unfortunately I am not able to find more relevant selector in the web page to find a specific container with races.
-    # print(len(containers))
     containers = page_soup.findAll("div", { "class" : "row"})
+    #print(len(containers))
     # I found by trial-error method that container with relevant content is the 12th one.
     # So I need to select container with index 11.
     # print(container)
@@ -93,21 +91,43 @@ for p in page_list:
         #only_date = sliced_date[1:4]
         # the name of the column in our database in PostgreSQL should be the same -> "date_of_race" instead of "datum_zavodu"
         date_of_race = year + '-' + month + '-' + day
-        print(date_of_race)
-        f.write(date_of_race + "\n")
+        #print(date_of_race)
+        date_column.append(date_of_race)
+        #date_column = f.write(date_of_race + "\n")
 
     place = container.findAll("p", {"class" : "iframe-visible cb-iframe-place"})
     for p in place:
         # the name of the column in our database in PostgreSQL should be the same -> "place_of_race" instead of "misto_zavodu"
         place_of_race = p.text.strip('()')
-        print(place_of_race)
-        f.write(place_of_race + "\n")
+        #print(place_of_race)
+        place_column.append(place_of_race)
+        #place_column = f.write(place_of_race + "\n")
 
     name = container.findAll("h4", {"class": "mt-0 mb-0"})
     for n in name:
         #the name of the column in our database in PostgreSQL should be the same -> "name_of_race" instead of "nazev_zavodu"
         #some of the names have "DOPORUČUJEME" in the name co we need to delete this word
         name_of_race = n.text.strip()
-        print(name_of_race)
-        f.write(name_of_race + "\n")
+        if name_of_race.startswith('DOPORUČUJEME'):
+            name_of_race = name_of_race[12:]
+        #print(name_of_race)
+        name_column.append(name_of_race)
+        #f.write(name_of_race + "\n")
+
+#print(date_column)
+#print(place_column)
+#print(name_column)
+
+
+filename = "C:/Users/fischerova/Desktop/bezcisobe/races.csv"
+f = open(filename, "w", encoding='UTF-8')
+headers="Date_of_race,Place_of_race,Name_of_race\n"
+f.write(headers)
+
+all_races = zip(date_column, place_column, name_column)
+#print(list(all_races))
+
+for race in all_races:
+    f.write(race[0] + ';\'' + race[1] + '\';\'' + race[2] + '\'' + '\n')
+
 f.close()
