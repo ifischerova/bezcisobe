@@ -13,8 +13,8 @@ page_count = 91
 date_column = []
 place_column = []
 name_column = []
-latitude = []
-longitude = []
+latitude_column = []
+longitude_column = []
 app_id = 'LJYFl2AZbHtLHftkJeWA'
 app_code = 'C7sHEhOBFLTVZCQ2K8S4-A'
 geolocator = Geolocator(app_id=app_id, app_code=app_code)
@@ -61,8 +61,8 @@ for i in range(0, math.ceil(page_count/10) + 1):
         # Unfortunately I am not able to find more relevant selector in the web page to find a specific container with races.
         containers = page_soup.findAll("div", { "class" : "row"})
         #print(len(containers))
-        # I found by trial-error method that container with relevant content is the 12th one.
-        # So I need to select container with index 11.
+        # I found by trial-error method that container with relevant content is the 13th one.
+        # So I need to select container with index 12.
         # print(container)
         container = containers[12]
         # This function will find a list of items, which contains two kinds of span with "class = text-muted iframe-hidden".
