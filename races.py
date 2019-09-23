@@ -108,14 +108,11 @@ for i in range(0, math.ceil(page_count/10) + 1):
             place_of_race = p.text.strip('()')
             location = do_geocode(place_of_race)
             if location is None:
-                latitude.append(.0)
-                longitude.append(.0)
+                latitude_column.append(.0)
+                longitude_column.append(.0)
             else:
-                latitude.append(location.latitude)
-                longitude.append(location.longitude)
-            #print(location.latitude)
-            #print(location.longitude)
-            #print(place_of_race)
+                latitude_column.append(location.latitude_column)
+                longitude_column.append(location.longitude_column)
             place_column.append(place_of_race)
 
         name = container.findAll("h4", {"class": "mt-0 mb-0"})
@@ -134,7 +131,7 @@ f = open(filename, "w", encoding='UTF-8')
 headers="datum_zavodu,misto_zavodu,latitude,longitude,nazev\n"
 f.write(headers)
 
-all_races = zip(date_column, place_column, latitude, longitude, name_column)
+all_races = zip(date_column, place_column, latitude_column, longitude_column, name_column)
 
 for race in all_races:
     #f.write(race[0] + ';\'' + race[1] + '\';\'' + race[2] + '\'' + '\n')
