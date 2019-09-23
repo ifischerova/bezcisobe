@@ -111,8 +111,8 @@ for i in range(0, math.ceil(page_count/10) + 1):
                 latitude_column.append(.0)
                 longitude_column.append(.0)
             else:
-                latitude_column.append(location.latitude_column)
-                longitude_column.append(location.longitude_column)
+                latitude_column.append(location.latitude)
+                longitude_column.append(location.longitude)
             place_column.append(place_of_race)
 
         name = container.findAll("h4", {"class": "mt-0 mb-0"})
