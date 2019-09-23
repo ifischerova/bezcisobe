@@ -4,9 +4,8 @@ import os
 from flask import g
 
 
-
 def get_db():
-    """ Spojeni s dtb. """
+    """ Connection with database. """
 
     if not hasattr(g, 'db') or g.db.closed == 1:
 		# https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
@@ -16,16 +15,13 @@ def get_db():
         g.db = con
     return g.db
 
-def zavody_dle_datumu(datum_zavodu):
-    """ Vypise seznam zavodu dle vybraneho datumu v klesajicim poradi. """
+
+def races_for_date(date_race):
+    """ Returns list of get_races according to the selected date in decreasing order. """
 
     sql = """SELECT * FROM zavody WHERE datum_zavodu = %s ORDER BY datum_zavodu DESC"""
     conn = get_db()
     cur = conn.cursor()
-    cur.execute(sql, (datum_zavodu,))
+    cur.execute(sql, (date_race,))
     data = cur.fetchall()
     return data
-
-
-# Zaregistruje funkci show_about() jako funkci, kterou má Flask zavolat, když 
-# uživatel otevře v prohlížeči stránku "/zavody"

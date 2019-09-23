@@ -9,18 +9,19 @@ from geopy.geocoders import Here as locator
 from geopy.exc import GeopyError
 from functools import lru_cache
 
+
 class User(UserMixin):
-    def __init__(self, id, db_id, password_hash, jmeno, prijmeni, telefon):
-        self.id = id  # id-čkem je pro nás email uživatele
+    def __init__(self, id, db_id, password_hash, name, surname, phone):
+        self.id = id  # email is an id for us
         self.db_id = db_id
         self.password_hash = password_hash
-        self.jmeno = jmeno
-        self.prijmeni = prijmeni
-        self.telefon = telefon
+        self.name = name
+        self.surname = surname
+        self.phone = phone
 
 
 def get_db():
-    """ Spojeni s dtb. """
+    """ Connection with database. """
 
     if not hasattr(g, 'db') or g.db.closed == 1:
 		# https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
@@ -31,8 +32,8 @@ def get_db():
     return g.db
 
 
-def zavody():
-    """ Vypise seznam zavodu na webu v klesajicim poradi. """
+def get_races():
+    """ Returns list of get_races in decreasing order by date. """
 
     sql = """SELECT * FROM zavody ORDER BY datum_zavodu DESC"""
     conn = get_db()
@@ -41,53 +42,57 @@ def zavody():
     data = cur.fetchall()
     return data
 
-def zavod(id_zavod):
-    """ Vypise datum, misto zavodu a nazev do mailu"""
+
+def get_race(id_race):
+    """ Returns date of race, place of race and name of race in the email. """
 
     sql = """SELECT datum_zavodu, misto_zavodu, nazev FROM zavody WHERE id_zavod = %s"""
     conn = get_db()
     cur = conn.cursor()
-    cur.execute(sql, (id_zavod, ))
+    cur.execute(sql, (id_race, ))
     data = cur.fetchone()
     return data
 
-def posta_ridic(id_jizdy):
-    """Vypíše jméno řidiče, místo odjezdu, datum odjezdu, email a telefon řidiče do mailu o potvrzeni nástupu do auta"""
+
+def get_ride_confirmation_details(id_ride):
+    """ Returns name of driver, place of departure, date of departure, email and phone into an email with confirmation of the boarding to the car. """
 
     sql = """SELECT id_uzivatele, jmeno, telefon, email, ns.ridic, ns.misto_odjezdu, ns.datum_odjezdu, ns.id_jizdy from uzivatele as u
     left join (select ridic, misto_odjezdu, datum_odjezdu, id_jizdy from nabidka_spolujizdy as ns) as ns
     on u.id_uzivatele = ns.ridic WHERE id_jizdy= %s"""
     conn = get_db()
     cur = conn.cursor()
-    cur.execute(sql, (int(id_jizdy), ))
+    cur.execute(sql, (int(id_ride), ))
     data = cur.fetchone()
-    return data 
+    return data
 
-def email_ridic(id_jizdy):
-    """Vypíše email řidiče pro pole adresáta emailu, který odejde řdiči ve chvíli, kdy někdo potvrdí nástup do jím nabízeného auta"""
+
+def get_ride_driver(id_ride):
+    """ Returns email of driver for a email field, that is sended to the driver at moment of confirmation of the boarding to his/her offered car."""
+
     sql = """SELECT id_uzivatele, email, ns.ridic from uzivatele as u left join (select ns.ridic, id_jizdy from nabidka_spolujizdy as ns) as ns on ns.ridic = u.id_uzivatele WHERE id_jizdy = %s"""
     conn = get_db()
     cur = conn.cursor()
-    cur.execute(sql, (int(id_jizdy), ))
+    cur.execute(sql, (int(id_ride), ))
     data = cur.fetchone()
     return data 
 
 
-def hash_heslo(heslo):
-    """ Hashovani hesel do dtb pri registraci noveho uzivatele. """
+def hash_password(password):
+    """ Hashes passwords in database with registration of the user. """
 
-    return sha512(heslo.encode()).hexdigest()
+    return sha512(password.encode()).hexdigest()
 
 
-def get_gps(ulice, PSC):
-    """ Ziska GPS souradnice z Here map."""
+def get_gps(street, postcode):
+    """ Gets GPS locators from Here maps."""
 
     app_id = os.environ["API_KEY_MAPS"]
     app_code = os.environ["API_CODE_MAPS"]
 
     connection = locator(app_id=app_id, app_code=app_code)
 
-    query = '{}, {}, czech republic'.format(ulice, PSC)
+    query = '{}, {}, czech republic'.format(street, postcode)
     try:
         data = connection.geocode(query)
     except GeopyError:
@@ -95,23 +100,23 @@ def get_gps(ulice, PSC):
     return (.0, .0) if data is None else (data.latitude, data.longitude)
 
 
-def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_potvrzeni):
-    """ vlozi noveho uzivatele do databaze """
+def add_user(name, surname, street, city, postcode, email, phone, password, password_confirmation):
+    """ Inserts new user into database. """
 
     sql = """INSERT INTO uzivatele
             (jmeno, prijmeni, ulice, mesto_obec, "PSC", email, telefon, heslo, latitude, longitude)
              VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_uzivatele;"""
     conn = get_db()
-    id_uzivatele = None
-    latitude, longitude = get_gps(ulice, psc)
-    heslo = hash_heslo(heslo)
+    id_user = None
+    latitude, longitude = get_gps(street, postcode)
+    password = hash_password(password)
 
     try:
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, latitude, longitude))
+        cur.execute(sql, (name, surname, street, city, postcode, email, phone, password, latitude, longitude))
         # get the generated id back
-        id_uzivatele = cur.fetchone()[0]
+        id_user = cur.fetchone()[0]
         # commit the changes to the database
         conn.commit()
         # close communication with the database
@@ -121,21 +126,21 @@ def registrace(jmeno, prijmeni, ulice, mesto, psc, email, telefon, heslo, heslo_
     finally:
         if conn is not None:
             conn.close()
-    return id_uzivatele
+    return id_user
 
 
-def najdi_uzivatele(email):
-    """ najde uzivatele v databazi """
+def find_user(email):
+    """ Finds user in the database. """
 
     sql = """SELECT id_uzivatele, jmeno, prijmeni, email, heslo, telefon FROM uzivatele WHERE lower(email)=%s;"""
     conn = get_db()
 
-    uzivatel = None
+    user = None
     try:
         cur = conn.cursor()
         cur.execute(sql, (email.lower(),))
         # get the generated id back
-        uzivatel = cur.fetchone()
+        user = cur.fetchone()
         # close communication with the database
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -143,33 +148,33 @@ def najdi_uzivatele(email):
     finally:
         if conn is not None:
             conn.close()
-    if uzivatel:
-        return User(uzivatel[3], uzivatel[0], uzivatel[4], uzivatel[1], uzivatel[2], uzivatel[5])
+    if user:
+        return User(user[3], user[0], user[4], user[1], user[2], user[5])
     else:
         return None
 
 
+def car_exists(driver, id_race):
+    """ Looks into database if the driver is not added for given race. """
 
-def uz_existuje_auto(ridic, id_zavod):
-    """ podiva se do db, jestli uz tam neni ridic pro dany zavod """
-
-    sql_najdi_auto = """SELECT * from nabidka_spolujizdy WHERE ridic = %s and id_zavod = %s;"""
+    sql_find_car = """SELECT * from nabidka_spolujizdy WHERE ridic = %s and id_zavod = %s;"""
 
     conn = get_db()
     
     try:
         cur = conn.cursor()
-        cur.execute(sql_najdi_auto, (ridic, id_zavod))
+        cur.execute(sql_find_car, (driver, id_race))
         # execute the SELECT statement
-        vysledek = cur.fetchall()
+        result = cur.fetchall()
         cur.close()
     finally:
         if conn is not None:
             conn.close()
-    return vysledek
+    return result
 
-def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky):
-    """ prida nove auto s ridicem do databaze """
+
+def add_carpooling_offer(driver, id_race, departure, departure_date, offer_of_places_in_car, notes):
+    """ Adding a new car with a driver into database. """
 
     sql_najdi_auto = """SELECT * from nabidka_spolujizdy WHERE ridic = %s and id_zavod = %s;"""
 
@@ -177,19 +182,19 @@ def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, 
              VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_jizdy; """
 
     conn = get_db()
-    id_jizdy = None
+    id_ride = None
     
     try:
         cur = conn.cursor()
-        cur.execute(sql_najdi_auto, (ridic, id_zavod))
+        cur.execute(sql_najdi_auto, (driver, id_race))
         # execute the SELECT statement
-        vysledek = cur.fetchall()
-        if vysledek:
+        result = cur.fetchall()
+        if result:
             return None
         # execute the INSERT statement
-        cur.execute(sql_zapis_auto, (ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky))
+        cur.execute(sql_zapis_auto, (driver, id_race, departure, departure_date, offer_of_places_in_car, notes))
         # get the generated id back
-        id_jizdy = cur.fetchone()[0]
+        id_ride = cur.fetchone()[0]
         # commit the changes to the database
         conn.commit()
         # close communication with the database
@@ -199,11 +204,11 @@ def nove_auto(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, 
     finally:
         if conn is not None:
             conn.close()
-    return id_jizdy
+    return id_ride
 
 
-def nabidky_spolujizdy(id_zavodu):
-    """ nabidne volna auta ke konkretnimu zavodu """
+def get_carpool_offers_for_race(id_race):
+    """ Returns carpooling offers for the given race. """
     
     sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
     volnych_mist, poznamky FROM
@@ -224,7 +229,7 @@ def nabidky_spolujizdy(id_zavodu):
     try:
         cur = conn.cursor()
         # execute the SELECT statement
-        cur.execute(sql, (id_zavodu,))
+        cur.execute(sql, (id_race,))
         # close communication with the database
         return cur.fetchall()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -234,8 +239,8 @@ def nabidky_spolujizdy(id_zavodu):
             conn.close()
 
 
-def vyber_spolujizdu(id_jizdy):
-    """ Vybere konkretni id jizdy pro spolujizdu """
+def choose_carpool(id_ride):
+    """ Chooses specific id of ride for carpool. """
 
     sql = """SELECT ns.id_jizdy, ns.id_zavod, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
     volnych_mist, poznamky FROM
@@ -255,7 +260,7 @@ def vyber_spolujizdu(id_jizdy):
     try:
         cur = conn.cursor()
         # execute the SELECT statement
-        cur.execute(sql, (id_jizdy,))
+        cur.execute(sql, (id_ride,))
         # close communication with the database
         return cur.fetchone()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -265,8 +270,8 @@ def vyber_spolujizdu(id_jizdy):
             conn.close()
 
 
-def najdi_pocet_mist(id_jizdy):
-    """ Najde pocet mist v aute pro overeni poctu pozadovanych mist pri nastupu do auta."""
+def find_count_of_seats(id_ride):
+    """ Finds counts of seats for checking the count of asked places during the getting to car. """
 
     sql = """SELECT ns.id_jizdy, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
     volnych_mist FROM
@@ -282,7 +287,7 @@ def najdi_pocet_mist(id_jizdy):
     try:
         cur = conn.cursor()
         # execute the SELECT statement
-        cur.execute(sql, (id_jizdy,))
+        cur.execute(sql, (id_ride,))
         # close communication with the database
         volnych_mist = cur.fetchone().volnych_mist
         return volnych_mist
@@ -290,11 +295,11 @@ def najdi_pocet_mist(id_jizdy):
         print(error)
     finally:
         if conn is not None:
-            conn.close()    
+            conn.close()
 
 
-def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
-    """ vlozi spolujezdce do db """
+def board_car(id_ride, co_rider, places_wanted):
+    """ Inserts co-rider(s) into a database."""
 
     sql_zjisti = """SELECT * FROM spolujezdci
                    WHERE id_jizdy = %s
@@ -308,12 +313,12 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
 
     try:
         cur = conn.cursor()
-        cur.execute(sql_zjisti, (id_jizdy, spolujezdec))
+        cur.execute(sql_zjisti, (id_ride, co_rider))
         # execute the SELECT statement
         vysledek = cur.fetchone()
         if vysledek:
             return False
-        cur.execute(sql_zapis, (id_jizdy, spolujezdec, chci_mist))
+        cur.execute(sql_zapis, (id_ride, co_rider, places_wanted))
         conn.commit()
         # close communication with the database
         # return cur.fetchall()
@@ -325,8 +330,8 @@ def chci_nastoupit(id_jizdy, spolujezdec, chci_mist):
     return True
 
 
-def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
-    """ Najde jizdu podle id_jizdy a spolujezdce """
+def confirmation_of_carpool(id_ride, co_rider):
+    """ Finds a specific ride using id_ride and id_co_rider. """
 
     sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, chci_mist, spolujezdec, poznamky FROM
     nabidka_spolujizdy as ns 
@@ -344,7 +349,7 @@ def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
     try:
         cur = conn.cursor()
         # execute the SELECT statement
-        cur.execute(sql, (id_jizdy, spolujezdec))
+        cur.execute(sql, (id_ride, co_rider))
         # close communication with the database
         return cur.fetchone()
         # print(cur.fetchone())
@@ -353,20 +358,21 @@ def potvrzeni_spolujizdy(id_jizdy, spolujezdec):
     finally:
         if conn is not None:
             conn.close()
-            
-def zmena_hesla(heslo, id_uzivatele):
-    """ zmeni uzivateli heslo v db. """
+
+
+def change_password(password, id_user):
+    """ Changes the user´s password in database. """
 
     sql = """UPDATE uzivatele
             SET heslo = %s 
             WHERE id_uzivatele = %s;"""
     conn = get_db()
-    heslo = hash_heslo(heslo)
+    password = hash_password(password)
 
     try:
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (heslo, id_uzivatele))
+        cur.execute(sql, (password, id_user))
         # commit the changes to the database
         conn.commit()
         # close communication with the database
@@ -378,7 +384,3 @@ def zmena_hesla(heslo, id_uzivatele):
         if conn is not None:
             return True
             conn.close()
-'''
-if __name__ == '__main__':
-    print(get_gps('Otokara Breziny 1109', 25082))
-'''

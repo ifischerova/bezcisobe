@@ -2,7 +2,7 @@
 {% block title %}PŘIHLÁŠENÍ{% endblock %}
 {% block body %}
 
-<form method="POST" action="{{ url_for('prihlaseni_bp.login') }}">
+    <form method="POST" action="{{ url_for('login_bp.login') }}">
 
 <div>
 		<p class="zarovnani">
@@ -34,9 +34,9 @@
 		<p class="tlacitka">
 				<input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
 				<input type=hidden value="{{ next or '' }}" name=next>
-				<a href="{{ url_for('registrace_bp.show_registrace') }}"  class="btn btn-default">
+            <a href="{{ url_for('registration_bp.show_registration') }}" class="btn btn-default">
 				Registrovat se</a>
-				<a href="{{ url_for('obnova_hesla_bp.show_obnova') }}" class="btn btn-default">
+            <a href="{{ url_for('password_renewal_bp.show_renewal') }}" class="btn btn-default">
 				Zapomněl/a jsem heslo</a>
 		</p>
 	</div>

@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from wtforms import BooleanField, StringField, PasswordField, IntegerField, validators
 from flask_wtf import FlaskForm
 from flask_login import current_user
-import db_funkce
+import db_functions
 
 
 class RegistrationForm(FlaskForm):
@@ -27,35 +27,35 @@ class RegistrationForm(FlaskForm):
         message='Bez udělení Tvého souhlasu Tě nemůžeme zaregistrovat.')])
 
 
-blueprint = Blueprint('registrace_bp', __name__)
+blueprint = Blueprint('registration_bp', __name__)
 
 
 @blueprint.route('/registrace')
-def show_registrace():
-    uzivatel = current_user
+def show_registration():
+    user = current_user
     form = RegistrationForm()
 
-    if uzivatel.is_authenticated:
+    if user.is_authenticated:
         flash('Už jsi přihlášen.', "danger")
-        return redirect(url_for('zavody_bp.show_zavody'))
+        return redirect(url_for('races_bp.show_races'))
     return render_template('registrace.html', values={}, form=form)
 
 
 @blueprint.route('/registrace', methods=['POST', 'GET'])
-def add_new():
+def add_new_user():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        uz_registrovany = db_funkce.najdi_uzivatele(form.email.data)
-        if uz_registrovany:
+        already_registered = db_functions.find_user(form.email.data)
+        if already_registered:
             flash('Už jsi u nás byl/a, tak se prosím přihlaš.', "danger")
-            return redirect(url_for('prihlaseni_bp.login'))
+            return redirect(url_for('login_bp.login'))
 
         if not form.password.data == form.confirm_password.data:
             flash('Hesla se neshodují.', "danger")
             return render_template("registrace.html", form=form)
 
-        id_uzivatele = db_funkce.registrace(
+        id_user = db_functions.add_user(
             form.username.data,
             form.surname.data,
             form.street.data,
@@ -67,9 +67,9 @@ def add_new():
             form.confirm_password.data
         )
 
-        if id_uzivatele:
+        if id_user:
             flash('Vítáme Tě! Teď se prosím přihlaš.', "success")
-            return redirect(url_for('prihlaseni_bp.login'))
+            return redirect(url_for('login_bp.login'))
         else:
             flash(
                 'Mrzí nás to, ale registrace se nepovedla. Dej nám pár minut a zkus to znovu.', "danger")
