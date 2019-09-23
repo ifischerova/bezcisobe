@@ -1,5 +1,5 @@
 # bezcisobe
-Spusteni flasku v Powershell Terminalu ve Viscual Studio Code:
+Spusteni flasku v Powershell Terminalu ve Visual Studio Code:
 ```
 $env:FLASK_ENV="development"
 $env:FLASK_APP="main.py"
