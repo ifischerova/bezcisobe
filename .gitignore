@@ -116,3 +116,4 @@ dmypy.json
 .env
 .vscode
 .idea
+races.csv
