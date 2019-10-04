@@ -5,6 +5,7 @@ from geopy.exc import GeocoderTimedOut, GeocoderQuotaExceeded
 import win_unicode_console
 import math
 import time
+import os
 #I need import this because I have s problem with encoding in my notebook
 win_unicode_console.enable()
 #I need import this because I have s problem with encoding in my notebook
@@ -15,8 +16,8 @@ place_column = []
 name_column = []
 latitude_column = []
 longitude_column = []
-app_id = 'LJYFl2AZbHtLHftkJeWA'
-app_code = 'C7sHEhOBFLTVZCQ2K8S4-A'
+app_id = os.environ["API_KEY_MAPS"]
+app_code = os.environ["API_CODE_MAPS"]
 geolocator = Geolocator(app_id=app_id, app_code=app_code)
 
 def do_geocode(place, attempts=0):
