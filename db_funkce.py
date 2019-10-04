@@ -82,8 +82,8 @@ def hash_heslo(heslo):
 def get_gps(ulice, PSC):
     """ Ziska GPS souradnice z Here map."""
 
-    app_id = 'LJYFl2AZbHtLHftkJeWA'
-    app_code = 'C7sHEhOBFLTVZCQ2K8S4-A'
+    app_id = os.environ["API_KEY_MAPS"]
+    app_code = os.environ["API_CODE_MAPS"]
 
     connection = locator(app_id=app_id, app_code=app_code)
 

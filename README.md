@@ -5,6 +5,8 @@ $env:FLASK_ENV="development"
 $env:FLASK_APP="main.py"
 $env:PASSWORD_RESET_KEY="sem-dej-reset-key-z-heroku"
 $env:DATABASE_URL="postgres://sem-dej-url-k-databazi-v-heroku"
+$env:API_KEY_MAPS="sem-dej-api-klic-k-here-mapam-z-heroku"
+$env:API_CODE_MAPS="sem-dej-api-code-k-here-mapam-v-heroku"
 flask run
 ```
 
