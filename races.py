@@ -59,7 +59,7 @@ for i in range(0, math.ceil(page_count/10) + 1):
 
 
         # This function find list with 35 items, which have selector "class = row".
-        # Unfortunately I am not able to find more relevant selector in the web page to find a specific container with races.
+        # Unfortunately I am not able to find more relevant selector in the web page to find a specific container with get_races.
         containers = page_soup.findAll("div", { "class" : "row"})
         #print(len(containers))
         # I found by trial-error method that container with relevant content is the 13th one.
@@ -127,7 +127,7 @@ for i in range(0, math.ceil(page_count/10) + 1):
     print('Finished ten page, going to sleep for 10 seconds.')
     time.sleep(10)
 
-filename = "C:/Users/fischerova/Desktop/bezcisobe/races.csv"
+filename = "C:/Users/fischerova/Desktop/bezcisobe/get_races.csv"
 f = open(filename, "w", encoding='UTF-8')
 headers="datum_zavodu,misto_zavodu,latitude,longitude,nazev\n"
 f.write(headers)

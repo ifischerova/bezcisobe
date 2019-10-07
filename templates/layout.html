@@ -54,18 +54,19 @@
 					</div>
 	
 					<div class="tlacitko_login">
-						<a href="{{ url_for('prihlaseni_bp.logout') }}" class="btn btn-default btn-sm">
+                        <a href="{{ url_for('login_bp.logout') }}" class="btn btn-default btn-sm">
 							Odhlásit</a>
 					</div>
 					{% endif %}
 	
 					{% if not current_user.is_authenticated %}
 					<div class="tlacitko_login">
-						<a href="{{ url_for('prihlaseni_bp.login') }}" class="btn btn-default">Přihlásit se</a>
+                        <a href="{{ url_for('login_bp.login') }}" class="btn btn-default">Přihlásit se</a>
 					</div>
 	
 					<div class="tlacitko_login">
-						<a href="{{ url_for('registrace_bp.show_registrace') }}" class="btn btn-default">Registrovat se</a>
+                        <a href="{{ url_for('registration_bp.show_registration') }}" class="btn btn-default">Registrovat
+                            se</a>
 					</div>
 					{% endif %}
 				</div>

@@ -1,57 +1,60 @@
-# Z modulu flask naimportuje "Flask" a "g" tak, abychom je mohli
-# používat v tomto programu
+#From Flask module import Flask and g for using them in this program.
 import os
 from flask import Flask, g, render_template
 from flask_login import LoginManager
 
-import zavody_bp
+import races_bp
 
-import onas_bp
+import about_us_bp
 
-import registrace_bp
+import registration_bp
 
-import prihlaseni_bp
+import login_bp
 
-import obnova_hesla_bp
+import password_renewal_bp
 
-import newautoinput_bp
+import addnewcar_bp
 
-import potvrzeni_jizdy_bp
+import ride_confirmation_bp
 
-from db_funkce import najdi_uzivatele
+from db_functions import find_user
 
 
 bezciSobe = Flask(__name__)
-# pokus o nastaveni server_name z env kvuli plnemu url na obnovu hesla (aktualne bude mozna vracet http://0.0.0.0/
+# Attempt to set a server_name from env because of full url for enable to change password (actually will maybe return http://0.0.0.0/
 #bezciSobe.config['SERVER_NAME'] = os.environ.get('SERVER_NAME')
 bezciSobe.secret_key = b"\xc1'\xa6T<\x85\x9b\x9d\xdc\x96\x83\x9cx\xad\xf0v"
 login_manager = LoginManager()
 login_manager.init_app(bezciSobe)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     print("load user")
-    return najdi_uzivatele(user_id)
+    return find_user(user_id)
 
-bezciSobe.register_blueprint(zavody_bp.blueprint)
-bezciSobe.register_blueprint(onas_bp.blueprint)
-bezciSobe.register_blueprint(registrace_bp.blueprint)
-bezciSobe.register_blueprint(prihlaseni_bp.blueprint)
-bezciSobe.register_blueprint(obnova_hesla_bp.blueprint)
-bezciSobe.register_blueprint(newautoinput_bp.blueprint)
-bezciSobe.register_blueprint(potvrzeni_jizdy_bp.blueprint)
-#bezciSobe.register_blueprint(potvrzeni_jizdy_bp.blueprint)
-# Zaregistruje funkci close_db() do naší aplikace jako funkci, která se má spustit,
-# když se ukončuje naše aplikace
+
+bezciSobe.register_blueprint(races_bp.blueprint)
+bezciSobe.register_blueprint(about_us_bp.blueprint)
+bezciSobe.register_blueprint(registration_bp.blueprint)
+bezciSobe.register_blueprint(login_bp.blueprint)
+bezciSobe.register_blueprint(password_renewal_bp.blueprint)
+bezciSobe.register_blueprint(addnewcar_bp.blueprint)
+bezciSobe.register_blueprint(ride_confirmation_bp.blueprint)
+
+
+#Registers the function db.close() to our application. This function should start to run when our application terminates.
+
 
 @bezciSobe.route('/')
 def show_index():
     return render_template('index.html')
 
+
 @bezciSobe.teardown_appcontext
 def close_db(error):
     if hasattr(g, 'db'):
-        # Bezpečně ukončí spojení s naší databází
+        # Safely close the connection to our database.
         g.db.close()
 
 
