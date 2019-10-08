@@ -11,7 +11,7 @@ blueprint = Blueprint('password_renewal_bp', __name__)
 
 @blueprint.route('/obnovahesla')
 def show_renewal():
-	return render_template('obnova_hesla.html')
+	return render_template('password_renewal_email.html')
 
 
 pw_refresh_token_generator = Fernet(os.environ["PASSWORD_RESET_KEY"].encode("ascii"))
@@ -29,10 +29,10 @@ def renew_password():
 		password_reset_url = url_for('.show_new_password', token=token, _external=True)
 		print(password_reset_url)
 		email_functions.email_about_reseting_the_password(user, password_reset_url)
-		return render_template('obnova_hesla.html')
+		return render_template('password_renewal_email.html')
 	else:
 		flash('Tento e-mail v naší databázi není.', "danger")
-		return render_template('obnova_hesla.html')
+		return render_template('password_renewal_email.html')
 
 
 @blueprint.route('/noveheslo/<token>')
@@ -47,7 +47,7 @@ def show_new_password(token):
 		except InvalidToken:
 			print("Neplatný token.")
 			flash("Neplatný link pro obnovení hesla.", "danger")
-		return render_template('new_password.html', token=token)
+		return render_template('change_password.html', token=token)
 
 
 @blueprint.route('/noveheslo', methods=['POST'])
@@ -59,7 +59,7 @@ def new_password():
 	password_confirmation = result.get("password_confirmation")
 	if not password == password_confirmation:
 		flash('Hesla se neshodují.', "danger")
-		return render_template("new_password.html")
+		return render_template("change_password.html")
 	else:
 		changed = db_functions.change_password(password, id_user)
 

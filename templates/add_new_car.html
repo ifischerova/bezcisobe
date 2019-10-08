@@ -7,14 +7,14 @@
 	Nejprve prosím zkontroluj závod, ke kterému chceš nabídnout auto.
 </div>
 
-<form method="POST" action="{{ url_for('newautoinput_bp.add_new_car') }}">
+<form method="POST" action="{{ url_for('add_new_car_bp.add_new_car') }}">
 
 <div class="lista">
-		<select name="id_zavod">
+		<select name="id_race">
 				<option value="">Vyber si závod.</option>
 				{% for zavod in zavody %}
-				<option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod == id_vybraneho %}selected{% endif %}>
-						{{ zavod.datum_zavodu.strftime("%d. %m. %Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
+				<option value="{{ race.id_race }}" {% if race.id_race == id_chosen %}selected{% endif %}>
+						{{ race.race_date.strftime("%d. %m. %Y") + ": " + race.name + ", " + race.race_place}}
 				</option>
 				{% endfor %}
 		</select>
@@ -27,35 +27,36 @@
 <div class="formular">
 <div class="form-group row">
 	
-		<label for="odjezd" class="col-sm-2 col-form-label">Místo odjezdu:</label>
+		<label for="departure" class="col-sm-2 col-form-label">Místo odjezdu:</label>
 		<div class="col-sm-10">
-		<input type="text" class="form-control form-control-sm" name="misto_odjezdu" required id="misto_odjezdu" value="{{ values.misto_odjezdu }}">
+		<input type="text" class="form-control form-control-sm" name="departure_place" required id="departure_place"
+               value="{{ values.departure_place }}">
 	 </div>	
 	</div>
 
 	<div class="form-group row">
 	
-		<label for="odjezd_datum" class="col-sm-2 col-form-label">Datum odjezdu:</label>
+		<label for="departure_date" class="col-sm-2 col-form-label">Datum odjezdu:</label>
 		<div class="col-sm-10">
-		<input type="date" class="form-control form-control-sm" name="datum_odjezdu" required id="datum_odjezdu" value="{{ values.datum_odjezdu }}">
+		<input type="date" class="form-control form-control-sm" name="departure_date" required id="departure_date" value="{{ values.departure_date }}">
 		</div>	
 	</div>
 
 <div class="form-group row">
 
-	<label for="pocet_mist" class="col-sm-2 col-form-label">Volná místa v autě:</label>
+	<label for="nuber_of_seats" class="col-sm-2 col-form-label">Volná místa v autě:</label>
 	<div class="col-sm-10">
-	<input type="number" class="form-control form-control-sm" name="mist_auto_nabidka" required id="mist_auto_nabidka" value="{{ values.mist_auto_nabidka }}">
+	<input type="number" class="form-control form-control-sm" name="number_of_seats_offer" required id="number_of_seats_offer" value="{{ values.number_of_seats_offer }}">
 	</div>	
 </div>
 
 <div class="form-group">
 
-	<label for="poznamky">Poznámky:</label>
-	<textarea class="form-control" rows="5" name="poznamky" value="{{ values.poznamky }}"></textarea>
+	<label for="notes">Poznámky:</label>
+	<textarea class="form-control" rows="5" name="notes" value="{{ values.notes }}"></textarea>
 </div>
 
-<input type="hidden" name="id_zavod" value="{{ values.id_zavod }}">
+<input type="hidden" name="id_race" value="{{ values.id_race }}">
 
 <p class="tlacitka">
 		<input tabindex=1 type="submit" value="PŘIDAT AUTO" class="btn btn-default">

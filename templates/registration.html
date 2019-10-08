@@ -4,7 +4,7 @@
 {% block body %}
 
 <div class="formular">
-<form method="POST" action="{{ url_for('registrace_bp.add_new') }}">
+<form method="POST" action="{{ url_for('registration_bp.add_new_user') }}">
   {{form.csrf_token}}
 
   {{ render_field(form.username) }}

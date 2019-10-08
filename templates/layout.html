@@ -1,49 +1,34 @@
-<!-- Tohle je komentář v HTML. Prohlížeč ho ignoruje, ale Flask ne. Proto nemůžu
-     v komentářích používat kombinaci složená závorka-procento, protože Flask se
-     to snaží pochopit, i když je to jenom komentář. Proto v komentářích používám
-     {$ a $}, které Flask nezná, takže mu nevadí. Jenom si představ, že místo "$"
-     je tam "%" :) //-->
+<!-- This is a comment in HTML. Browser ignores it but Flask don´t. Due to this I can´t use combination of
+     braces nad percent. Flask tries to understand them although they are commented.
+     That is the reason I use {$ and $} in my comments. These elements are not known for Flask, so they don´t bother it.
+     Just imagine that there is "%" instead of "$" :) //-->
 
 
-<!-- První element na stránce: říka, že tohle je HTML dokument //-->
+<!-- First element on the page. Proclaims that this is a HTML document. //-->
 <!DOCTYPE HTML>
 <html>
-<!-- Začátek hlavičky - hlavička obsahuje metadata pro prohlížeč, která se nezobrazují
-     nikde na stránce //-->
+<!-- Beginning of the head, contains metadata about a page for a browser. These metadata are not displayed nowhere on the page. //-->
 
 <head>
 
-	<!-- Nastaví titulek stránky - to je to, co se objeví v názvu tabu v prohlížeči //-->
 	<title>Běžci sobě</title>
 
-	<!-- Připojí ke stránce soubor, který obsahuje spoustu předpřipravených stylů,
-         které nám usnadní upravovat, jak má stránka vypadat //-->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
 	 crossorigin="anonymous">
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	 crossorigin="anonymous"></script>
-
-	<!-- Připojí ke stránce soubor, který obsahuje naše vlastní styly.
-         Všechno mezi {{ a }} Flask nahradí za skutečné hodnoty. V tomhle případě
-         nahrádí url_for('static', filename='style.css') za skutečnou adresu, na
-		 které prohlížeč může najít soubor static/style.css //-->
-		 
-
-
 	   
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 
-	<!-- Konec hlavičky //-->
 </head>
-<!-- Začátek těla stránky - všechno mezi <body> a </body> se zobrazí jako obsah
-     stránky //-->
+
 
 <body>
 	<div class="stranka">
 		<nav class="navbar navbar-light bg-light rounded container">
 				<a class="navbar-brand" href="/">
-					<img src="{{ url_for('static', filename='bezec5.png') }}" width="30" height="30" class="d-inline-block align-top"
+					<img src="{{ url_for('static', filename='runner_icon.png') }}" width="30" height="30" class="d-inline-block align-top"
 					 alt="">
 					BĚŽCI SOBĚ
 				</a>
@@ -90,15 +75,12 @@
 		{% endif %}
 	  {% endwith %}
 
-		<!-- {$ a $} jsou zase instrukce pro Flask, které říkají, že sem se má vložit
-         block s názvem "body" z jednotlivých templatů, které tento "layout" rozšiřují //-->
+		<!-- {$ a $} are instructions for Flask. They say that Flask should insert a block with a name "body", which
+		 is made from individual templates. These templates extends these "layout". //-->
 		{% block body %}
 		{% endblock %}
 
-		<!-- Konec oddilu stránky //-->
 	</div>
-	<!-- Konec těla stránky. Za tíhle prvkem už nic nesmí být //-->
-
 </div>
 </body>
 

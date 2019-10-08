@@ -23,11 +23,11 @@ def show_add_new_car_form(id_race):
 			result = db_functions.car_exists(user.db_id, id_race)
 			if result:
 				flash('Na tento závod už auto nabízíš;)', "error")
-				return render_template('newautoinput.html', zavody=races, id_vybraneho=int(id_race), values={})
+				return render_template('add_new_car.html', zavody=races, id_vybraneho=int(id_race), values={})
 			else: 
-				return render_template('newautoinput.html', zavody=races, id_vybraneho=int(id_race), values={})
+				return render_template('add_new_car.html', zavody=races, id_vybraneho=int(id_race), values={})
 		else:
-			return render_template('newautoinput.html', zavody=races, id_vybraneho=0, values={})
+			return render_template('add_new_car.html', zavody=races, id_vybraneho=0, values={})
 	else:
 		flash('Abys mohl/a přidat auto, musíš se nejdřív přihlásit.', "danger")
 		return render_template('login.html')
@@ -55,4 +55,4 @@ def add_new_car():
 		return render_template('races.html', zavody=races, id_vybraneho=0)
 	else:
 		flash('Na tento závod už auto nabízíš.', "danger")
-		return render_template('newautoinput.html', zavody=races, values=result)
+		return render_template('add_new_car.html', zavody=races, values=result)
