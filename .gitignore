@@ -117,3 +117,4 @@ dmypy.json
 .vscode
 .idea
 get_races.csv
+.desktop.ini

@@ -47,7 +47,7 @@ def show_new_password(token):
 		except InvalidToken:
 			print("Neplatný token.")
 			flash("Neplatný link pro obnovení hesla.", "danger")
-		return render_template('change_password.html', token=token)
+		return render_template('password_change.html', token=token)
 
 
 @blueprint.route('/noveheslo', methods=['POST'])
@@ -59,7 +59,7 @@ def new_password():
 	password_confirmation = result.get("password_confirmation")
 	if not password == password_confirmation:
 		flash('Hesla se neshodují.', "danger")
-		return render_template("change_password.html")
+		return render_template("password_change.html")
 	else:
 		changed = db_functions.change_password(password, id_user)
 
