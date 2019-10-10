@@ -28,5 +28,5 @@ def show_races():
     if id_race:
         carpool_offer = db_functions.get_carpool_offers_for_race(id_race)
 
-    return render_template('races.html', zavody=races, datum_zavodu=race_date, id_vybraneho=id_race,
-                           nabidka_spolujizdy=carpool_offer)
+    return render_template('races.html', races=races, race_date=race_date, id_chosen=id_race,
+                           carpool_offer=carpool_offer)

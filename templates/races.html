@@ -1,25 +1,20 @@
-<!-- Tohle je komentář v HTML. Prohlížeč ho ignoruje, ale Flask ne. Proto nemůžu
-     v komentářích používat kombinaci složená závorka-procento, protože Flask se
-     to snaží pochopit, i když je to jenom komentář. Proto v komentářích používám
-     {$ a $}, které Flask nezná, takže mu nevadí. Jenom si představ, že místo "$"
-     je tam "%" :) //-->
 
-<!-- {$ extends $} říká Flasku, že tato šablona rozšiřuje šablonu layout.html
-     Tohle je hodně užitečné, když máš vícero stránek, které mají stejnou hlavičku
-     a strukturu a liší se jenom v jedné části (třeba v hlavním obsahu) a nechceš
-     pokaždý tu hlavičku opakovat ve všech šablonách //-->
+<!-- {$ extends $} says to Flask that this template extends the layout.html template.
+    It is very useful when you have more pages that have the same head and structure
+    and are different only in one part (for example the main content) and you don´t want
+    to repeat the head in all templates. //-->
 {% extends "layout.html" %}
 {% block title %}ZÁVODY{% endblock %}
 {% block body %}
 
-<form method="GET" action="{{ url_for('newautoinput_bp.show_newautoinput') }}">
+<form method="GET" action="{{ url_for('add_new_car_bp.show_add_new_car_form') }}">
 
 	<div class="zarovnani">
 		<p>Vyber si datum závodu a následně konkrétní závod pro daný den.</p>
 		<p>Nebo si rovnou vyber z kompletního seznamu závodů.</p>
 			<div class="col-sm-2">
-				<input id="date" type="date" class="form-control form-control-sm" data-date-inline-picker="true" name="datum_zavodu"
-				 value="{{ datum_zavodu }}">
+				<input id="date" type="date" class="form-control form-control-sm" data-date-inline-picker="true" name="race_date"
+				 value="{{ race_date }}">
 			</div>
 	</div>
 
@@ -31,17 +26,17 @@
 
 	<div class="zarovnani">
 		<div class="lista">
-			<select name="id_zavod" onchange="javascript:location.href='/zavody/?id_zavod='+this.value">
+			<select name="id_race" onchange="javascript:location.href='/zavody/?id_zavod='+this.value">
 				<option value="">Vyber si závod.</option>
-				{% for zavod in zavody %}
-				<option value="{{ zavod.id_zavod }}" {% if zavod.id_zavod==id_vybraneho %}selected{% endif %}>
-					{{ zavod.datum_zavodu.strftime("%d. %m. %Y") + ": " + zavod.nazev + ", " + zavod.misto_zavodu}}
+				{% for race in races %}
+				<option value="{{ race.id_race }}" {% if race.id_race==id_chosen %}selected{% endif %}>
+					{{ race.race_date.strftime("%d. %m. %Y") + ": " + race.name + ", " + race.race_place}}
 				</option>
 				{% endfor %}
 			</select>
 		</div>
 	</div>
-	{% if id_vybraneho > 0 and nabidka_spolujizdy %}
+	{% if id_chosen > 0 and carpool_offer %}
 	<div class="tabulka">
 		<table class="table table-bordered table-sm">
 			<thead class="zahlavitabulky">
@@ -55,19 +50,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for record in nabidka_spolujizdy %}
+				{% for record in carpool_offer %}
 				<tr>
-					<th scope="row">{{ record.jmeno }}</th>
-					<td>{{ record.misto_odjezdu }}</td>
-					<td>{{ record.datum_odjezdu.strftime('%d. %m. %Y') }}</td>
-					<td>{{ record.volnych_mist }}</td>
-					{% if record.poznamky %}
-					<td>{{ record.poznamky }}</td>
+					<th scope="row">{{ record.name }}</th>
+					<td>{{ record.departure_place }}</td>
+					<td>{{ record.departure_date.strftime('%d. %m. %Y') }}</td>
+					<td>{{ record.free_seats }}</td>
+					{% if record.notes %}
+					<td>{{ record.notes }}</td>
 					{% else %}
 					<td></td>
 					{% endif %}
 					<td>
-						<a href="{{ url_for('potvrzeni_jizdy_bp.show_potvrzenijizdy', zvoleno=record.id_jizdy) }}" class="btn btn-success btn-sm">Ano</a>
+						<a href="{{ url_for('ride_confirmation_bp.show_ride_confirmation', chosen=record.id_ride) }}" class="btn btn-success btn-sm">Ano</a>
 					</td>
 				</tr>
 				{% endfor %}
@@ -75,7 +70,7 @@
 		</table>
 	</div>
 
-	{% elif id_vybraneho > 0 %}
+	{% elif id_chosen > 0 %}
 	<p class="zarovnani1">Je nám líto. Na tento závod není aktuálně k dispozici žádné volné auto. <br>Můžeš ho sem přidat,
 		anebo se vrátit později.</p>
 	{% endif %}
@@ -90,5 +85,4 @@
 	</div>
 </form>
 
-<!-- Řekne Flasku, že tady končí blok "body" //-->
 {% endblock %}
