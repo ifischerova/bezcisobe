@@ -14,7 +14,7 @@ def show_ride_confirmation(chosen):
 		return render_template('potvrzeni_jizdy.html', values=chosen)
 	else:
 		flash('Abys mohl nastoupit, musíš se nejdřív přihlásit.', "danger")
-        return render_template('login.html')
+		return render_template('login.html')
 
 
 @blueprint.route('/potvrzenijizdy/', methods=['POST'])
@@ -23,13 +23,12 @@ def confirm_ride():
 	chosen = db_functions.choose_carpool(request.form.get("id_jizdy"))
 	id_race = request.form.get("id_zavod")
 	id_ride = request.form.get("id_jizdy")
-
-    free_carplaces = db_functions.find_count_of_seats(int(request.form.get("id_jizdy")))
+	free_carplaces = db_functions.find_count_of_seats(int(request.form.get("id_jizdy")))
 	if int(request.form.get("chci_mist")) > int(free_carplaces):
 		flash('Bohužel chceš víc míst, než kolik jich je volných.', "danger")
 		return render_template('potvrzeni_jizdy.html', values=chosen)
 	else:
-        possible_to_board_on = db_functions.board_car(
+		possible_to_board_on = db_functions.board_car(
 			int(request.form.get("id_jizdy")),
 			user.db_id,
 			int(request.form.get("chci_mist"))

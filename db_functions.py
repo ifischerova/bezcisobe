@@ -35,7 +35,7 @@ def get_db():
 def get_races():
     """ Returns list of get_races in decreasing order by date. """
 
-    sql = """SELECT * FROM zavody ORDER BY datum_zavodu DESC"""
+    sql = """SELECT * FROM races ORDER BY date_race DESC"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql)
@@ -46,7 +46,7 @@ def get_races():
 def get_race(id_race):
     """ Returns date of race, place of race and name of race in the email. """
 
-    sql = """SELECT datum_zavodu, misto_zavodu, nazev FROM zavody WHERE id_zavod = %s"""
+    sql = """SELECT date_race, place_race, name_race FROM races WHERE id_race = %s"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql, (id_race, ))
@@ -57,9 +57,9 @@ def get_race(id_race):
 def get_ride_confirmation_details(id_ride):
     """ Returns name of driver, place of departure, date of departure, email and phone into an email with confirmation of the boarding to the car. """
 
-    sql = """SELECT id_uzivatele, jmeno, telefon, email, ns.ridic, ns.misto_odjezdu, ns.datum_odjezdu, ns.id_jizdy from uzivatele as u
-    left join (select ridic, misto_odjezdu, datum_odjezdu, id_jizdy from nabidka_spolujizdy as ns) as ns
-    on u.id_uzivatele = ns.ridic WHERE id_jizdy= %s"""
+    sql = """SELECT id_user, name, phone, email, ns.driver, ns.departure_place, ns.departure_date, ns.id_ride from users as u
+    left join (select driver, departure_place, departure_date, id_ride from carpool_offer as ns) as ns
+    on u.id_user = ns.driver WHERE id_ride= %s"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql, (int(id_ride), ))
@@ -70,7 +70,7 @@ def get_ride_confirmation_details(id_ride):
 def get_ride_driver(id_ride):
     """ Returns email of driver for a email field, that is sended to the driver at moment of confirmation of the boarding to his/her offered car."""
 
-    sql = """SELECT id_uzivatele, email, ns.ridic from uzivatele as u left join (select ns.ridic, id_jizdy from nabidka_spolujizdy as ns) as ns on ns.ridic = u.id_uzivatele WHERE id_jizdy = %s"""
+    sql = """SELECT id_user, email, ns.driver from users as u left join (select ns.driver, id_ride from carpool_offer as ns) as ns on ns.driver = u.id_user WHERE id_ride = %s"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql, (int(id_ride), ))
@@ -103,9 +103,9 @@ def get_gps(street, postcode):
 def add_user(name, surname, street, city, postcode, email, phone, password, password_confirmation):
     """ Inserts new user into database. """
 
-    sql = """INSERT INTO uzivatele
-            (jmeno, prijmeni, ulice, mesto_obec, "PSC", email, telefon, heslo, latitude, longitude)
-             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_uzivatele;"""
+    sql = """INSERT INTO users
+            (name, surname, street, city, postcode, email, phone, password, latitude, longitude)
+             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_user;"""
     conn = get_db()
     id_user = None
     latitude, longitude = get_gps(street, postcode)
@@ -132,7 +132,7 @@ def add_user(name, surname, street, city, postcode, email, phone, password, pass
 def find_user(email):
     """ Finds user in the database. """
 
-    sql = """SELECT id_uzivatele, jmeno, prijmeni, email, heslo, telefon FROM uzivatele WHERE lower(email)=%s;"""
+    sql = """SELECT id_user, name, surname, email, password, phone FROM users WHERE lower(email)=%s;"""
     conn = get_db()
 
     user = None
@@ -157,7 +157,7 @@ def find_user(email):
 def car_exists(driver, id_race):
     """ Looks into database if the driver is not added for given race. """
 
-    sql_find_car = """SELECT * from nabidka_spolujizdy WHERE ridic = %s and id_zavod = %s;"""
+    sql_find_car = """SELECT * from carpool_offer WHERE driver = %s and id_ride = %s;"""
 
     conn = get_db()
     
@@ -176,23 +176,23 @@ def car_exists(driver, id_race):
 def add_carpooling_offer(driver, id_race, departure, departure_date, offer_of_places_in_car, notes):
     """ Adding a new car with a driver into database. """
 
-    sql_najdi_auto = """SELECT * from nabidka_spolujizdy WHERE ridic = %s and id_zavod = %s;"""
+    sql_find_car = """SELECT * from carpool_offer WHERE driver = %s and id_race = %s;"""
 
-    sql_zapis_auto = """INSERT INTO nabidka_spolujizdy(ridic, id_zavod, misto_odjezdu, datum_odjezdu, mist_auto_nabidka, poznamky)
-             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_jizdy; """
+    sql_insert_car = """INSERT INTO carpool_offer(driver, id_race, departure_place, departure_date, carseats_offer, notes)
+             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_ride; """
 
     conn = get_db()
     id_ride = None
     
     try:
         cur = conn.cursor()
-        cur.execute(sql_najdi_auto, (driver, id_race))
+        cur.execute(sql_find_car, (driver, id_race))
         # execute the SELECT statement
         result = cur.fetchall()
         if result:
             return None
         # execute the INSERT statement
-        cur.execute(sql_zapis_auto, (driver, id_race, departure, departure_date, offer_of_places_in_car, notes))
+        cur.execute(sql_insert_car, (driver, id_race, departure, departure_date, offer_of_places_in_car, notes))
         # get the generated id back
         id_ride = cur.fetchone()[0]
         # commit the changes to the database
@@ -210,20 +210,20 @@ def add_carpooling_offer(driver, id_race, departure, departure_date, offer_of_pl
 def get_carpool_offers_for_race(id_race):
     """ Returns carpooling offers for the given race. """
     
-    sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
-    volnych_mist, poznamky FROM
-    nabidka_spolujizdy as ns 
+    sql = """SELECT ns.id_ride, name, departure_place, departure_date, (carseats_offer - coalesce(sum_occupied_seats, 0)) as
+    free_seats, notes FROM
+    carpool_offer as ns 
     left join 
-        (select id_jizdy, sum(chci_mist) as sum_obsazena_mista from 
-        spolujezdci as s 
-        group by s.id_jizdy) as s
-    on ns.id_jizdy = s.id_jizdy
+        (select id_jizdy, sum(seats_wanted) as sum_occupied_seats from 
+        co_riders as s 
+        group by s.id_ride) as s
+    on ns.id_ride = s.id_ride
     left join
-		(select jmeno, id_uzivatele from
-		 uzivatele as u) as u
-	on ns.ridic = u.id_uzivatele
-     where (mist_auto_nabidka > sum_obsazena_mista or s.id_jizdy is null) AND id_zavod=%s
-     order by misto_odjezdu;
+		(select name, id_user from
+		 users as u) as u
+	on ns.driver = u.id_user
+     where (carseats_offer > sum_occupied_seats or s.id_ride is null) AND id_race=%s
+     order by departure_place;
      """
     conn = get_db()
     try:
@@ -242,19 +242,19 @@ def get_carpool_offers_for_race(id_race):
 def choose_carpool(id_ride):
     """ Chooses specific id of ride for carpool. """
 
-    sql = """SELECT ns.id_jizdy, ns.id_zavod, jmeno, misto_odjezdu, datum_odjezdu, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
-    volnych_mist, poznamky FROM
-    nabidka_spolujizdy as ns 
+    sql = """SELECT ns.id_ride, ns.id_race, name, departure_place, departure_date, (carseats_offer - coalesce(sum_occupied_seats, 0)) as
+    free_seats, notes FROM
+    carpool_offer as ns 
     left join 
-        (select id_jizdy, sum(chci_mist) as sum_obsazena_mista from 
-        spolujezdci as s 
-        group by s.id_jizdy) as s
-    on ns.id_jizdy = s.id_jizdy
+        (select id_ride, sum(seats_wanted) as sum_occupied_seats from 
+        co_drivers as s 
+        group by s.id_ride) as s
+    on ns.id_ride = s.id_ride
     left join
-		(select jmeno, id_uzivatele from
-		 uzivatele as u) as u
-	on ns.ridic = u.id_uzivatele
-            WHERE ns.id_jizdy=%s;"""
+		(select name, id_user from
+		 users as u) as u
+	on ns.driver = u.id_user
+            WHERE ns.id_ride=%s;"""
 
     conn = get_db()
     try:
@@ -273,15 +273,15 @@ def choose_carpool(id_ride):
 def find_count_of_seats(id_ride):
     """ Finds counts of seats for checking the count of asked places during the getting to car. """
 
-    sql = """SELECT ns.id_jizdy, (mist_auto_nabidka - coalesce(sum_obsazena_mista, 0)) as
-    volnych_mist FROM
-    nabidka_spolujizdy as ns 
+    sql = """SELECT ns.id_ride, (carseats_offer - coalesce(sum_occupied_seats, 0)) as
+    free_seats FROM
+    carpool_offer as ns 
     left join 
-        (select id_jizdy, sum(chci_mist) as sum_obsazena_mista from 
-        spolujezdci as s 
-        group by s.id_jizdy) as s
-    on ns.id_jizdy = s.id_jizdy
-            WHERE ns.id_jizdy=%s;"""
+        (select id_ride, sum(seats_wanted) as sum_occupied_seats from 
+        co_drivers as s 
+        group by s.id_ride) as s
+    on ns.id_ride = s.id_ride
+            WHERE ns.id_ride=%s;"""
 
     conn = get_db()
     try:
@@ -289,8 +289,8 @@ def find_count_of_seats(id_ride):
         # execute the SELECT statement
         cur.execute(sql, (id_ride,))
         # close communication with the database
-        volnych_mist = cur.fetchone().volnych_mist
-        return volnych_mist
+        free_seats = cur.fetchone().free_seats
+        return free_seats
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
@@ -301,11 +301,11 @@ def find_count_of_seats(id_ride):
 def board_car(id_ride, co_rider, places_wanted):
     """ Inserts co-rider(s) into a database."""
 
-    sql_zjisti = """SELECT * FROM spolujezdci
-                   WHERE id_jizdy = %s
-                   AND spolujezdec = %s"""
+    sql_find = """SELECT * FROM co_riders
+                   WHERE id_ride = %s
+                   AND co_rider = %s"""
 
-    sql_zapis = """INSERT INTO spolujezdci(id_jizdy, spolujezdec, chci_mist)
+    sql_insert = """INSERT INTO co_riders(id_ride, co_rider, seats_wanted)
                         VALUES(%s, %s, %s);"""
 
 
@@ -313,12 +313,12 @@ def board_car(id_ride, co_rider, places_wanted):
 
     try:
         cur = conn.cursor()
-        cur.execute(sql_zjisti, (id_ride, co_rider))
+        cur.execute(sql_find, (id_ride, co_rider))
         # execute the SELECT statement
-        vysledek = cur.fetchone()
-        if vysledek:
+        result = cur.fetchone()
+        if result:
             return False
-        cur.execute(sql_zapis, (id_ride, co_rider, places_wanted))
+        cur.execute(sql_insert, (id_ride, co_rider, places_wanted))
         conn.commit()
         # close communication with the database
         # return cur.fetchall()
@@ -333,17 +333,17 @@ def board_car(id_ride, co_rider, places_wanted):
 def confirmation_of_carpool(id_ride, co_rider):
     """ Finds a specific ride using id_ride and id_co_rider. """
 
-    sql = """SELECT ns.id_jizdy, jmeno, misto_odjezdu, datum_odjezdu, chci_mist, spolujezdec, poznamky FROM
-    nabidka_spolujizdy as ns 
+    sql = """SELECT ns.id_ride, name, departure_place, departure_date, seats_wanted, co_rider, notes FROM
+    carpool_offer as ns 
     left join 
-        (select id_jizdy, spolujezdec, chci_mist from 
-        spolujezdci as s) as s
-    on ns.id_jizdy = s.id_jizdy
+        (select id_ride, co_rider, seats_wanted from 
+        co_riders as s) as s
+    on ns.id_ride = s.id_ride
     left join
-		(select jmeno, id_uzivatele from
-		 uzivatele as u) as u
-	on ns.ridic = u.id_uzivatele
-            WHERE ns.id_jizdy=%s and spolujezdec=%s;"""
+		(select name, id_user from
+		 users as u) as u
+	on ns.driver = u.id_user
+            WHERE ns.id_ride=%s and co_rider=%s;"""
 
     conn = get_db()
     try:
@@ -363,9 +363,9 @@ def confirmation_of_carpool(id_ride, co_rider):
 def change_password(password, id_user):
     """ Changes the user´s password in database. """
 
-    sql = """UPDATE uzivatele
-            SET heslo = %s 
-            WHERE id_uzivatele = %s;"""
+    sql = """UPDATE users
+            SET password = %s 
+            WHERE id_user = %s;"""
     conn = get_db()
     password = hash_password(password)
 
