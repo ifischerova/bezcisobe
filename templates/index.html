@@ -19,18 +19,18 @@
 </head>
 <!-- Beginning of the body of the page. everything between <body> and </body> is displayed as a content of the page.//-->
 <body>
-    <div class="container container_telo rounded">
+    <div class="container container_body rounded">
 
     
-    <div class="hlavicka">
-        						 <div class="nadpis h1">
+    <div class="header">
+        						 <div class="title h1">
 								 <h1>BĚŽCI SOBĚ</h1>
 						 </div>
-						 <img class="bezec" src="{{ url_for('static', filename='runner_icon.png') }}" >
+						 <img class="runner" src="{{ url_for('static', filename='runner_icon.png') }}" >
 						 <p> Naše appka slouží všem běžcům, kteří nemají problém dojet za závodem přes půl republiky, ale mají občas potíže, jak se tam dopravit.</p>
 						 <p>Jestli řešíš to stejné, neváhej se tu zaregistrovat a najít si spolujízdu.</p>
 		</div>
-	<div class="tlacitka">
+	<div class="buttons">
         <a href="{{ url_for('races_bp.show_races') }}" class="btn btn-default">
 			ZÁVODY
 		</a>

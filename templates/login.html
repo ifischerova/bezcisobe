@@ -5,12 +5,12 @@
     <form method="POST" action="{{ url_for('login_bp.login') }}">
 
 <div>
-		<p class="zarovnani">
+		<p class="alignment">
 	Zadej prosím svůj email a heslo.
 	</p>
 </div>
 
-<div class="formular">
+<div class="form">
 <div class="form-group row">
 
 		<label for="email" class="col-sm-2 col-form-label">E-mail*:</label>
@@ -31,7 +31,7 @@
 
 
 <div>
-		<p class="tlacitka">
+		<p class="buttons">
 				<input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
 				<input type=hidden value="{{ next or '' }}" name=next>
             <a href="{{ url_for('registration_bp.show_registration') }}" class="btn btn-default">

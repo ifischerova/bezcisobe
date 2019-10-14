@@ -4,7 +4,7 @@ body{
 min-height:100vh;
 }
 
-.container_telo{
+.container_body{
 	background-color:#d2ed9e;
 	padding-bottom:50px;
 	min-height:calc(100vh - 75px);
@@ -26,23 +26,23 @@ min-height:100vh;
 .btn:hover{
 	color:#344F00;
 }
-.tlacitka .btn{
+.buttons .btn{
 	width: 250px;
 }
 
-.tlacitka_login{
+.login_buttons{
 	float:right;
 }
-.tlacitko_login{
+.login_button{
 	display:inline-block;
 }
 
-.tlacitko_login .btn{
+.login_button .btn{
 	align-content: flex-end;
 	padding: 5px 20px;
 }
 
-.nadpis h1{
+.title h1{
 	font-size: 48px; 
 	color: #344F00; 
 	font-weight: bold;
@@ -52,22 +52,22 @@ min-height:100vh;
 	margin:40px;
 }
 
-.bezec{
+.runner{
 	margin: 3em;
 }
-.hlavicka{
+.header{
 	text-align: center;
 }
 
-.tabulka .btn {
+.table .btn {
 	margin:0;
 	display:inline-block;
 }
 
-.kontakty{
+.contacts{
 	text-align: center;
 }
-.kontakty h2{
+.contacts h2{
 	margin: 40px 0 10px 0;
 	font-size:36px;
 	color:#344F00;
@@ -75,10 +75,10 @@ min-height:100vh;
 	font-family: "Helvetica";
 }
 
-.obrazky{
+.images{
 	float: left;
 }
-.zarovnani{
+.alignment{
 	text-align: center;
 	font-weight: bold;
 	font-family:"Helvetica";
@@ -86,7 +86,7 @@ min-height:100vh;
 	padding-bottom:20px;
 }
 
-.zarovnani1{
+.alignment_1{
 	text-align: center;
 	font-weight: bold;
 	font-family:"Helvetica";
@@ -95,7 +95,7 @@ min-height:100vh;
 	padding-bottom:40px;
 }
 
-.zarovnani .col-sm-2{
+.alignment .col-sm-2{
 	text-align: center;
 	margin: auto;
 	font-family:"Helvetica";
@@ -105,7 +105,7 @@ min-height:100vh;
 	display: inline-block;
 }
 
-.formular{
+.form{
 	text-align: left;
 	font-weight: bold;
 	font-family:"Helvetica";
@@ -113,16 +113,16 @@ min-height:100vh;
 	margin:auto;
 }
 
-.kontakt img {
+.contact img {
 	width:300px;
 	float:left;
 	margin-right:20px;
 }
-.kontakt{
+.contact{
 	margin-bottom:20px;
 }
 
-.zahlavitabulky{
+.table_header{
 	background-color: #d5e1df;
 	margin: auto;
 	font-family:"Helvetica";
@@ -132,18 +132,18 @@ min-height:100vh;
 	padding:20px;
 }
 
-.tabulka{
+.table{
 	margin:auto;
 	max-width:700px;
 	text-align:center;
 	padding-bottom:60px;
 	padding-top:30px;
 }
-.tabulka td, .tabulka th{
+.table td, .table th{
 	vertical-align:middle;
 }
 
-.lista{
+.slider{
 	margin:auto;
 	font-family:"Helvetica";
 	font-size: 1em;
@@ -152,11 +152,11 @@ min-height:100vh;
 	padding-bottom:40px;
 }
 
-.lista select{
+.slider select{
 	max-width:600px;
 }
 
-.lista-zarovnani{
+.slider_alignment{
 	text-align: center;
 	font-weight: bold;
 	font-family:"Helvetica";
@@ -166,14 +166,14 @@ min-height:100vh;
 	max-width: 1000px;
 }
 
-.odkaz{
+.link{
 	color:#344F00;
 }
 
-.popis{
+.description{
 	padding-top:50px;
 }
 
-.popis h3{
+.description h3{
 	color:#344F00;
 }

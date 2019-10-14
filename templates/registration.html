@@ -3,7 +3,7 @@
 {% block title %}REGISTRAČNÍ FORMULÁŘ{% endblock %}
 {% block body %}
 
-<div class="formular">
+<div class="form">
 <form method="POST" action="{{ url_for('registration_bp.add_new_user') }}">
   {{form.csrf_token}}
 
@@ -16,7 +16,7 @@
   {{ render_field(form.phone) }}
   {{ render_field(form.password) }}
   {{ render_field(form.confirm_password) }}
-  <div class="hlavicka">
+  <div class="header">
     {{form.gdpr.label}}
     {{form.gdpr(class="form-control form-control-sm")}}
   </div>
@@ -27,7 +27,7 @@
   {%endif%}
 
   <div>
-    <p class="tlacitka">
+    <p class="buttons">
       <input tabindex=1 type="submit" value="Odeslat" class="btn btn-default">
     </p>
   </div>

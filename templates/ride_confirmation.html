@@ -2,15 +2,15 @@
 {% block title %}POTVRZENÍ JÍZDY{% endblock %}
 {% block body %}
 
-<div class="zarovnani">
+<div class="alignment">
 		Potvrď prosím svoji volbu spolujízdy na závod.
 </div>
 
 <form method="POST" action="{{ url_for('ride_confirmation_bp.confirm_ride') }}">
 
-<div class="tabulka">
+<div class="table">
 	<table class="table table-bordered table-sm">
-		 <thead class="zahlavitabulky">
+		 <thead class="table_header">
 			 <tr>
 				 <th scope="col">Řidič/ka</th>
 				 <th scope="col">Odjíždí z</th>
@@ -39,13 +39,13 @@
 <input type="hidden" id="id_ride" name="id_ride" value="{{ values.id_ride }}">
 <input type="hidden" id="id_race" name="id_race" value="{{ values.id_race }}">
 <div>
-		<p class="tlacitka">
+		<p class="buttons">
 			<input tabindex=1 type="submit" value="POTVRZUJI" class="btn btn-default">
 		</p>
 </div>
 </form>
 
-<div class="tlacitka">
+<div class="buttons">
 	<a href="{{ url_for('races_bp.show_races') }}" class="btn btn-default">
 			CHCI JET JINAK
 		</a>

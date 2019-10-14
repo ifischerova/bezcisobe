@@ -3,13 +3,13 @@
 {% block body %}
 
 
-<div class="zarovnani">
+<div class="alignment">
 	Nejprve prosím zkontroluj závod, ke kterému chceš nabídnout auto.
 </div>
 
 <form method="POST" action="{{ url_for('add_new_car_bp.add_new_car') }}">
 
-<div class="lista">
+<div class="slider">
 		<select name="id_race">
 				<option value="">Vyber si závod.</option>
 				{% for race in races %}
@@ -20,11 +20,11 @@
 		</select>
 </div>
 
-<div class="zarovnani">
+<div class="alignment">
 		Vyplň prosím všechny kolonky.
 	</div>
 
-<div class="formular">
+<div class="form">
 <div class="form-group row">
 	
 		<label for="departure" class="col-sm-2 col-form-label">Místo odjezdu:</label>
@@ -58,7 +58,7 @@
 
 <input type="hidden" name="id_race" value="{{ values.id_race }}">
 
-<p class="tlacitka">
+<p class="buttons">
 		<input tabindex=1 type="submit" value="PŘIDAT AUTO" class="btn btn-default">
 </p>
 
