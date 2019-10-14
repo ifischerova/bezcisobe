@@ -32,33 +32,33 @@
 					 alt="">
 					BĚŽCI SOBĚ
 				</a>
-				<div class="tlacitka_login">
+				<div class="login_buttons">
 					{% if current_user.is_authenticated %}
-					<div class="tlacitko_login">
+					<div class="login_button">
 						<div class="btn btn-default">{{ current_user.jmeno }} {{ current_user.prijmeni }}</div>
 					</div>
 	
-					<div class="tlacitko_login">
+					<div class="login_button">
                         <a href="{{ url_for('login_bp.logout') }}" class="btn btn-default btn-sm">
 							Odhlásit</a>
 					</div>
 					{% endif %}
 	
 					{% if not current_user.is_authenticated %}
-					<div class="tlacitko_login">
+					<div class="login_button">
                         <a href="{{ url_for('login_bp.login') }}" class="btn btn-default">Přihlásit se</a>
 					</div>
 	
-					<div class="tlacitko_login">
+					<div class="login_button">
                         <a href="{{ url_for('registration_bp.show_registration') }}" class="btn btn-default">Registrovat
                             se</a>
 					</div>
 					{% endif %}
 				</div>
 			</nav>
-	<div class="container container_telo rounded">
+	<div class="container container_body rounded">
 		
-		<div class="nadpis h1">
+		<div class="title h1">
 			<h1>{% block title %}{% endblock %}</h1>
 		</div>
 

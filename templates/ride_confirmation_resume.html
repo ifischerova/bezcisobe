@@ -5,9 +5,9 @@
 
 <form method="POST" action="{{ url_for('ride_confirmation_bp.show_confirmation') }}">
 
-<div class="tabulka">
+<div class="table">
 	<table class="table table-bordered table-sm">
-		 <thead class="zahlavitabulky">
+		 <thead class="table_header">
 			 <tr>
 				 <th scope="col">Řidič/ka</th>
 				 <th scope="col">Odjíždí z</th>
@@ -27,7 +27,7 @@
 		 </tbody>
 	 </table>
 </div>
-<div class="tlacitka">
+<div class="buttons">
 	<a href="{{ url_for('races_bp.show_races') }}"  class="btn btn-default">
 		OK
 	</a>

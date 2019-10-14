@@ -9,7 +9,7 @@
 
 <form method="GET" action="{{ url_for('add_new_car_bp.show_add_new_car_form') }}">
 
-	<div class="zarovnani">
+	<div class="alignment">
 		<p>Vyber si datum závodu a následně konkrétní závod pro daný den.</p>
 		<p>Nebo si rovnou vyber z kompletního seznamu závodů.</p>
 			<div class="col-sm-2">
@@ -18,14 +18,14 @@
 			</div>
 	</div>
 
-	<div class="tlacitka">
+	<div class="buttons">
 		<a href="#" class="btn btn-default" onclick="javascript:location.href='/zavody/?datum_zavodu='+document.getElementById('date').value">
 			VYBRAT DATUM
 		</a>
 	</div>
 
-	<div class="zarovnani">
-		<div class="lista">
+	<div class="alignment">
+		<div class="slider">
 			<select name="id_race" onchange="javascript:location.href='/zavody/?id_zavod='+this.value">
 				<option value="">Vyber si závod.</option>
 				{% for race in races %}
@@ -37,9 +37,9 @@
 		</div>
 	</div>
 	{% if id_chosen > 0 and carpool_offer %}
-	<div class="tabulka">
+	<div class="table">
 		<table class="table table-bordered table-sm">
-			<thead class="zahlavitabulky">
+			<thead class="table_header">
 				<tr>
 					<th scope="col">Řidič/ka</th>
 					<th scope="col">Odjíždí z</th>
@@ -71,14 +71,14 @@
 	</div>
 
 	{% elif id_chosen > 0 %}
-	<p class="zarovnani1">Je nám líto. Na tento závod není aktuálně k dispozici žádné volné auto. <br>Můžeš ho sem přidat,
+	<p class="alignment_1">Je nám líto. Na tento závod není aktuálně k dispozici žádné volné auto. <br>Můžeš ho sem přidat,
 		anebo se vrátit později.</p>
 	{% endif %}
 
 
 
 	</p>
-	<div class="tlacitka">
+	<div class="buttons">
 		<input tabindex=1 type="submit" value="PŘIDAT AUTO K ZÁVODU" class="btn btn-default">
 
 
