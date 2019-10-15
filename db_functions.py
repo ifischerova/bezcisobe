@@ -24,9 +24,9 @@ def get_db():
     """ Connection with database. """
 
     if not hasattr(g, 'db') or g.db.closed == 1:
-		# https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
+    # https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
         database_url = os.environ["DATABASE_URL"]
-    #database_url = os.environ["DATABASE_URL"]
+    # database_url = os.environ["DATABASE_URL"]
         con = psycopg2.connect(database_url, sslmode='require', cursor_factory=psycopg2.extras.NamedTupleCursor)
         g.db = con
     return g.db
@@ -35,7 +35,7 @@ def get_db():
 def get_races():
     """ Returns list of get_races in decreasing order by date. """
 
-    sql = """SELECT * FROM races ORDER BY date_race DESC"""
+    sql = """SELECT id_race, date_race, place_race, latitude, longitude, name_race FROM races ORDER BY date_race DESC"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql)
@@ -57,12 +57,11 @@ def get_race(id_race):
 def get_ride_confirmation_details(id_ride):
     """ Returns name of driver, place of departure, date of departure, email and phone into an email with confirmation of the boarding to the car. """
 
-    sql = """SELECT id_user, name, phone, email, ns.driver, ns.departure_place, ns.departure_date, ns.id_ride from users as u
-    left join (select driver, departure_place, departure_date, id_ride from carpool_offer as ns) as ns
-    on u.id_user = ns.driver WHERE id_ride= %s"""
+    sql = """SELECT u.id_user, u.name, u.phone, u.email, co.driver, co.departure_place, co.departure_date, co.id_ride FROM users AS u LEFT JOIN 
+             (SELECT co.driver, co.departure_place, co.departure_date, co.id_ride FROM carpool_offer AS co) AS co ON u.id_user = co.driver WHERE id_ride = %s"""
     conn = get_db()
     cur = conn.cursor()
-    cur.execute(sql, (int(id_ride), ))
+    cur.execute(sql, (int(id_ride),))
     data = cur.fetchone()
     return data
 
@@ -70,7 +69,7 @@ def get_ride_confirmation_details(id_ride):
 def get_ride_driver(id_ride):
     """ Returns email of driver for a email field, that is sended to the driver at moment of confirmation of the boarding to his/her offered car."""
 
-    sql = """SELECT id_user, email, ns.driver from users as u left join (select ns.driver, id_ride from carpool_offer as ns) as ns on ns.driver = u.id_user WHERE id_ride = %s"""
+    sql = """SELECT u.id_user, u.email, co.driver FROM users AS u LEFT JOIN (SELECT co.driver, co.id_ride FROM carpool_offer AS co) AS co ON co.driver = u.id_user WHERE id_ride = %s"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql, (int(id_ride), ))
@@ -103,9 +102,7 @@ def get_gps(street, postcode):
 def add_user(name, surname, street, city, postcode, email, phone, password, password_confirmation):
     """ Inserts new user into database. """
 
-    sql = """INSERT INTO users
-            (name, surname, street, city, postcode, email, phone, password, latitude, longitude)
-             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_user;"""
+    sql = """INSERT INTO users (name, surname, street, city, postcode, email, phone, password, latitude, longitude) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_user;"""
     conn = get_db()
     id_user = None
     latitude, longitude = get_gps(street, postcode)
@@ -132,7 +129,7 @@ def add_user(name, surname, street, city, postcode, email, phone, password, pass
 def find_user(email):
     """ Finds user in the database. """
 
-    sql = """SELECT id_user, name, surname, email, password, phone FROM users WHERE lower(email)=%s;"""
+    sql = """SELECT id_user, name, surname, email, password, phone FROM users WHERE lower(email) = %s;"""
     conn = get_db()
 
     user = None
@@ -157,7 +154,7 @@ def find_user(email):
 def car_exists(driver, id_race):
     """ Looks into database if the driver is not added for given race. """
 
-    sql_find_car = """SELECT * from carpool_offer WHERE driver = %s and id_ride = %s;"""
+    sql_find_car = """SELECT id_ride, driver, id_place, departure_place, departure_date, craseats_offer, notes FROM carpool_offer WHERE driver = %s AND id_ride = %s;"""
 
     conn = get_db()
     
@@ -176,10 +173,9 @@ def car_exists(driver, id_race):
 def add_carpooling_offer(driver, id_race, departure, departure_date, offer_of_places_in_car, notes):
     """ Adding a new car with a driver into database. """
 
-    sql_find_car = """SELECT * from carpool_offer WHERE driver = %s and id_race = %s;"""
+    sql_find_car = """SELECT id_ride, driver, id_place, departure_place, departure_date, craseats_offer, notes FROM carpool_offer WHERE driver = %s AND id_race = %s;"""
 
-    sql_insert_car = """INSERT INTO carpool_offer(driver, id_race, departure_place, departure_date, carseats_offer, notes)
-             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_ride; """
+    sql_insert_car = """INSERT INTO carpool_offer(driver, id_race, departure_place, departure_date, carseats_offer, notes) VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_ride; """
 
     conn = get_db()
     id_ride = None
@@ -210,21 +206,10 @@ def add_carpooling_offer(driver, id_race, departure, departure_date, offer_of_pl
 def get_carpool_offers_for_race(id_race):
     """ Returns carpooling offers for the given race. """
     
-    sql = """SELECT ns.id_ride, name, departure_place, departure_date, (carseats_offer - coalesce(sum_occupied_seats, 0)) as
-    free_seats, notes FROM
-    carpool_offer as ns 
-    left join 
-        (select id_jizdy, sum(seats_wanted) as sum_occupied_seats from 
-        co_riders as s 
-        group by s.id_ride) as s
-    on ns.id_ride = s.id_ride
-    left join
-		(select name, id_user from
-		 users as u) as u
-	on ns.driver = u.id_user
-     where (carseats_offer > sum_occupied_seats or s.id_ride is null) AND id_race=%s
-     order by departure_place;
-     """
+    sql = """ SELECT co.id_ride, co.name, co.departure_place, co.departure_date, (carseats_offer - coalesce(sum_occupied_seats, 0)) AS co.free_seats, co.notes FROM
+              carpool_offer AS co LEFT JOIN (SELECT c.id_ride, sum(c.seats_wanted) AS sum_occupied_seats FROM co_riders AS c GROUP BY c.id_ride) AS c ON 
+              co.id_ride = c.id_ride LEFT JOIN (SELECT NAME, u.id_user FROM users AS u) AS u ON co.driver = u.id_user WHERE (carseats_offer > sum_occupied_seats 
+              OR c.id_ride IS NULL) AND id_race = %s ORDER BY departure_place; """
     conn = get_db()
     try:
         cur = conn.cursor()
@@ -242,19 +227,9 @@ def get_carpool_offers_for_race(id_race):
 def choose_carpool(id_ride):
     """ Chooses specific id of ride for carpool. """
 
-    sql = """SELECT ns.id_ride, ns.id_race, name, departure_place, departure_date, (carseats_offer - coalesce(sum_occupied_seats, 0)) as
-    free_seats, notes FROM
-    carpool_offer as ns 
-    left join 
-        (select id_ride, sum(seats_wanted) as sum_occupied_seats from 
-        co_drivers as s 
-        group by s.id_ride) as s
-    on ns.id_ride = s.id_ride
-    left join
-		(select name, id_user from
-		 users as u) as u
-	on ns.driver = u.id_user
-            WHERE ns.id_ride=%s;"""
+    sql = """SELECT co.id_ride, co.id_race, co.name, co.departure_place, co.departure_date, (co.carseats_offer - coalesce(sum_occupied_seats, 0)) AS co.free_seats, co.notes FROM
+             carpool_offer AS co LEFT JOIN (SELECT c.id_ride, sum(c.seats_wanted) AS sum_occupied_seats FROM co_drivers AS c GROUP BY c.id_ride) AS c ON co.id_ride 
+             = c.id_ride LEFT JOIN (SELECT NAME, u.id_user FROM u.users AS u) AS u ON co.driver = u.id_user WHERE co.id_ride = %s;"""
 
     conn = get_db()
     try:
@@ -273,15 +248,8 @@ def choose_carpool(id_ride):
 def find_count_of_seats(id_ride):
     """ Finds counts of seats for checking the count of asked places during the getting to car. """
 
-    sql = """SELECT ns.id_ride, (carseats_offer - coalesce(sum_occupied_seats, 0)) as
-    free_seats FROM
-    carpool_offer as ns 
-    left join 
-        (select id_ride, sum(seats_wanted) as sum_occupied_seats from 
-        co_drivers as s 
-        group by s.id_ride) as s
-    on ns.id_ride = s.id_ride
-            WHERE ns.id_ride=%s;"""
+    sql = """SELECT co.id_ride, (co.carseats_offer - coalesce(sum_occupied_seats, 0)) AS co.free_seats FROM carpool_offer AS co LEFT JOIN (SELECT c.id_ride, sum(c.seats_wanted)
+             AS sum_occupied_seats FROM co_drivers AS c GROUP BY c.id_ride) AS c ON co.id_ride = c.id_ride WHERE co.id_ride = %s;"""
 
     conn = get_db()
     try:
@@ -301,13 +269,9 @@ def find_count_of_seats(id_ride):
 def board_car(id_ride, co_rider, places_wanted):
     """ Inserts co-rider(s) into a database."""
 
-    sql_find = """SELECT * FROM co_riders
-                   WHERE id_ride = %s
-                   AND co_rider = %s"""
+    sql_find = """SELECT id_ride, co_rider, seats_wanted FROM co_riders WHERE id_ride = %s AND co_rider = %s"""
 
-    sql_insert = """INSERT INTO co_riders(id_ride, co_rider, seats_wanted)
-                        VALUES(%s, %s, %s);"""
-
+    sql_insert = """INSERT INTO co_riders(id_ride, co_rider, seats_wanted) VALUES(%s, %s, %s);"""
 
     conn = get_db()
 
@@ -333,17 +297,8 @@ def board_car(id_ride, co_rider, places_wanted):
 def confirmation_of_carpool(id_ride, co_rider):
     """ Finds a specific ride using id_ride and id_co_rider. """
 
-    sql = """SELECT ns.id_ride, name, departure_place, departure_date, seats_wanted, co_rider, notes FROM
-    carpool_offer as ns 
-    left join 
-        (select id_ride, co_rider, seats_wanted from 
-        co_riders as s) as s
-    on ns.id_ride = s.id_ride
-    left join
-		(select name, id_user from
-		 users as u) as u
-	on ns.driver = u.id_user
-            WHERE ns.id_ride=%s and co_rider=%s;"""
+    sql = """SELECT co.id_ride, co.name, co.departure_place, co.departure_date, c.seats_wanted, c.co_rider, c.notes FROM carpool_offer AS co LEFT JOIN (SELECT c.id_ride, c.co_rider, c.seats_wanted FROM 
+             co_riders AS c) AS c ON co.id_ride = c.id_ride LEFT JOIN (SELECT NAME, u.id_user FROM users AS u) AS u ON co.driver = u.id_user WHERE co.id_ride = %s AND c.co_rider = %s;"""
 
     conn = get_db()
     try:
@@ -363,9 +318,7 @@ def confirmation_of_carpool(id_ride, co_rider):
 def change_password(password, id_user):
     """ Changes the user´s password in database. """
 
-    sql = """UPDATE users
-            SET password = %s 
-            WHERE id_user = %s;"""
+    sql = """UPDATE users SET password = %s WHERE id_user = %s;"""
     conn = get_db()
     password = hash_password(password)
 
