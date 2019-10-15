@@ -33,14 +33,14 @@ def email_new_added_car(user, id_race):
 	date = race.datum_zavodu.strftime('%d.%m.%Y')
 	place = race.misto_zavodu
 	subject = "Potvrzení o zadání nabídky spolujízdy na závod"
-	text = f"""Ahoj!
+	text = """Ahoj!
 
 	Právě jsi na bezcisobe.cz nabídl/a spolujízdu na následující akci: {date} {name_of_race} {place}. 
 
 	Super!
 
 	Přeji prima společnou jízdu a skvělý sportovní zážitek!
-	Ivka z Běžci Sobě"""
+	Ivka z Běžci Sobě""".format(date=date, name_of_race=name_of_race,place=place)
 
 	send_email(email, subject, text)
 
@@ -59,7 +59,7 @@ def email_board_on_car(user, id_race, id_ride):
 	date_of_departure = driver.datum_odjezdu.strftime('%d.%m.%Y')
 	subject = "Jedete spolu!"
 	
-	text = f"""Ahoj!
+	text = """Ahoj!
 
 	Právě jsi na bezcisobe.cz potvrdil/a, že chceš jet na {date} {name_of_race} {place_of_race} s {chauffeur}. Odjizdite z {departure} v terminu {date_of_departure}.
 
@@ -68,7 +68,7 @@ def email_board_on_car(user, id_race, id_ride):
  	* mail: {email_driver}
 
 	Skvělý zážitek přeji!
-	Ivka z Běžci Sobě"""
+	Ivka z Běžci Sobě""".format(date=date, name_of_race=name_of_race, place_of_race=place_of_race, chauffeur=chauffeur, departure=departure, date_of_departure=date_of_departure, mobile_phone=mobile_phone, email_driver=email_driver)
 
 	send_email(email, subject, text)
 
@@ -85,7 +85,7 @@ def email_to_carpool_driver(user, id_race, id_ride):
 	mobilephone_user = user.telefon #signed user´s phone who confirmed boarding on car
 	subject = "Jedete spolu!"
 
-	text = f"""Ahoj!
+	text = """Ahoj!
 
 	{co_driver_name} si Tě právě na bezcisobe.cz vybral/a jako svého řidiče na {date} {name_of_race} {place}.
 
@@ -96,7 +96,7 @@ def email_to_carpool_driver(user, id_race, id_ride):
 	Doladění detailů už je na vás:)
 
 	Skvělý zážitek přeji!
-	Ivka z Běžci Sobě"""
+	Ivka z Běžci Sobě""".format(co_driver_name=co_driver_name, date=date, name_of_race=name_of_race, place=place, mobilephone_user=mobilephone_user, email_user=email_user)
 
 	send_email(driver.email, subject, text)
 
@@ -106,14 +106,14 @@ def email_about_reseting_the_password(user, password_reset_url):
 	email = user.id
 	#password_reset_url = ???
 	subject = "Žádost o obnovu hesla na Běžci Sobě"
-	text = f"""Ahoj!
+	text = """Ahoj!
 
 	Právě jsi na Běžci sobě požádal/a o obnovení zapomenutého hesla.
 
 	Klikni, prosím, na následující link a heslo si resetuj.
 
-	{ password_reset_url }
+	{password_reset_url}
 
-	Petra z Běžci Sobě"""
+	Petra z Běžci Sobě""".format(password_reset_url=password_reset_url)
 
 	send_email(email, subject, text)
