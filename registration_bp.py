@@ -38,7 +38,7 @@ def show_registration():
     if user.is_authenticated:
         flash('Už jsi přihlášen.', "danger")
         return redirect(url_for('races_bp.show_races'))
-    return render_template('registrace.html', values={}, form=form)
+    return render_template('registration.html', values={}, form=form)
 
 
 @blueprint.route('/registrace', methods=['POST', 'GET'])
@@ -53,7 +53,7 @@ def add_new_user():
 
         if not form.password.data == form.confirm_password.data:
             flash('Hesla se neshodují.', "danger")
-            return render_template("registrace.html", form=form)
+            return render_template("registration.html", form=form)
 
         id_user = db_functions.add_user(
             form.username.data,
@@ -73,6 +73,6 @@ def add_new_user():
         else:
             flash(
                 'Mrzí nás to, ale registrace se nepovedla. Dej nám pár minut a zkus to znovu.', "danger")
-            return render_template("registrace.html", form=form)
+            return render_template("registration.html", form=form)
     else:
-        return render_template("registrace.html", form=form)
+        return render_template("registration.html", form=form)

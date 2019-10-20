@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}POTVRZENÍ JÍZDY{% endblock %}
+{% block body %}
+
+<div class="alignment">
+		Potvrď prosím svoji volbu spolujízdy na závod.
+</div>
+
+<form method="POST" action="{{ url_for('ride_confirmation_bp.confirm_ride') }}">
+
+<div class="table">
+	<table class="table table-bordered table-sm">
+		 <thead class="table_header">
+			 <tr>
+				 <th scope="col">Řidič/ka</th>
+				 <th scope="col">Odjíždí z</th>
+				 <th scope="col">Odjíždí dne</th>
+				 <th scope="col">Volná místa v autě</th>
+				 <th scope="col">Rezervuji míst</th>
+				 <th scope="col">Poznámky</th>
+			 </tr>
+		 </thead>
+		 <tbody>
+			<tr>
+				<th scope="row">{{ values.name }}</th>
+				<td>{{ values.departure_place }}</td>
+				<td>{{ values.departure_date.strftime('%d. %m. %Y') }}</td>
+				<td>{{ values.free_seats }}</td>
+				<td><input type="number" class="form-control form-control-sm" name="wanted_seats" required id="wanted_seats" value=""></td>
+				{% if values.notes %}
+				<td>{{ values.notesy }}</td>
+				{% else %}
+				<td></td>
+				{% endif %}
+			 </tr>
+		 </tbody>
+	 </table>
+</div>
+<input type="hidden" id="id_ride" name="id_ride" value="{{ values.id_ride }}">
+<input type="hidden" id="id_race" name="id_race" value="{{ values.id_race }}">
+<div>
+		<p class="buttons">
+			<input tabindex=1 type="submit" value="POTVRZUJI" class="btn btn-default">
+		</p>
+</div>
+</form>
+
+<div class="buttons">
+	<a href="{{ url_for('races_bp.show_races') }}" class="btn btn-default">
+			CHCI JET JINAK
+		</a>
+</div>
+{% endblock %}

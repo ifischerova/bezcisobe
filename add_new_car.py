@@ -23,11 +23,11 @@ def show_add_new_car_form(id_race):
 			result = db_functions.car_exists(user.db_id, id_race)
 			if result:
 				flash('Na tento závod už auto nabízíš;)', "error")
-				return render_template('newautoinput.html', zavody=races, id_vybraneho=int(id_race), values={})
+				return render_template('add_new_car.html', races=races, id_chosen=int(id_race), values={})
 			else: 
-				return render_template('newautoinput.html', zavody=races, id_vybraneho=int(id_race), values={})
+				return render_template('add_new_car.html', races=races, id_chosen=int(id_race), values={})
 		else:
-			return render_template('newautoinput.html', zavody=races, id_vybraneho=0, values={})
+			return render_template('add_new_car.html', races=races, id_chosen=0, values={})
 	else:
 		flash('Abys mohl/a přidat auto, musíš se nejdřív přihlásit.', "danger")
 		return render_template('login.html')
@@ -52,7 +52,7 @@ def add_new_car():
 	if id_race:
 		email_functions.email_new_added_car(user, result.get("id_zavod"))
 		flash ('Hotovo! Auto jsme přidali do nabídky spolujízdy na závod a je zpřístupněno zájemcům:) Potvrzení najdeš i ve svém mailu.', 'success')
-		return render_template('races.html', zavody=races, id_vybraneho=0)
+		return render_template('races.html', races=races, id_chosen=0)
 	else:
 		flash('Na tento závod už auto nabízíš.', "danger")
-		return render_template('newautoinput.html', zavody=races, values=result)
+		return render_template('add_new_car.html', races=races, values=result)

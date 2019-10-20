@@ -13,7 +13,7 @@ import login_bp
 
 import password_renewal_bp
 
-import addnewcar_bp
+import add_new_car
 
 import ride_confirmation_bp
 
@@ -39,7 +39,7 @@ bezciSobe.register_blueprint(about_us_bp.blueprint)
 bezciSobe.register_blueprint(registration_bp.blueprint)
 bezciSobe.register_blueprint(login_bp.blueprint)
 bezciSobe.register_blueprint(password_renewal_bp.blueprint)
-bezciSobe.register_blueprint(addnewcar_bp.blueprint)
+bezciSobe.register_blueprint(add_new_car.blueprint)
 bezciSobe.register_blueprint(ride_confirmation_bp.blueprint)
 
 
