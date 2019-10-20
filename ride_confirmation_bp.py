@@ -23,7 +23,6 @@ def confirm_ride():
 	chosen = db_functions.choose_carpool(request.form.get("id_jizdy"))
 	id_race = request.form.get("id_zavod")
 	id_ride = request.form.get("id_jizdy")
-
 	free_seats = db_functions.find_count_of_seats(int(request.form.get("id_jizdy")))
 	if int(request.form.get("chci_mist")) > int(free_seats):
 		flash('Bohužel chceš víc míst, než kolik jich je volných.', "danger")
