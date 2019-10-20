@@ -14,7 +14,7 @@
 				<option value="">Vyber si závod.</option>
 				{% for race in races %}
 				<option value="{{ race.id_race }}" {% if race.id_race == id_chosen %}selected{% endif %}>
-						{{ race.race_date.strftime("%d. %m. %Y") + ": " + race.name + ", " + race.race_place}}
+						{{ race.date_race.strftime("%d. %m. %Y") + ": " + race.name_race + ", " + race.place_race}}
 				</option>
 				{% endfor %}
 		</select>

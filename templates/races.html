@@ -19,18 +19,18 @@
 	</div>
 
 	<div class="buttons">
-		<a href="#" class="btn btn-default" onclick="javascript:location.href='/zavody/?datum_zavodu='+document.getElementById('date').value">
+		<a href="#" class="btn btn-default" onclick="javascript:location.href='/zavody/?race_date='+document.getElementById('date').value">
 			VYBRAT DATUM
 		</a>
 	</div>
 
 	<div class="alignment">
 		<div class="slider">
-			<select name="id_race" onchange="javascript:location.href='/zavody/?id_zavod='+this.value">
+			<select name="id_race" onchange="javascript:location.href='/zavody/?id_race='+this.value+'&race_date='+document.getElementById('date').value">
 				<option value="">Vyber si závod.</option>
 				{% for race in races %}
 				<option value="{{ race.id_race }}" {% if race.id_race==id_chosen %}selected{% endif %}>
-					{{ race.race_date.strftime("%d. %m. %Y") + ": " + race.name + ", " + race.race_place}}
+					{{ race.date_race.strftime("%d. %m. %Y") + ": " + race.name_race + ", " + race.place_race}}
 				</option>
 				{% endfor %}
 			</select>

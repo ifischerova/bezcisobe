@@ -4,7 +4,7 @@ import db_functions
 import email_functions
 
 
-blueprint = Blueprint('addnewcar_bp', __name__)
+blueprint = Blueprint('add_new_car_bp', __name__)
 
 
 @blueprint.route('/noveauto', defaults={'id_race': 0})
@@ -12,7 +12,7 @@ blueprint = Blueprint('addnewcar_bp', __name__)
 def show_add_new_car_form(id_race):
 	races = db_functions.get_races()
 	variable = request.args
-	id_race = variable.get('id_zavod')
+	id_race = variable.get('id_race')
 	if not id_race:
 		id_race = 0
 	# print(id_zavod)
@@ -37,21 +37,21 @@ def show_add_new_car_form(id_race):
 def add_new_car():
 	result = request.form
 	races = db_functions.get_races()
-	id_zavod = int(result.get('id_zavod'))
+	id_race = int(result.get('id_race'))
 
 	user = current_user
 
-	id_race = db_functions.add_carpooling_offer(
+	id_ride = db_functions.add_carpooling_offer(
 		user.db_id,
-		result.get("id_zavod"),
-		result.get("misto_odjezdu"),
-		result.get("datum_odjezdu"),
-		result.get("mist_auto_nabidka"),
-		result.get("poznamky")
+		result.get("id_race"),
+		result.get("departure_place"),
+		result.get("departure_date"),
+		result.get("number_of_seats_offer"),
+		result.get("notes")
 	)
-	if id_race:
-		email_functions.email_new_added_car(user, result.get("id_zavod"))
-		flash ('Hotovo! Auto jsme přidali do nabídky spolujízdy na závod a je zpřístupněno zájemcům:) Potvrzení najdeš i ve svém mailu.', 'success')
+	if id_ride:
+		email_functions.email_new_added_car(user, id_race)
+		flash('Hotovo! Auto jsme přidali do nabídky spolujízdy na závod a je zpřístupněno zájemcům:) Potvrzení najdeš i ve svém mailu.', 'success')
 		return render_template('races.html', races=races, id_chosen=0)
 	else:
 		flash('Na tento závod už auto nabízíš.', "danger")

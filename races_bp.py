@@ -14,7 +14,7 @@ def show_races():
     # Calls function render_template(), which takes template about.html and
     # generates HTML that is returned as a result of these function to the Flask.
     # Flask sends this result to the user´s browser
-    race_date = request.args.get('date_race', default='', type=str)
+    race_date = request.args.get('race_date', default='', type=str)
     id_race = request.args.get('id_race', default=0, type=int)
 
     carpool_offer = []

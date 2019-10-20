@@ -154,7 +154,7 @@ def find_user(email):
 def car_exists(driver, id_race):
     """ Looks into database if the driver is not added for given race. """
 
-    sql_find_car = """SELECT id_ride, driver, id_place, departure_place, departure_date, craseats_offer, notes FROM carpool_offer WHERE driver = %s AND id_ride = %s;"""
+    sql_find_car = """SELECT id_ride, driver, id_race, departure_place, departure_date, carseats_offer, notes FROM carpool_offer WHERE driver = %s AND id_race = %s;"""
 
     conn = get_db()
     
@@ -173,7 +173,7 @@ def car_exists(driver, id_race):
 def add_carpooling_offer(driver, id_race, departure, departure_date, offer_of_places_in_car, notes):
     """ Adding a new car with a driver into database. """
 
-    sql_find_car = """SELECT id_ride, driver, id_place, departure_place, departure_date, craseats_offer, notes FROM carpool_offer WHERE driver = %s AND id_race = %s;"""
+    sql_find_car = """SELECT id_ride, driver, id_race, departure_place, departure_date, carseats_offer, notes FROM carpool_offer WHERE driver = %s AND id_race = %s;"""
 
     sql_insert_car = """INSERT INTO carpool_offer(driver, id_race, departure_place, departure_date, carseats_offer, notes) VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_ride; """
 

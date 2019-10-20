@@ -17,11 +17,10 @@ def send_email(recipient_address, email_subject, text):
 	message['Message-Id'] = make_msgid()
 	message.set_content(text)
 
-	mail = smtplib.SMTP(host='smtp.gmail.com',port=587)
+	mail = smtplib.SMTP_SSL(host='smtp.gmail.com', port=465)
 	mail.ehlo()
-	mail.starttls()
 	mail.login('bezcisobe@gmail.com','behamespolu')
-	mail.sendmail('bezcisobe@gmail.com',recipient_address, message.as_string())
+	mail.sendmail('bezcisobe@gmail.com', recipient_address, message.as_string())
 	mail.close()
 
 
@@ -29,9 +28,9 @@ def email_new_added_car(user, id_race):
 	""" Should be a race for which is the car signed in. """
 	email = user.id
 	race = db_functions.get_race(id_race)
-	name_of_race = race.nazev
-	date = race.datum_zavodu.strftime('%d.%m.%Y')
-	place = race.misto_zavodu
+	name_of_race = race.name_race
+	date = race.date_race.strftime('%d.%m.%Y')
+	place = race.place_race
 	subject = "Potvrzení o zadání nabídky spolujízdy na závod"
 	text = """Ahoj!
 
@@ -44,19 +43,20 @@ def email_new_added_car(user, id_race):
 
 	send_email(email, subject, text)
 
+
 def email_board_on_car(user, id_race, id_ride):
 	""" Email is sent when someone boards on the car. """
 	email = user.id
 	race = db_functions.get_race(id_race)
 	driver = db_functions.get_ride_confirmation_details(id_ride)
-	name_of_race = race.nazev
-	date = race.datum_zavodu.strftime('%d.%m.%Y')
-	place_of_race = race.misto_zavodu
-	chauffeur = driver.jmeno
-	mobile_phone = driver.telefon
+	name_of_race = race.name_race
+	date = race.date_race.strftime('%d.%m.%Y')
+	place_of_race = race.place_race
+	chauffeur = driver.name
+	mobile_phone = driver.phone
 	email_driver = driver.email
-	departure = driver.misto_odjezdu
-	date_of_departure = driver.datum_odjezdu.strftime('%d.%m.%Y')
+	departure = driver.departure_place
+	date_of_departure = driver.departure_date.strftime('%d.%m.%Y')
 	subject = "Jedete spolu!"
 	
 	text = """Ahoj!
@@ -77,12 +77,12 @@ def email_to_carpool_driver(user, id_race, id_ride):
 	""" Email is sent when someone boards on the car. """
 	driver = db_functions.get_ride_driver(id_ride)
 	race = db_functions.get_race(id_race)
-	name_of_race = race.nazev
-	date = race.datum_zavodu.strftime('%d.%m.%Y')
-	place = race.misto_zavodu
-	co_driver_name = user.jmeno #signed user´s name who confirmed boarding on car
+	name_of_race = race.name_race
+	date = race.date_race.strftime('%d.%m.%Y')
+	place = race.place_race
+	co_driver_name = user.name #signed user´s name who confirmed boarding on car
 	email_user = user.id #signed user´s uzivatel.id who confirmed boarding on car
-	mobilephone_user = user.telefon #signed user´s phone who confirmed boarding on car
+	mobilephone_user = user.phone #signed user´s phone who confirmed boarding on car
 	subject = "Jedete spolu!"
 
 	text = """Ahoj!
@@ -99,6 +99,7 @@ def email_to_carpool_driver(user, id_race, id_ride):
 	Ivka z Běžci Sobě""".format(co_driver_name=co_driver_name, date=date, name_of_race=name_of_race, place=place, mobilephone_user=mobilephone_user, email_user=email_user)
 
 	send_email(driver.email, subject, text)
+
 
 def email_about_reseting_the_password(user, password_reset_url):
 	""" Sents email with link for reseting the password."""

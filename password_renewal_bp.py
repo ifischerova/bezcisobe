@@ -42,7 +42,7 @@ def show_new_password(token):
 		return redirect(url_for('.show_new_password', token=token))
 	else:
 		try:
-			token_data = json.loads(pw_refresh_token_generator.decrypt(token.encode("ascii"), ttl=60 * 60 * 24))
+			token_data = json.loads(pw_refresh_token_generator.decrypt(token.encode("ascii"), ttl=60 * 60 * 24).decode('UTF-8'))
 			#print(token_data)
 		except InvalidToken:
 			print("Neplatný token.")
@@ -54,7 +54,7 @@ def show_new_password(token):
 def new_password():
 	result = request.form
 	token = result.get("token")
-	id_user = json.loads(pw_refresh_token_generator.decrypt(token.encode("ascii"), ttl=60 * 60 * 24))['id']
+	id_user = json.loads(pw_refresh_token_generator.decrypt(token.encode("ascii"), ttl=60 * 60 * 24).decode('UTF-8'))['id']
 	password = result.get("password")
 	password_confirmation = result.get("password_confirmation")
 	if not password == password_confirmation:

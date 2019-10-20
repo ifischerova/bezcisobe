@@ -19,7 +19,7 @@ def get_db():
 def races_for_date(date_race):
     """ Returns list of get_races according to the selected date in decreasing order. """
 
-    sql = """SELECT * FROM zavody WHERE datum_zavodu = %s ORDER BY datum_zavodu DESC"""
+    sql = """SELECT * FROM races WHERE date_race = %s ORDER BY date_race DESC"""
     conn = get_db()
     cur = conn.cursor()
     cur.execute(sql, (date_race,))
